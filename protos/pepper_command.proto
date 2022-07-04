@@ -1,0 +1,17 @@
+// Main proto interface to control Pepper remotely.
+syntax = "proto3";
+package pepper_command;
+
+import "google/protobuf/empty.proto";
+
+// Pepper service.
+service Pepper {
+    // Connects to server and waits for new movement commands
+    rpc ListenMovementCommand(google.protobuf.Empty) returns (stream Command) {}
+}
+
+message Command {
+    string movement = 1;
+    bool halt_last = 2;
+}
+
