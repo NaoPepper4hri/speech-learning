@@ -20,7 +20,8 @@ def home():
 def pubCommand():
     req = request.get_json()
     cb = CommandBridge()
-    cb.send_command({"movement": req, "halt": True})
+    cb.send_command(req)
+    return "Ok"
 
 
 if __name__ == '__main__':
