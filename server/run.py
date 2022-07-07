@@ -28,4 +28,4 @@ if __name__ == '__main__':
     publish_hostname()
     grpc = Thread(target=serve_grpc)
     grpc.start()
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port='5002')

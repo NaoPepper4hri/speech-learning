@@ -1,4 +1,4 @@
-# duolingo-webapp
+# Speech Learning Task
 
 experiment app
 
@@ -7,7 +7,7 @@ experiment app
 1. Copy to server with ip `raspberry-ip`:
 
 ```
-rsync -a duolingo-webapp ubuntu@{raspberry-ip}:~/duolingo-webapp
+rsync -a speech-learning ubuntu@{raspberry-ip}:~
 ```
 
 2. Login into the server:
@@ -19,7 +19,7 @@ ssh ubuntu@{raspberry-ip}
 3. Run installation script:
 
 ```
-~/duolingo-webapp/install.sh
+~/speech-learning/install.sh
 ```
 
 4. When you restart the raspberry, the webapp should be setup.

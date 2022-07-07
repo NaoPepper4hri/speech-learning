@@ -14,7 +14,7 @@ def publish_hostname() -> None:
         slack_client = WebClient(token)
         slack_client.chat_postMessage(
             channel="reading_to_robot",
-            text="Access Reading To Robot App in: http://{}:5000".format(host))
+            text="Access Speech Learning App in: http://{}:5002".format(host))
 
 
 if __name__ == '__main__':
