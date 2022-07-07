@@ -24,7 +24,7 @@ class CommandBridge():
         self.accepting_cmds = False
 
     def send_command(self, cmd: str) -> None:
-        self.queue.put({"movement": cmd, "halt": True})
+        self.queue.put(cmd)
 
     def get(self, timeout: float) -> pepper_command_pb2.Command:
         cmd = self.queue.get(timeout=timeout)
