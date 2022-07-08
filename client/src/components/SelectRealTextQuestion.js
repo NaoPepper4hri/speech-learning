@@ -11,7 +11,7 @@ class SelectRealTextQuestion extends React.Component {
   };
 
   render() {
-    const { question, options, answer } = this.props;
+    const { question, options } = this.props;
     return (
       <Stack>
         <Typography>{question}</Typography>
@@ -21,9 +21,7 @@ class SelectRealTextQuestion extends React.Component {
               <Grid key={option.id} item>
                 <Button
                   onClick={
-                    option.id === answer
-                      ? this.answerCorrect
-                      : this.answerIncorrect
+                    option.correct ? this.answerCorrect : this.answerIncorrect
                   }
                 >
                   {option.text}

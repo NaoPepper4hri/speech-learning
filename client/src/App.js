@@ -1,7 +1,7 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import "./App.css";
 
-import { ImageButtonQuestion, VocabularyQuestion } from "./components";
+import { SelectRealTextQuestion, Navigator } from "./components";
 import image_example from "./assets/128x128@2x.png";
 
 const exampleQuestion = {
@@ -11,16 +11,54 @@ const exampleQuestion = {
       id: 3,
       text: "text3",
       img: image_example,
+      correct: false,
     },
     {
       id: 2,
       text: "text2",
       img: image_example,
+      correct: true,
     },
     {
       id: 1,
       text: "text1",
       img: image_example,
+      correct: true,
+    },
+    {
+      id: 4,
+      text: "text2",
+      img: image_example,
+      correct: true,
+    },
+    {
+      id: 5,
+      text: "text1",
+      img: image_example,
+      correct: true,
+    },
+    {
+      id: 6,
+      text: "text2",
+      img: image_example,
+      correct: true,
+    },
+    {
+      id: 7,
+      text: "text1",
+      img: image_example,
+      correct: true,
+    },
+    {
+      id: 8,
+      text: "text2",
+      img: image_example,
+      correct: true,
+    },
+    {
+      id: 9,
+      text: "text1",
+      correct: true,
     },
   ],
   answer: 3,
@@ -35,29 +73,24 @@ function App() {
         label="Required"
         defaultValue="Hello World"
       />
-      <Button
-        onClick={() => {
-          fetch("/pubCommand", {
-            method: "POST",
-            body: JSON.stringify({ movement: "test command", halt: true }),
-            headers: new Headers({
-              "content-type": "application/json",
-            }),
-          })
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((e) => {
-              console.error(e);
-            });
-        }}
-      >
-        here
-      </Button>
-      <VocabularyQuestion
-        question={exampleQuestion.question}
-        options={exampleQuestion.options}
-        answer={exampleQuestion.answer}
+      <Navigator
+        layout={[
+          <SelectRealTextQuestion
+            question={exampleQuestion.question}
+            options={exampleQuestion.options}
+            answer={exampleQuestion.answer}
+          />,
+          <SelectRealTextQuestion
+            question={exampleQuestion.question}
+            options={exampleQuestion.options}
+            answer={exampleQuestion.answer}
+          />,
+          <SelectRealTextQuestion
+            question={exampleQuestion.question}
+            options={exampleQuestion.options}
+            answer={exampleQuestion.answer}
+          />,
+        ]}
       />
     </div>
   );
