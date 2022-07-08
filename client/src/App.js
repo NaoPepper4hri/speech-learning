@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import "./App.css";
 
-import ImageButtonQuestion from "./components/ImageButtonQuestion";
+import { ImageButtonQuestion, VocabularyQuestion } from "./components";
 import image_example from "./assets/128x128@2x.png";
 
 const exampleQuestion = {
@@ -54,7 +54,7 @@ function App() {
       >
         here
       </Button>
-      <ImageButtonQuestion
+      <VocabularyQuestion
         question={exampleQuestion.question}
         options={exampleQuestion.options}
         answer={exampleQuestion.answer}
