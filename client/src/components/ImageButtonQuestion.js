@@ -10,26 +10,29 @@ import {
 import { Box } from "@mui/system";
 
 class ImageButtonQuestion extends React.Component {
-  onButtonPress = (id) => {
-    const { answer } = this.props;
-    return () => {
-      if (answer === id) {
-        console.log(true);
-      } else {
-        console.log(false);
-      }
-    };
+  correctAnswer = () => {
+    console.log(true);
+  };
+
+  incorrectAnswer = () => {
+    console.log(false);
   };
 
   optionGrid = () => {
     const { options } = this.props;
     return (
       <Grid container spacing={3} justifyContent="center">
-        {options.map((option) => {
+        {options.map((option, idx) => {
           return (
-            <Grid key={option.id} item>
+            <Grid key={idx} item>
               <Card sx={{ width: 345 }}>
-                <CardActionArea onClick={this.onButtonPress(option.id)}>
+                <CardActionArea
+                  onClick={() => {
+                    option.correct
+                      ? this.correctAnswer()
+                      : this.incorrectAnswer();
+                  }}
+                >
                   <CardMedia component="img" image={option.img}></CardMedia>
                   <CardContent>
                     <Typography>{option.text}</Typography>

@@ -1,7 +1,7 @@
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 
-class SelectRealTextQuestion extends React.Component {
+class MatchPairsQuestion extends React.Component {
   answerCorrect = () => {
     console.log(true);
   };
@@ -12,6 +12,7 @@ class SelectRealTextQuestion extends React.Component {
 
   render() {
     const { question, options } = this.props;
+    console.log(options);
     return (
       <Stack>
         <Typography>{question}</Typography>
@@ -35,4 +36,4 @@ class SelectRealTextQuestion extends React.Component {
   }
 }
 
-export default SelectRealTextQuestion;
+export default MatchPairsQuestion;

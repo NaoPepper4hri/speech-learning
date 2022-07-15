@@ -1,13 +1,15 @@
 import ImageButtonQuestion from "./ImageButtonQuestion";
 import FillBlankQuestion from "./FillBlankQuestion";
 import VocabularyQuestion from "./VocabularyQuestion";
-import SelectRealTextQuestion from "./SelectRealTextQuestion";
-import Navigator from "./Navigation"
+import MatchPairsQuestion from "./MatchPairsQuestion";
+import Navigator from "./Navigation";
+import SortWordsQuestion from "./SortWordsQuestion";
 
 export {
   ImageButtonQuestion,
   FillBlankQuestion,
   VocabularyQuestion,
-  SelectRealTextQuestion,
-  Navigator
+  MatchPairsQuestion,
+  Navigator,
+  SortWordsQuestion,
 };

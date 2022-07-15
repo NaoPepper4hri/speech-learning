@@ -1,94 +1,184 @@
-import { TextField } from "@mui/material";
 import "./App.css";
 
-import { SelectRealTextQuestion, Navigator } from "./components";
+import {
+  MatchPairsQuestion,
+  Navigator,
+  ImageButtonQuestion,
+  FillBlankQuestion,
+  VocabularyQuestion,
+  SortWordsQuestion,
+} from "./components";
 import image_example from "./assets/128x128@2x.png";
 
-const exampleQuestion = {
-  question: "What is this text?",
+const exampleQuestion1 = {
+  question: "Which one of these is 'the woman'?",
   options: [
     {
-      id: 3,
-      text: "text3",
+      text: "el hombre",
       img: image_example,
       correct: false,
     },
     {
-      id: 2,
-      text: "text2",
+      text: "la mujer",
       img: image_example,
       correct: true,
     },
     {
-      id: 1,
-      text: "text1",
+      text: "el niño",
       img: image_example,
+      correct: false,
+    },
+  ],
+};
+
+const exampleQuestion2 = {
+  question: "una niña, una {}",
+  options: {
+    a0:
+    {
+      id: "a0",
+      text: "la",
+      correct: false,
+    },
+    a1:
+    {
+      id: "a1",
+      text: "mujer",
+      correct: true,
+    },
+    a2:
+    {
+      id: "a2",
+      text: "el",
+      correct: false,
+    },
+    a3:
+    {
+      id: "a3",
+      text: "yo",
+      correct: false,
+    },
+  },
+};
+
+const exampleQuestion3 = {
+  question: `How do you say "she"?`,
+  options: [
+    {
+      text: "soy",
+      correct: false,
+    },
+    {
+      text: "ella",
       correct: true,
     },
     {
-      id: 4,
-      text: "text2",
-      img: image_example,
+      text: "niña",
+      correct: false,
+    },
+  ],
+};
+
+const exampleQuestion4 = {
+  question: `Yo soy una mujer.`,
+  options: [
+    {
+      idx: 0,
+      text: "I",
+    },
+    {
+      idx: 1,
+      text: "am",
+    },
+    {
+      idx: 2,
+      text: "a",
+    },
+    {
+      idx: 3,
+      text: "woman",
+    },
+    {
+      idx: -1,
+      text: "girl",
+    },
+    {
+      idx: -1,
+      text: "boy",
+    },
+    {
+      idx: -1,
+      text: "the",
+    },
+  ],
+};
+
+const exampleQuestion5 = {
+  question: "Select the real English words in this list",
+  options: [
+    {
+      text: "wake",
       correct: true,
     },
     {
-      id: 5,
-      text: "text1",
-      img: image_example,
+      text: "somether",
+      correct: false,
+    },
+    {
+      text: "walks",
       correct: true,
     },
     {
-      id: 6,
-      text: "text2",
-      img: image_example,
+      text: "waines",
+      correct: false,
+    },
+    {
+      text: "bookstore",
       correct: true,
     },
     {
-      id: 7,
-      text: "text1",
-      img: image_example,
+      text: "tooking",
+      correct: false,
+    },
+    {
+      text: "thinking",
       correct: true,
     },
     {
-      id: 8,
-      text: "text2",
-      img: image_example,
-      correct: true,
+      text: "givess",
+      correct: false,
     },
     {
-      id: 9,
-      text: "text1",
+      text: "nineteen",
       correct: true,
     },
   ],
-  answer: 3,
 };
 
 function App() {
   return (
     <div className="App">
-      <TextField
-        required
-        id="outlined-required"
-        label="Required"
-        defaultValue="Hello World"
-      />
       <Navigator
         layout={[
-          <SelectRealTextQuestion
-            question={exampleQuestion.question}
-            options={exampleQuestion.options}
-            answer={exampleQuestion.answer}
+          <ImageButtonQuestion
+            question={exampleQuestion1.question}
+            options={exampleQuestion1.options}
           />,
-          <SelectRealTextQuestion
-            question={exampleQuestion.question}
-            options={exampleQuestion.options}
-            answer={exampleQuestion.answer}
+          <FillBlankQuestion
+            question={exampleQuestion2.question}
+            options={exampleQuestion2.options}
           />,
-          <SelectRealTextQuestion
-            question={exampleQuestion.question}
-            options={exampleQuestion.options}
-            answer={exampleQuestion.answer}
+          <VocabularyQuestion
+            question={exampleQuestion3.question}
+            options={exampleQuestion3.options}
+          />,
+          // <SortWordsQuestion
+          //   question={exampleQuestion4.question}
+          //   options={exampleQuestion4.options}
+          // />,
+          <MatchPairsQuestion
+            question={exampleQuestion5.question}
+            options={exampleQuestion5.options}
           />,
         ]}
       />
