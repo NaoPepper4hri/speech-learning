@@ -120,40 +120,40 @@ const exampleQuestion5 = {
   question: "Select the real English words in this list",
   options: [
     {
-      text: "wake",
-      correct: true,
+      p1: "pajaro",
+      p2: "bird",
     },
     {
-      text: "somether",
-      correct: false,
+      p1: "something",
+      p2: "algo",
     },
     {
-      text: "walks",
-      correct: true,
+      p1: "walks",
+      p2: "camina",
     },
     {
-      text: "waines",
-      correct: false,
+      p1: "verdadero",
+      p2: "true",
     },
     {
-      text: "bookstore",
-      correct: true,
+      p1: "library",
+      p2: "biblioteca",
     },
     {
-      text: "tooking",
-      correct: false,
+      p1: "tool",
+      p2: "herramienta",
     },
     {
-      text: "thinking",
-      correct: true,
+      p1: "thinking",
+      p2: "pensando",
     },
     {
-      text: "givess",
-      correct: false,
+      p1: "present",
+      p2: "regalo",
     },
     {
-      text: "nineteen",
-      correct: true,
+      p1: "nineteen",
+      p2: "diecinueve",
     },
   ],
 };
