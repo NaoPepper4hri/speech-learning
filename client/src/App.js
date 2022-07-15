@@ -34,26 +34,22 @@ const exampleQuestion1 = {
 const exampleQuestion2 = {
   question: "una niña, una {}",
   options: {
-    a0:
-    {
+    a0: {
       id: "a0",
       text: "la",
       correct: false,
     },
-    a1:
-    {
+    a1: {
       id: "a1",
       text: "mujer",
       correct: true,
     },
-    a2:
-    {
+    a2: {
       id: "a2",
       text: "el",
       correct: false,
     },
-    a3:
-    {
+    a3: {
       id: "a3",
       text: "yo",
       correct: false,
@@ -81,36 +77,43 @@ const exampleQuestion3 = {
 
 const exampleQuestion4 = {
   question: `Yo soy una mujer.`,
-  options: [
-    {
-      idx: 0,
+  options: {
+    o0: {
+      id: "o0",
+      tIdx: 0,
       text: "I",
     },
-    {
-      idx: 1,
+    o1: {
+      id: "o1",
+      tIdx: 1,
       text: "am",
     },
-    {
-      idx: 2,
+    o2: {
+      id: "o2",
+      tIdx: 2,
       text: "a",
     },
-    {
-      idx: 3,
+    o3: {
+      id: "o3",
+      tIdx: 3,
       text: "woman",
     },
-    {
-      idx: -1,
+    o4: {
+      id: "o4",
+      tIdx: -1,
       text: "girl",
     },
-    {
-      idx: -1,
+    o5: {
+      id: "o5",
+      tIdx: -1,
       text: "boy",
     },
-    {
-      idx: -1,
+    o6: {
+      id: "o6",
+      tIdx: -1,
       text: "the",
     },
-  ],
+  },
 };
 
 const exampleQuestion5 = {
@@ -172,10 +175,10 @@ function App() {
             question={exampleQuestion3.question}
             options={exampleQuestion3.options}
           />,
-          // <SortWordsQuestion
-          //   question={exampleQuestion4.question}
-          //   options={exampleQuestion4.options}
-          // />,
+          <SortWordsQuestion
+            question={exampleQuestion4.question}
+            options={exampleQuestion4.options}
+          />,
           <MatchPairsQuestion
             question={exampleQuestion5.question}
             options={exampleQuestion5.options}

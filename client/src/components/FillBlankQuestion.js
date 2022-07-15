@@ -122,15 +122,6 @@ class FillBlankQuestion extends React.Component {
     // Divide question in list of words.
     var comps = [];
     const answer = answerArea.length > 0 ? options[answerArea[0]] : undefined;
-    if (question.startsWith("{}")) {
-      comps.push(
-        <QuestionDroppable
-          key={this.dropAnswerArea}
-          id={this.dropAnswerArea}
-          answer={answer}
-        />
-      );
-    }
     question.split("{}").forEach((text) => {
       comps.push(<Typography key={text}>{text}</Typography>);
       comps.push(
@@ -158,7 +149,6 @@ class FillBlankQuestion extends React.Component {
       return;
     }
     const { optionArea, answerArea } = this.state;
-    const { options } = this.props;
     var newAnswerArea = Array.from(answerArea);
     var newOptionArea = Array.from(optionArea);
 

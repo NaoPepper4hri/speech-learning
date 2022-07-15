@@ -11,11 +11,13 @@ class VocabularyQuestion extends React.Component {
   };
 
   render() {
-    const { question, options, answer } = this.props;
+    const { question, options } = this.props;
     return (
       <Stack spacing={5}>
-        <Typography variant="h3">{question}</Typography>
-        {options.map((option) => {
+        <Typography key="question" variant="h3">
+          {question}
+        </Typography>
+        {options.map((option, idx) => {
           return (
             <Button
               sx={{
@@ -29,9 +31,9 @@ class VocabularyQuestion extends React.Component {
                 },
               }}
               variant="outlined"
-              key={option.id}
+              key={`btn${idx}`}
               onClick={
-                option.id === answer ? this.correctAnswer : this.incorrectAnswer
+                option.correct ? this.correctAnswer : this.incorrectAnswer
               }
             >
               {option.text}
