@@ -7,7 +7,8 @@ const Card = styled.div`
   border: 1px solid lightgrey;
   border-radius: 6px;
   padding: 4px;
-  background-color: white;
+  background-color: ${(props) =>
+    props.color === "success" ? "#66bb6a" : "white"};
   min-height: 10px;
   min-width: 40px;
 `;
@@ -36,7 +37,7 @@ const AnswerContainer = styled.div`
 
 class DraggableAnswer extends React.Component {
   render() {
-    const { id, index, text } = this.props;
+    const { id, index, text, color } = this.props;
     return (
       <Draggable draggableId={id} index={index}>
         {(provided) => (
@@ -44,6 +45,7 @@ class DraggableAnswer extends React.Component {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            color={color}
           >
             <Typography>{text}</Typography>
           </Card>
@@ -55,7 +57,7 @@ class DraggableAnswer extends React.Component {
 
 class QuestionDroppable extends React.Component {
   render() {
-    const { id, answer } = this.props;
+    const { id, answer, color } = this.props;
     return (
       <Droppable droppableId={id} direction="horizontal">
         {(provided) => (
@@ -67,6 +69,7 @@ class QuestionDroppable extends React.Component {
                   id={answer.id}
                   text={answer.text}
                   index={0}
+                  color={color}
                 ></DraggableAnswer>
               ) : (
                 <> </>
@@ -118,7 +121,7 @@ class FillBlankQuestion extends React.Component {
 
   getTargetSentenceComp = () => {
     const { question, options } = this.props;
-    const { answerArea } = this.state;
+    const { answerArea, done } = this.state;
     // Divide question in list of words.
     var comps = [];
     const answer = answerArea.length > 0 ? options[answerArea[0]] : undefined;
@@ -129,6 +132,7 @@ class FillBlankQuestion extends React.Component {
           key={this.dropAnswerArea}
           id={this.dropAnswerArea}
           answer={answer}
+          color={done ? "success" : ""}
         />
       );
     });
@@ -169,17 +173,21 @@ class FillBlankQuestion extends React.Component {
       console.log(this.dropOptionArea);
     }
 
-    this.setState({ optionArea: newOptionArea, answerArea: newAnswerArea });
+    this.setState({
+      optionArea: newOptionArea,
+      answerArea: newAnswerArea,
+      done: this.props.options[draggableId].correct,
+    });
   };
 
   render() {
     const { image, options } = this.props;
-    const { optionArea } = this.state;
+    const { optionArea, done } = this.state;
     const optInArea = optionArea.map((optIdx) => options[optIdx]);
 
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Stack spacing={2} alignItems="center">
+        <Stack spacing={2} alignItems="center" padding={5}>
           <Typography key="title" variant="h4" gutterBottom>
             Fill in the blank.
           </Typography>

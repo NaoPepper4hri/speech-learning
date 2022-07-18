@@ -5,7 +5,10 @@ import { fisherYatesShuffle } from "../utils";
 class MatchPairsQuestion extends React.Component {
   constructor(props) {
     super(props);
-    const buttons = props.options
+    const opts = Array.from(props.options);
+    fisherYatesShuffle(opts);
+    const buttons = opts
+      .slice(0, 8)
       .map((o, i) => [
         { text: o.p1, idx: i },
         { text: o.p2, idx: i },
@@ -40,7 +43,7 @@ class MatchPairsQuestion extends React.Component {
     const { question } = this.props;
     const { correct, buttons, clicked } = this.state;
     return (
-      <Stack maxWidth={500}>
+      <Stack maxWidth={600} padding={5} spacing={3} alignItems="center">
         <Typography variant="h4" gutterBottom>
           {question}
         </Typography>

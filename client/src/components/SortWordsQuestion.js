@@ -7,7 +7,8 @@ const Card = styled.div`
   border: 1px solid lightgrey;
   border-radius: 6px;
   padding: 4px;
-  background-color: white;
+  background-color: ${(props) =>
+    props.color === "success" ? "#66bb6a" : "white"};
   min-height: 10px;
   min-width: 40px;
 `;
@@ -25,7 +26,7 @@ const OptionContainer = styled.div`
 
 class DraggableWord extends React.Component {
   render() {
-    const { id, index, text } = this.props;
+    const { id, index, text, color } = this.props;
     return (
       <Draggable draggableId={id} index={index}>
         {(provided) => (
@@ -33,6 +34,7 @@ class DraggableWord extends React.Component {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            color={color}
           >
             <Typography>{text}</Typography>
           </Card>
@@ -44,7 +46,7 @@ class DraggableWord extends React.Component {
 
 class OptionsDroppable extends React.Component {
   render() {
-    const { id, options, justifyContent, spacing } = this.props;
+    const { id, options, justifyContent, spacing, color } = this.props;
     return (
       <Droppable droppableId={id} direction="horizontal">
         {(provided) => (
@@ -60,6 +62,7 @@ class OptionsDroppable extends React.Component {
                   id={option.id}
                   text={option.text}
                   index={index}
+                  color={color}
                 />
               ))}
               {provided.placeholder}
@@ -90,6 +93,22 @@ class SortWordsQuestion extends React.Component {
     console.log(false);
   };
 
+  isAnswerCorrect = (answerList, optionList) => {
+    const { options } = this.props;
+    // All elements in the optionList are -1.
+    var correct = !optionList.some((o) => options[o].tIdx >= 0);
+    console.log(correct);
+    if (correct) {
+      // Check order of answer
+      answerList.forEach((o, idx) => {
+        correct = correct && options[o].tIdx === idx;
+        console.log(correct);
+        console.log(options[o]);
+      });
+    }
+    return correct;
+  };
+
   onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
     if (!destination) {
@@ -118,18 +137,27 @@ class SortWordsQuestion extends React.Component {
       newOptionList.splice(destination.index, 0, draggableId);
     }
 
-    this.setState({ answerList: newAnswerList, optionList: newOptionList });
+    this.setState({
+      answerList: newAnswerList,
+      optionList: newOptionList,
+      done: this.isAnswerCorrect(newAnswerList, newOptionList),
+    });
   };
 
   render() {
     const { question, options } = this.props;
-    const { answerList, optionList } = this.state;
+    const { answerList, optionList, done } = this.state;
     const answer = answerList.map((a) => options[a]);
     const opts = optionList.map((o) => options[o]);
 
     return (
       <DragDropContext key="dnd" onDragEnd={this.onDragEnd}>
-        <Stack sx={{ width: 600 }} spacing={4} justifyContent="stretch">
+        <Stack
+          sx={{ width: 600 }}
+          spacing={4}
+          padding={5}
+          justifyContent="stretch"
+        >
           <Typography key="title" variant="h4" gutterBottom>
             Write this in English
           </Typography>
@@ -142,6 +170,7 @@ class SortWordsQuestion extends React.Component {
             options={answer}
             id={this.dropAnswerArea}
             spacing={1}
+            color={done ? "success" : ""}
           />
           <Divider />
           <OptionsDroppable
