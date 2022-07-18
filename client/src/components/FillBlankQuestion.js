@@ -180,7 +180,9 @@ class FillBlankQuestion extends React.Component {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Stack spacing={2} alignItems="center">
-          <Typography key="title">Fill in the blank.</Typography>
+          <Typography key="title" variant="h4" gutterBottom>
+            Fill in the blank.
+          </Typography>
           <img key="image" src={image} alt="" />
           <Stack direction="row">{this.getTargetSentenceComp()}</Stack>
           <OptionsDroppable

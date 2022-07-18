@@ -39,12 +39,17 @@ export default class Navigator extends React.Component {
     const { current: c } = this.state;
     const { isLoading: loading } = this.props;
     return (
-      <Box position="sticky" height="85%" display="flex" flexDirection="column">
+      <Box
+        position="sticky"
+        height="85%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
         <Box>
           {React.cloneElement(this.layout[c], {
             isLoading: loading,
           })}
-          <Box height="10vh" />
         </Box>
         <AppBar position="fixed" style={{ top: "auto", bottom: 0 }}>
           <MobileStepper

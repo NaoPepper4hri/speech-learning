@@ -40,8 +40,10 @@ class MatchPairsQuestion extends React.Component {
     const { question } = this.props;
     const { correct, buttons, clicked } = this.state;
     return (
-      <Stack>
-        <Typography>{question}</Typography>
+      <Stack maxWidth={500}>
+        <Typography variant="h4" gutterBottom>
+          {question}
+        </Typography>
         <Grid container justifyContent="space-evenly" spacing={3}>
           {buttons.map((b, index) => {
             const done = correct.includes(index);

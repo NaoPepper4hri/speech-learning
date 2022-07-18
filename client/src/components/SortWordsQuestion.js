@@ -130,8 +130,12 @@ class SortWordsQuestion extends React.Component {
     return (
       <DragDropContext key="dnd" onDragEnd={this.onDragEnd}>
         <Stack sx={{ width: 600 }} spacing={4} justifyContent="stretch">
-          <Typography key="title">Write this in English</Typography>
-          <Typography key="question">{question}</Typography>
+          <Typography key="title" variant="h4" gutterBottom>
+            Write this in English
+          </Typography>
+          <Typography key="question" variant="h5" gutterBottom>
+            {question}
+          </Typography>
           <Divider />
           <OptionsDroppable
             key="answer"

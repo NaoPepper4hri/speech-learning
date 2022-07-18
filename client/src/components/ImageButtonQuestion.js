@@ -5,9 +5,9 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Stack,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
 
 class ImageButtonQuestion extends React.Component {
   correctAnswer = () => {
@@ -49,12 +49,12 @@ class ImageButtonQuestion extends React.Component {
   render() {
     const { question } = this.props;
     return (
-      <Box>
-        <Typography variant="h3" gutterBottom>
+      <Stack spacing={4}>
+        <Typography variant="h4" gutterBottom>
           {question}
         </Typography>
         {this.optionGrid()}
-      </Box>
+      </Stack>
     );
   }
 }
