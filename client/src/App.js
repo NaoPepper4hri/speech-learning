@@ -9,112 +9,16 @@ import {
   SortWordsQuestion,
 } from "./components";
 import image_example from "./assets/128x128@2x.png";
+import questions from "./assets/questions.json";
+import { fisherYatesShuffle } from "./utils";
 
-const exampleQuestion1 = {
-  question: "Which one of these is 'the woman'?",
-  options: [
-    {
-      text: "el hombre",
-      img: image_example,
-      correct: false,
-    },
-    {
-      text: "la mujer",
-      img: image_example,
-      correct: true,
-    },
-    {
-      text: "el niño",
-      img: image_example,
-      correct: false,
-    },
-  ],
-};
+const pairs = questions.pop();
 
-const exampleQuestion2 = {
-  question: "una niña, una {}",
-  options: {
-    a0: {
-      id: "a0",
-      text: "la",
-      correct: false,
-    },
-    a1: {
-      id: "a1",
-      text: "mujer",
-      correct: true,
-    },
-    a2: {
-      id: "a2",
-      text: "el",
-      correct: false,
-    },
-    a3: {
-      id: "a3",
-      text: "yo",
-      correct: false,
-    },
-  },
-};
+for (var i = 0; i < 5; i++) {
+  questions.push(pairs);
+}
 
-const exampleQuestion3 = {
-  question: `How do you say "she"?`,
-  options: [
-    {
-      text: "soy",
-      correct: false,
-    },
-    {
-      text: "ella",
-      correct: true,
-    },
-    {
-      text: "niña",
-      correct: false,
-    },
-  ],
-};
-
-const exampleQuestion4 = {
-  question: `Yo soy una mujer.`,
-  options: {
-    o0: {
-      id: "o0",
-      tIdx: 0,
-      text: "I",
-    },
-    o1: {
-      id: "o1",
-      tIdx: 1,
-      text: "am",
-    },
-    o2: {
-      id: "o2",
-      tIdx: 2,
-      text: "a",
-    },
-    o3: {
-      id: "o3",
-      tIdx: 3,
-      text: "woman",
-    },
-    o4: {
-      id: "o4",
-      tIdx: -1,
-      text: "girl",
-    },
-    o5: {
-      id: "o5",
-      tIdx: -1,
-      text: "boy",
-    },
-    o6: {
-      id: "o6",
-      tIdx: -1,
-      text: "the",
-    },
-  },
-};
+fisherYatesShuffle(questions);
 
 const exampleQuestion5 = {
   question: "Select the real English words in this list",
@@ -162,28 +66,52 @@ function App() {
   return (
     <div className="App">
       <Navigator
-        layout={[
-          <ImageButtonQuestion
-            question={exampleQuestion1.question}
-            options={exampleQuestion1.options}
-          />,
-          <FillBlankQuestion
-            question={exampleQuestion2.question}
-            options={exampleQuestion2.options}
-          />,
-          <VocabularyQuestion
-            question={exampleQuestion3.question}
-            options={exampleQuestion3.options}
-          />,
-          <SortWordsQuestion
-            question={exampleQuestion4.question}
-            options={exampleQuestion4.options}
-          />,
-          <MatchPairsQuestion
-            question={exampleQuestion5.question}
-            options={exampleQuestion5.options}
-          />,
-        ]}
+        layout={questions.map((q, index) => {
+          switch (q.ty) {
+            case "ImageButtonQuestion":
+              return (
+                <ImageButtonQuestion
+                  key={index}
+                  question={q.question}
+                  options={q.options}
+                />
+              );
+            case "FillBlankQuestion":
+              return (
+                <FillBlankQuestion
+                  key={index}
+                  question={q.question}
+                  options={q.options}
+                />
+              );
+            case "VocabularyQuestion":
+              return (
+                <VocabularyQuestion
+                  key={index}
+                  question={q.question}
+                  options={q.options}
+                />
+              );
+            case "SortWordsQuestion":
+              return (
+                <SortWordsQuestion
+                  key={index}
+                  question={q.question}
+                  options={q.options}
+                />
+              );
+            case "MatchPairsQuestion":
+              return (
+                <MatchPairsQuestion
+                  key={index}
+                  question={q.question}
+                  options={q.options}
+                />
+              );
+            default:
+              return <></>;
+          }
+        })}
       />
     </div>
   );

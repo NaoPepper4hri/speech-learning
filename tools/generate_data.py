@@ -34,6 +34,8 @@ class ImageButtonQuestion(Question):
             images = ",,"
         opt = []
         for image, text in zip(images.split(","), options.split(",")):
+            image = image.strip()
+            text = text.strip()
             opt.append({
                 "text": text,
                 "image": image,
@@ -66,6 +68,7 @@ class FillBlankQuestion(Question):
         for o in options.split(","):
             key = "o{}".format(counter)
             counter += 1
+            o = o.strip()
             opt[key] = {
                     "id": key,
                     "text": o,
@@ -84,6 +87,7 @@ class VocabularyQuestion(Question):
         question, answer, options = data
         opts = []
         for o in options.split(","):
+            o = o.strip()
             opts.append({
                 "text": o,
                 "correct": o == answer
@@ -102,6 +106,7 @@ class SortWordsQuestion(Question):
         counter = 0
         answer_sequence = answer.split()
         for o in options.split(","):
+            o = o.strip()
             key = "o{}".format(counter)
             counter += 1
             opts[key] = {

@@ -15,7 +15,7 @@ class VocabularyQuestion extends React.Component {
     return (
       <Stack spacing={5}>
         <Typography key="question" variant="h3">
-          {question}
+          {`How do you say "${question}"?`}
         </Typography>
         {options.map((option, idx) => {
           return (
