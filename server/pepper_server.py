@@ -28,11 +28,17 @@ class CommandBridge():
 
     def get(self, timeout: float) -> pepper_command_pb2.Command:
         cmd = self.queue.get(timeout=timeout)
+        # cmd = {
+        #     "movement": "asdf",
+        #     "say": "ss",
+        #     "rot": 0,
+        #     "halt": True
+        # }
         return pepper_command_pb2.Command(
-            movement=cmd["movement"],
-            say=cmd["say"],
-            rotate=cmd["rot"],
-            halt_last=cmd["halt"])
+            movement=cmd.get("movement", ""),
+            say=cmd.get("say", ""),
+            rotation=cmd.get("rot", 0.0),
+            halt_last=cmd.get("halt", True))
 
 
 class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
@@ -59,3 +65,7 @@ def serve_grpc() -> None:
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
+
+
+if __name__ == "__main__":
+    serve_grpc()

@@ -8,7 +8,7 @@ export function fisherYatesShuffle(arr) {
 export const sendPepperCommand = async (cmd, text, rot = 0, halt = true) => {
   await fetch("/pubCommand", {
     method: "POST",
-    body: JSON.stringify({ command: cmd, say: text, rot: rot, halt: halt }),
+    body: JSON.stringify({ movement: cmd, say: text, rot: rot, halt: halt }),
     headers: new Headers({
       "content-type": "application/json",
     }),
