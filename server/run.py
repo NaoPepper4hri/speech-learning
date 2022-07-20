@@ -19,9 +19,15 @@ def home():
 @app.route('/pubCommand', methods=['POST'])
 def pubCommand():
     req = request.get_json()
+    print(req)
     cb = CommandBridge()
     cb.send_command(req)
     return "Ok"
+
+
+@app.route('/control', defaults={'path': ''})
+def index(path):
+    return app.send_static_file('index.html')
 
 
 if __name__ == '__main__':

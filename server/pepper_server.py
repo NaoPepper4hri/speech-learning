@@ -28,7 +28,11 @@ class CommandBridge():
 
     def get(self, timeout: float) -> pepper_command_pb2.Command:
         cmd = self.queue.get(timeout=timeout)
-        return pepper_command_pb2.Command(movement=cmd["movement"], halt_last=cmd["halt"])
+        return pepper_command_pb2.Command(
+            movement=cmd["movement"],
+            say=cmd["say"],
+            rotate=cmd["rot"],
+            halt_last=cmd["halt"])
 
 
 class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
