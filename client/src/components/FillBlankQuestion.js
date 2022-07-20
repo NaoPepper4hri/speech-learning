@@ -182,7 +182,7 @@ class FillBlankQuestion extends React.Component {
 
   render() {
     const { image, options } = this.props;
-    const { optionArea, done } = this.state;
+    const { optionArea } = this.state;
     const optInArea = optionArea.map((optIdx) => options[optIdx]);
 
     return (

@@ -2,7 +2,7 @@
 import argparse
 import json
 import openpyxl as xml
-from typing import Dict, Iterator, Tuple
+from typing import Dict, Iterator, Optional, Tuple
 
 
 class DataSheets:
@@ -10,6 +10,7 @@ class DataSheets:
     FILL_BLANK_SHEET = "Task1"
     VOCABULARY_SHEET = "Task2"
     SORT_WORDS_SHEET = "Task3"
+    SORT_WORDS_SHEET_2 = "Task3 (2)"
     MATCH_PAIRS_SHEET = "Optional task"
 
 
@@ -99,8 +100,20 @@ class VocabularyQuestion(Question):
 
 
 class SortWordsQuestion(Question):
+    def __init__(self, header, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.header = header
+
+    def as_dict(self) -> Dict:
+        return {
+            "ty": self.__class__.__name__,
+            "question": self.question,
+            "header": self.header,
+            "options": self.options,
+        }
+
     @classmethod
-    def from_row(cls, data: Tuple):
+    def from_row(cls, data: Tuple, task: Optional[str] = ""):
         question, answer, options = data[0:3]
         opts = {}
         counter = 0
@@ -115,6 +128,7 @@ class SortWordsQuestion(Question):
                 "text": o,
             }
         return cls(
+            header=task,
             question=question,
             options=opts,
         )
@@ -151,9 +165,10 @@ if __name__ == "__main__":
         for name in book.sheetnames:
             question_type = name
             sheet = book[name]
+            task = sheet["A2"].value
             if question_type == DataSheets.MATCH_PAIRS_SHEET:
                 pairs = MatchPairsQuestion.from_sheet(
-                        sheet["A2"].value,
+                        task,
                         sheet.iter_rows(min_row=3, values_only=True))
             else:
                 for entry in sheet.iter_rows(min_row=3, values_only=True):
@@ -166,7 +181,12 @@ if __name__ == "__main__":
                             questions.append(VocabularyQuestion.from_row(entry))
                         case DataSheets.SORT_WORDS_SHEET:
                             try:
-                                questions.append(SortWordsQuestion.from_row(entry))
+                                questions.append(SortWordsQuestion.from_row(entry, task))
+                            except Exception as e:
+                                print(e)
+                        case DataSheets.SORT_WORDS_SHEET_2:
+                            try:
+                                questions.append(SortWordsQuestion.from_row(entry, task))
                             except Exception as e:
                                 print(e)
 

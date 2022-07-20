@@ -145,7 +145,7 @@ class SortWordsQuestion extends React.Component {
   };
 
   render() {
-    const { question, options } = this.props;
+    const { header, question, options } = this.props;
     const { answerList, optionList, done } = this.state;
     const answer = answerList.map((a) => options[a]);
     const opts = optionList.map((o) => options[o]);
@@ -159,7 +159,7 @@ class SortWordsQuestion extends React.Component {
           justifyContent="stretch"
         >
           <Typography key="title" variant="h4" gutterBottom>
-            Write this in English
+            {header}
           </Typography>
           <Typography key="question" variant="h5" gutterBottom>
             {question}
