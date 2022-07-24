@@ -97,13 +97,10 @@ class SortWordsQuestion extends React.Component {
     const { options } = this.props;
     // All elements in the optionList are -1.
     var correct = !optionList.some((o) => options[o].tIdx >= 0);
-    console.log(correct);
     if (correct) {
       // Check order of answer
       answerList.forEach((o, idx) => {
         correct = correct && options[o].tIdx === idx;
-        console.log(correct);
-        console.log(options[o]);
       });
     }
     return correct;

@@ -170,7 +170,7 @@ class FillBlankQuestion extends React.Component {
       }
       newOptionArea.splice(destination.index, 0, draggableId);
     } else {
-      console.log(this.dropOptionArea);
+      console.warn("Drop option area unknown:", this.dropOptionArea);
     }
 
     this.setState({

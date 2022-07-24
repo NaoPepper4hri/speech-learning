@@ -11,20 +11,52 @@ import {
 import questions from "./assets/questions.json";
 import { fisherYatesShuffle } from "./utils";
 
-const pairs = questions.pop();
+const MATCH_PAIR_QUESTION_NUMBER = 5;
 
-for (var i = 0; i < 5; i++) {
-  questions.push(pairs);
+const block1 = [];
+const block2 = [];
+const block3 = [];
+const block4 = [];
+const block5 = [];
+
+for (var i = 0; i < questions.length; i++) {
+  switch (questions[i].ty) {
+    case "ImageButtonQuestion":
+      block1.push(questions[i]);
+      break;
+    case "FillBlankQuestion":
+      block2.push(questions[i]);
+      break;
+    case "VocabularyQuestion":
+      block3.push(questions[i]);
+      break;
+    case "SortWordsQuestion":
+      block4.push(questions[i]);
+      break;
+    case "MatchPairsQuestion":
+      for (var j = 0; j < MATCH_PAIR_QUESTION_NUMBER; j++) {
+        block5.push(questions[i]);
+      }
+      break;
+    default:
+      break;
+  }
 }
 
-fisherYatesShuffle(questions);
+fisherYatesShuffle(block1);
+fisherYatesShuffle(block2);
+fisherYatesShuffle(block3);
+fisherYatesShuffle(block4);
+fisherYatesShuffle(block5);
+
+const blocks = [...block1, ...block2, ...block3, ...block4, ...block5];
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
         <Navigator
-          layout={questions.map((q, index) => {
+          layout={blocks.map((q, index) => {
             switch (q.ty) {
               case "ImageButtonQuestion":
                 return (

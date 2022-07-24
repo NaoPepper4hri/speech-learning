@@ -16,7 +16,6 @@ class VocabularyQuestion extends React.Component {
   render() {
     const { question, options } = this.props;
     const { correct, incorrect } = this.state;
-    console.log(this.state);
     return (
       <Stack spacing={5} padding={5}>
         <Typography key="question" variant="h4">
@@ -50,7 +49,6 @@ class VocabularyQuestion extends React.Component {
               alignSelf: "center",
             };
           }
-          console.log(c);
           return (
             <Button
               sx={sx}
