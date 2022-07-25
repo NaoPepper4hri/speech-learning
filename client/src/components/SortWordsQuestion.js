@@ -1,5 +1,6 @@
-import { Divider, Stack, Typography } from "@mui/material";
 import React from "react";
+import { Divider, Fab, Stack, Typography } from "@mui/material";
+import { Check, KeyboardArrowRightRounded } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
@@ -7,8 +8,16 @@ const Card = styled.div`
   border: 1px solid lightgrey;
   border-radius: 6px;
   padding: 4px;
-  background-color: ${(props) =>
-    props.color === "success" ? "#66bb6a" : "white"};
+  background-color: ${(props) => {
+    switch (props.color) {
+      case "success":
+        return "#66bb6a";
+      case "error":
+        return "#f44336";
+      default:
+        return "white";
+    }
+  }};
   min-height: 10px;
   min-width: 40px;
 `;
@@ -85,6 +94,14 @@ class SortWordsQuestion extends React.Component {
     };
   }
 
+  checkAnswer = () => {
+    const { answerList, optionList } = this.state;
+    this.setState({
+      responded: true,
+      response: this.isAnswerCorrect(answerList, optionList),
+    });
+  };
+
   answerCorrect = () => {
     console.log(true);
   };
@@ -107,6 +124,9 @@ class SortWordsQuestion extends React.Component {
   };
 
   onDragEnd = (result) => {
+    if (this.state.responded) {
+      return;
+    }
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
@@ -142,43 +162,91 @@ class SortWordsQuestion extends React.Component {
   };
 
   render() {
-    const { header, question, options } = this.props;
-    const { answerList, optionList, done } = this.state;
+    const {
+      header,
+      question,
+      options,
+      handleNext,
+      answer: correctAnswer,
+    } = this.props;
+    const { answerList, optionList, responded, response } = this.state;
     const answer = answerList.map((a) => options[a]);
     const opts = optionList.map((o) => options[o]);
 
     return (
-      <DragDropContext key="dnd" onDragEnd={this.onDragEnd}>
-        <Stack
-          sx={{ width: 600 }}
-          spacing={4}
-          padding={5}
-          justifyContent="stretch"
-        >
-          <Typography key="title" variant="h4" gutterBottom>
-            {header}
-          </Typography>
-          <Typography key="question" variant="h5" gutterBottom>
-            {question}
-          </Typography>
-          <Divider />
-          <OptionsDroppable
-            key="answer"
-            options={answer}
-            id={this.dropAnswerArea}
-            spacing={1}
-            color={done ? "success" : ""}
-          />
-          <Divider />
-          <OptionsDroppable
-            key="options"
-            options={opts}
-            id={this.dropOptionArea}
-            justifyContent={"center"}
-            spacing={2}
-          />
-        </Stack>
-      </DragDropContext>
+      <React.Fragment>
+        <DragDropContext key="dnd" onDragEnd={this.onDragEnd}>
+          <Stack
+            sx={{ width: 600 }}
+            spacing={4}
+            padding={5}
+            justifyContent="stretch"
+          >
+            <Typography key="title" variant="h4" gutterBottom>
+              {header}
+            </Typography>
+            <Typography key="question" variant="h5" gutterBottom>
+              {question}
+            </Typography>
+            <Divider />
+            <OptionsDroppable
+              key="answer"
+              options={answer}
+              id={this.dropAnswerArea}
+              spacing={1}
+              color={!responded ? "" : response ? "success" : "error"}
+            />
+            {responded && !response ? (
+              <Typography key="correct_answer" variant="body1">
+                {correctAnswer}
+              </Typography>
+            ) : (
+              <></>
+            )}
+            <Divider />
+            <OptionsDroppable
+              key="options"
+              options={opts}
+              id={this.dropOptionArea}
+              justifyContent={"center"}
+              spacing={2}
+            />
+          </Stack>
+        </DragDropContext>
+        {responded ? (
+          <Fab
+            variant="extended"
+            sx={{
+              margin: 0,
+              top: "auto",
+              right: 20,
+              bottom: 40,
+              left: "auto",
+              position: "fixed",
+            }}
+            onClick={() => handleNext(response)}
+          >
+            Continue
+            <KeyboardArrowRightRounded />
+          </Fab>
+        ) : (
+          <Fab
+            variant="extended"
+            sx={{
+              margin: 0,
+              top: "auto",
+              right: 20,
+              bottom: 40,
+              left: "auto",
+              position: "fixed",
+            }}
+            onClick={this.checkAnswer}
+          >
+            Check
+            <Check />
+          </Fab>
+        )}
+      </React.Fragment>
     );
   }
 }

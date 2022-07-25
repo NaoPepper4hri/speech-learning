@@ -6,12 +6,12 @@ from typing import Dict, Iterator, Optional, Tuple
 
 
 class DataSheets:
-    IMAGE_BUTTON_SHEET = "Demo"
-    FILL_BLANK_SHEET = "Task1"
-    VOCABULARY_SHEET = "Task2"
-    SORT_WORDS_SHEET = "Task3"
-    SORT_WORDS_SHEET_2 = "Task3 (2)"
-    MATCH_PAIRS_SHEET = "Optional task"
+    IMAGE_BUTTON_SHEET = "Block 1"
+    FILL_BLANK_SHEET = "Block 2"
+    VOCABULARY_SHEET = "Block 3"
+    SORT_WORDS_SHEET = "Block 4"
+    SORT_WORDS_SHEET_2 = "Block 4 (Difficult Version)"
+    MATCH_PAIRS_SHEET = "Block 5"
 
 
 class Question:
@@ -100,14 +100,16 @@ class VocabularyQuestion(Question):
 
 
 class SortWordsQuestion(Question):
-    def __init__(self, header, *args, **kwargs) -> None:
+    def __init__(self, header, answer, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.header = header
+        self.answer = answer
 
     def as_dict(self) -> Dict:
         return {
             "ty": self.__class__.__name__,
             "question": self.question,
+            "answer": self.answer,
             "header": self.header,
             "options": self.options,
         }
@@ -118,6 +120,7 @@ class SortWordsQuestion(Question):
         opts = {}
         counter = 0
         answer_sequence = answer.split()
+        print(answer)
         for o in options.split(","):
             o = o.strip()
             key = "o{}".format(counter)
@@ -129,6 +132,7 @@ class SortWordsQuestion(Question):
             }
         return cls(
             header=task,
+            answer=answer,
             question=question,
             options=opts,
         )

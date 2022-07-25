@@ -519,9 +519,46 @@
         ]
     },
     {
+        "ty": "VocabularyQuestion",
+        "question": "he",
+        "options": [
+            {
+                "text": "él",
+                "correct": true
+            },
+            {
+                "text": "Yo",
+                "correct": false
+            },
+            {
+                "text": "la",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "ty": "VocabularyQuestion",
+        "question": "suitcase",
+        "options": [
+            {
+                "text": "maleta",
+                "correct": true
+            },
+            {
+                "text": "manzana",
+                "correct": false
+            },
+            {
+                "text": "mujer",
+                "correct": false
+            }
+        ]
+    },
+    {
         "ty": "SortWordsQuestion",
         "question": "El hombre",
-        "header": "Write this in English",
+        "answer": "The man",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -558,7 +595,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "El niño",
-        "header": "Write this in English",
+        "answer": "The boy",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -595,7 +633,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Un hombre",
-        "header": "Write this in English",
+        "answer": "A man",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -632,7 +671,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Yo soy un niño",
-        "header": "Write this in English",
+        "answer": "I am a boy",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -679,7 +719,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Yo soy una mujer",
-        "header": "Write this in English",
+        "answer": "I am a woman",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -721,7 +762,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Juan come manzanas",
-        "header": "Write this in English",
+        "answer": "Juan eats apples",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -763,7 +805,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Él come manzanas",
-        "header": "Write this in English",
+        "answer": "He eats apples",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -805,7 +848,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Él es un niño",
-        "header": "Write this in English",
+        "answer": "He is a boy",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -852,7 +896,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Tú eres una niña",
-        "header": "Write this in English",
+        "answer": "You are a girl",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
@@ -898,51 +943,42 @@
     },
     {
         "ty": "SortWordsQuestion",
-        "question": "Yo bebo, tú bebes, él bebe",
-        "header": "Write this in English",
+        "question": "él bebe agua",
+        "answer": "he drinks water",
+        "header": "\"Write this in English\"",
         "options": {
             "o0": {
                 "id": "o0",
-                "tIdx": 1,
-                "text": "drink"
+                "tIdx": 2,
+                "text": "water"
             },
             "o1": {
                 "id": "o1",
-                "tIdx": 2,
-                "text": "you"
+                "tIdx": 1,
+                "text": "drinks"
             },
             "o2": {
                 "id": "o2",
                 "tIdx": -1,
-                "text": "man"
+                "text": "drink"
             },
             "o3": {
                 "id": "o3",
-                "tIdx": 5,
-                "text": "drinks"
+                "tIdx": -1,
+                "text": "I"
             },
             "o4": {
                 "id": "o4",
                 "tIdx": 0,
-                "text": "I"
+                "text": "he"
             },
             "o5": {
                 "id": "o5",
-                "tIdx": 4,
-                "text": "he"
-            },
-            "o6": {
-                "id": "o6",
                 "tIdx": -1,
                 "text": "am"
             },
-            "o7": {
-                "id": "o7",
-                "tIdx": 1,
-                "text": "drink"
-            },
-            "o8": {
-                "id": "o8",
+            "o6": {
+                "id": "o6",
                 "tIdx": -1,
                 "text": "milk"
             }
@@ -951,7 +987,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "I am a man",
-        "header": "Write this in Spanish",
+        "answer": "Yo soy un hombre",
+        "header": "\"Write this in Spanish\" ",
         "options": {
             "o0": {
                 "id": "o0",
@@ -997,55 +1034,52 @@
     },
     {
         "ty": "SortWordsQuestion",
-        "question": "The boy, the girl",
-        "header": "Write this in Spanish",
+        "question": "I need a phone",
+        "answer": "Yo necesito un teléfone",
+        "header": "\"Write this in Spanish\" ",
         "options": {
             "o0": {
                 "id": "o0",
-                "tIdx": 2,
-                "text": "la"
+                "tIdx": 0,
+                "text": "Yo"
             },
             "o1": {
                 "id": "o1",
                 "tIdx": -1,
-                "text": "manzana"
+                "text": "calle"
             },
             "o2": {
                 "id": "o2",
-                "tIdx": -1,
-                "text": "comes"
+                "tIdx": 1,
+                "text": "necesito"
             },
             "o3": {
                 "id": "o3",
                 "tIdx": -1,
-                "text": "niño"
+                "text": "soy"
             },
             "o4": {
                 "id": "o4",
-                "tIdx": 0,
-                "text": "El"
+                "tIdx": -1,
+                "text": "una"
             },
             "o5": {
                 "id": "o5",
-                "tIdx": -1,
-                "text": "leche"
+                "tIdx": 2,
+                "text": "un"
             },
             "o6": {
                 "id": "o6",
                 "tIdx": 3,
-                "text": "niña"
-            },
-            "o7": {
-                "id": "o7",
-                "tIdx": -1,
-                "text": "él"
+                "text": "teléfone"
             }
         }
     },
     {
         "ty": "SortWordsQuestion",
         "question": "My suitcase",
-        "header": "Write this in Spanish",
+        "answer": "Mi maleta",
+        "header": "\"Write this in Spanish\" ",
         "options": {
             "o0": {
                 "id": "o0",
@@ -1077,7 +1111,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "It is her",
-        "header": "Write this in Spanish",
+        "answer": "Es ella",
+        "header": "\"Write this in Spanish\" ",
         "options": {
             "o0": {
                 "id": "o0",
@@ -1114,7 +1149,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "He eats apples",
-        "header": "Write this in Spanish",
+        "answer": "Él come manzanas",
+        "header": "\"Write this in Spanish\" ",
         "options": {
             "o0": {
                 "id": "o0",
@@ -1156,7 +1192,8 @@
     {
         "ty": "SortWordsQuestion",
         "question": "Juan eats bread",
-        "header": "Write this in Spanish",
+        "answer": "Juan come pan",
+        "header": "\"Write this in Spanish\" ",
         "options": {
             "o0": {
                 "id": "o0",
@@ -1191,92 +1228,8 @@
         }
     },
     {
-        "ty": "SortWordsQuestion",
-        "question": "I eat, you eat, he eats",
-        "header": "Write this in Spanish",
-        "options": {
-            "o0": {
-                "id": "o0",
-                "tIdx": 0,
-                "text": "Yo"
-            },
-            "o1": {
-                "id": "o1",
-                "tIdx": -1,
-                "text": "como"
-            },
-            "o2": {
-                "id": "o2",
-                "tIdx": 2,
-                "text": "tú"
-            },
-            "o3": {
-                "id": "o3",
-                "tIdx": -1,
-                "text": "comes"
-            },
-            "o4": {
-                "id": "o4",
-                "tIdx": 4,
-                "text": "él"
-            },
-            "o5": {
-                "id": "o5",
-                "tIdx": 5,
-                "text": "come"
-            },
-            "o6": {
-                "id": "o6",
-                "tIdx": -1,
-                "text": "bebo"
-            }
-        }
-    },
-    {
-        "ty": "SortWordsQuestion",
-        "question": "I need a phone",
-        "header": "Write this in Spanish",
-        "options": {
-            "o0": {
-                "id": "o0",
-                "tIdx": 0,
-                "text": "Yo"
-            },
-            "o1": {
-                "id": "o1",
-                "tIdx": -1,
-                "text": "calle"
-            },
-            "o2": {
-                "id": "o2",
-                "tIdx": 1,
-                "text": "necesito"
-            },
-            "o3": {
-                "id": "o3",
-                "tIdx": -1,
-                "text": "soy"
-            },
-            "o4": {
-                "id": "o4",
-                "tIdx": -1,
-                "text": "una"
-            },
-            "o5": {
-                "id": "o5",
-                "tIdx": 2,
-                "text": "un"
-            },
-            "o6": {
-                "id": "o6",
-                "tIdx": 3,
-                "text": "teléfone"
-            }
-        }
-    },
-    {
         "ty": "MatchPairsQuestion",
-        "question": "\"Select the English words in this list\" ",
+        "question": "\"Match the English and Spanish words in this list\" ",
         "options": [
             {
                 "p1": "Woman",

@@ -1,4 +1,5 @@
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { KeyboardArrowRightRounded } from "@mui/icons-material";
+import { Button, Fab, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { fisherYatesShuffle } from "../utils";
 
@@ -20,53 +21,87 @@ class MatchPairsQuestion extends React.Component {
       correct: [],
       clicked: [],
       buttons: buttons,
+      answers: [],
     };
   }
 
   toogleButton = (index) => {
-    const { correct, buttons, clicked } = this.state;
+    const { answers, buttons, clicked, correct } = this.state;
+
     if (clicked.length === 0) {
       this.setState({ clicked: [index] });
     } else {
+      var cor = false;
       if (
         clicked[0] !== index &&
         buttons[clicked[0]].idx === buttons[index].idx
       ) {
         // the pair is correct
         correct.push(clicked[0], index);
+        cor = true;
       }
-      this.setState({ clicked: [], correct: correct });
+      const newAnswer = {
+        correct: cor,
+        p1: buttons[clicked[0]].text,
+        p2: buttons[index].text,
+      };
+      this.setState({
+        clicked: [],
+        correct: correct,
+        answers: [...answers, newAnswer],
+      });
     }
   };
 
   render() {
-    const { question } = this.props;
-    const { correct, buttons, clicked } = this.state;
+    const { question, handleNext } = this.props;
+    const { answers, correct, buttons, clicked } = this.state;
     return (
-      <Stack maxWidth={600} padding={5} spacing={3} alignItems="center">
-        <Typography variant="h4" gutterBottom>
-          {question}
-        </Typography>
-        <Grid container justifyContent="space-evenly" spacing={3}>
-          {buttons.map((b, index) => {
-            const done = correct.includes(index);
-            const clk = clicked.includes(index);
-            return (
-              <Grid key={index} item>
-                <Button
-                  variant={clk ? "contained" : "outlined"}
-                  onClick={() => {
-                    this.toogleButton(index);
-                  }}
-                  disabled={done}
-                >
-                  {b.text}
-                </Button>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Stack>
+      <React.Fragment>
+        <Stack maxWidth={600} padding={5} spacing={3} alignItems="center">
+          <Typography variant="h4" gutterBottom>
+            {question}
+          </Typography>
+          <Grid container justifyContent="space-evenly" spacing={3}>
+            {buttons.map((b, index) => {
+              const done = correct.includes(index);
+              const clk = clicked.includes(index);
+              return (
+                <Grid key={index} item>
+                  <Button
+                    variant={clk ? "contained" : "outlined"}
+                    onClick={() => {
+                      this.toogleButton(index);
+                    }}
+                    disabled={done}
+                  >
+                    {b.text}
+                  </Button>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Stack>
+        {correct.length === buttons.length ? (
+          <Fab
+            variant="extended"
+            sx={{
+              margin: 0,
+              top: "auto",
+              right: 20,
+              bottom: 40,
+              left: "auto",
+              position: "fixed",
+            }}
+            onClick={() => handleNext(answers)}
+          >
+            Continue
+            <KeyboardArrowRightRounded />
+          </Fab>
+        ) : (
+          <></>
+        )}
+      </React.Fragment>
     );
   }
 }

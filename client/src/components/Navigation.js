@@ -25,7 +25,8 @@ export default class Navigator extends React.Component {
     };
   }
 
-  handleNext = () => {
+  handleNext = (response) => {
+    console.log(response);
     const { current: c } = this.state;
     this.setState({ current: c + 1 });
   };
@@ -49,6 +50,7 @@ export default class Navigator extends React.Component {
         <Box>
           {React.cloneElement(this.layout[c], {
             isLoading: loading,
+            handleNext: this.handleNext,
           })}
         </Box>
         <AppBar position="fixed" style={{ top: "auto", bottom: 0 }}>
@@ -58,22 +60,8 @@ export default class Navigator extends React.Component {
             position="static"
             activeStep={c}
             className={this.root}
-            nextButton={
-              <Button
-                size="small"
-                onClick={this.handleNext}
-                disabled={c === this.layout_length - 1}
-              >
-                Next
-                <KeyboardArrowRight />
-              </Button>
-            }
-            backButton={
-              <Button size="small" onClick={this.handleBack} disabled={c === 0}>
-                <KeyboardArrowLeft />
-                Back
-              </Button>
-            }
+            nextButton={<Box />}
+            backButton={<Box />}
           />
         </AppBar>
       </Box>

@@ -1,14 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Fab } from "@mui/material";
+import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Card = styled.div`
   border: 1px solid lightgrey;
   border-radius: 6px;
   padding: 4px;
-  background-color: ${(props) =>
-    props.color === "success" ? "#66bb6a" : "white"};
+  background-color: ${(props) => {
+    switch (props.color) {
+      case "success":
+        return "#66bb6a";
+      case "error":
+        return "#f44336";
+      default:
+        return "white";
+    }
+  }};
   min-height: 10px;
   min-width: 40px;
 `;
@@ -121,7 +130,7 @@ class FillBlankQuestion extends React.Component {
 
   getTargetSentenceComp = () => {
     const { question, options } = this.props;
-    const { answerArea, done } = this.state;
+    const { answerArea, response } = this.state;
     // Divide question in list of words.
     var comps = [];
     const answer = answerArea.length > 0 ? options[answerArea[0]] : undefined;
@@ -132,7 +141,7 @@ class FillBlankQuestion extends React.Component {
           key={this.dropAnswerArea}
           id={this.dropAnswerArea}
           answer={answer}
-          color={done ? "success" : ""}
+          color={response ? "success" : "error"}
         />
       );
     });
@@ -142,6 +151,10 @@ class FillBlankQuestion extends React.Component {
   };
 
   onDragEnd = (result) => {
+    const { responded } = this.state;
+    if (responded) {
+      return;
+    }
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
@@ -155,8 +168,9 @@ class FillBlankQuestion extends React.Component {
     const { optionArea, answerArea } = this.state;
     var newAnswerArea = Array.from(answerArea);
     var newOptionArea = Array.from(optionArea);
-
+    var res = false;
     if (destination.droppableId === this.dropAnswerArea) {
+      res = true;
       newAnswerArea = [draggableId];
       newOptionArea.splice(source.index, 1);
       if (answerArea.length > 0) {
@@ -176,30 +190,52 @@ class FillBlankQuestion extends React.Component {
     this.setState({
       optionArea: newOptionArea,
       answerArea: newAnswerArea,
-      done: this.props.options[draggableId].correct,
+      responded: res,
+      response: this.props.options[draggableId].correct,
     });
   };
 
   render() {
-    const { image, options } = this.props;
-    const { optionArea } = this.state;
+    const { image, options, handleNext } = this.props;
+    const { optionArea, responded, response } = this.state;
     const optInArea = optionArea.map((optIdx) => options[optIdx]);
 
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Stack spacing={2} alignItems="center" padding={5}>
-          <Typography key="title" variant="h4" gutterBottom>
-            Fill in the blank.
-          </Typography>
-          <img key="image" src={image} alt="" />
-          <Stack direction="row">{this.getTargetSentenceComp()}</Stack>
-          <OptionsDroppable
-            sx={{ border: "1px solid lightgrey" }}
-            id={this.dropOptionArea}
-            options={optInArea}
-          />
-        </Stack>
-      </DragDropContext>
+      <React.Fragment>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Stack spacing={2} alignItems="center" padding={5}>
+            <Typography key="title" variant="h4" gutterBottom>
+              Fill in the blank.
+            </Typography>
+            <img key="image" src={image} alt="" />
+            <Stack direction="row">{this.getTargetSentenceComp()}</Stack>
+            <OptionsDroppable
+              sx={{ border: "1px solid lightgrey" }}
+              id={this.dropOptionArea}
+              options={optInArea}
+            />
+          </Stack>
+        </DragDropContext>
+        {responded ? (
+          <Fab
+            variant="extended"
+            sx={{
+              margin: 0,
+              top: "auto",
+              right: 20,
+              bottom: 40,
+              left: "auto",
+              position: "fixed",
+            }}
+            onClick={() => handleNext(response)}
+          >
+            Continue
+            <KeyboardArrowRightRounded />
+          </Fab>
+        ) : (
+          <></>
+        )}
+      </React.Fragment>
     );
   }
 }

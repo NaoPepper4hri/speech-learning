@@ -1,71 +1,104 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { KeyboardArrowRightRounded } from "@mui/icons-material";
+import { Button, Fab, Stack, Typography } from "@mui/material";
 import React from "react";
 
 class VocabularyQuestion extends React.Component {
-  state = {};
+  state = {
+    showAnswer: [],
+    responded: false,
+  };
 
   correctAnswer = (index) => {
-    this.setState({ correct: index });
+    this.setState({ showAnswer: [index], response: true });
+    setTimeout(() => this.setState({ responded: true }), 500);
   };
 
   incorrectAnswer = (index) => {
-    this.setState({ incorrect: index });
-    setTimeout(() => this.setState({ incorrect: undefined }), 500);
+    const { options } = this.props;
+    const correct = options
+      .map((o, idx) => {
+        return { c: o.correct, idx: idx };
+      })
+      .filter((o) => o.c)[0].idx;
+    this.setState({ showAnswer: [index], response: false });
+    setTimeout(
+      () => this.setState({ showAnswer: [correct, ...this.state.showAnswer] }),
+      500
+    );
+    setTimeout(() => this.setState({ responded: true }), 1000);
   };
 
   render() {
-    const { question, options } = this.props;
-    const { correct, incorrect } = this.state;
+    const { question, options, handleNext } = this.props;
+    const { showAnswer, responded, response } = this.state;
     return (
-      <Stack spacing={5} padding={5}>
-        <Typography key="question" variant="h4">
-          {`How do you say "${question}"?`}
-        </Typography>
-        {options.map((option, idx) => {
-          var c = "primary";
-          var v = "outlined";
-          var sx = {
-            maxWidth: 200,
-            alignSelf: "center",
-            borderColor: "black",
-            color: "black",
-            "&:hover": {
-              borderColor: "gray",
-              backgroundColor: "#eeeeee",
-            },
-          };
-          if (incorrect !== undefined && incorrect === idx) {
-            c = "error";
-            v = "contained";
-            sx = {
+      <React.Fragment>
+        <Stack spacing={5} padding={5}>
+          <Typography key="question" variant="h4">
+            {`How do you say "${question}"?`}
+          </Typography>
+          {options.map((option, idx) => {
+            var c = "primary";
+            var v = "outlined";
+            var sx = {
               maxWidth: 200,
               alignSelf: "center",
+              borderColor: "black",
+              color: "black",
+              "&:hover": {
+                borderColor: "gray",
+                backgroundColor: "#eeeeee",
+              },
             };
-          } else if (correct !== undefined && correct === idx) {
-            c = "success";
-            v = "contained";
-            sx = {
-              maxWidth: 200,
-              alignSelf: "center",
-            };
-          }
-          return (
-            <Button
-              sx={sx}
-              color={c}
-              variant={v}
-              key={`btn${idx}`}
-              onClick={() =>
-                option.correct
-                  ? this.correctAnswer(idx)
-                  : this.incorrectAnswer(idx)
-              }
-            >
-              {option.text}
-            </Button>
-          );
-        })}
-      </Stack>
+            if (showAnswer.includes(idx)) {
+              c = option.correct ? "success" : "error";
+              v = "contained";
+              sx = {
+                maxWidth: 200,
+                alignSelf: "center",
+              };
+            }
+            return (
+              <Button
+                sx={sx}
+                color={c}
+                variant={v}
+                key={`btn${idx}`}
+                onClick={
+                  showAnswer.length === 0
+                    ? () => {
+                        option.correct
+                          ? this.correctAnswer(idx)
+                          : this.incorrectAnswer(idx);
+                      }
+                    : () => {}
+                }
+              >
+                {option.text}
+              </Button>
+            );
+          })}
+        </Stack>
+        {responded ? (
+          <Fab
+            variant="extended"
+            sx={{
+              margin: 0,
+              top: "auto",
+              right: 20,
+              bottom: 40,
+              left: "auto",
+              position: "fixed",
+            }}
+            onClick={() => handleNext(response)}
+          >
+            Continue
+            <KeyboardArrowRightRounded />
+          </Fab>
+        ) : (
+          <></>
+        )}
+      </React.Fragment>
     );
   }
 }

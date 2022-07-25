@@ -88,6 +88,7 @@ class App extends React.Component {
                     key={index}
                     header={q.header}
                     question={q.question}
+                    answer={q.answer}
                     options={q.options}
                   />
                 );
