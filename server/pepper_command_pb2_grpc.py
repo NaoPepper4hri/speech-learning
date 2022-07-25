@@ -21,6 +21,11 @@ class PepperStub(object):
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=pepper__command__pb2.Command.FromString,
                 )
+        self.NotifyAnimationEnded = channel.unary_unary(
+                '/pepper_command.Pepper/NotifyAnimationEnded',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                )
 
 
 class PepperServicer(object):
@@ -34,6 +39,12 @@ class PepperServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def NotifyAnimationEnded(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PepperServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -41,6 +52,11 @@ def add_PepperServicer_to_server(servicer, server):
                     servicer.ListenMovementCommand,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=pepper__command__pb2.Command.SerializeToString,
+            ),
+            'NotifyAnimationEnded': grpc.unary_unary_rpc_method_handler(
+                    servicer.NotifyAnimationEnded,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -67,5 +83,22 @@ class Pepper(object):
         return grpc.experimental.unary_stream(request, target, '/pepper_command.Pepper/ListenMovementCommand',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             pepper__command__pb2.Command.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def NotifyAnimationEnded(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/pepper_command.Pepper/NotifyAnimationEnded',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

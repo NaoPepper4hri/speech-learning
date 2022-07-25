@@ -7,6 +7,8 @@ import {
   FillBlankQuestion,
   VocabularyQuestion,
   SortWordsQuestion,
+  ParticipantInfoPage,
+  PepperInteractionPage,
 } from "./components";
 import questions from "./assets/questions.json";
 import { fisherYatesShuffle } from "./utils";
@@ -49,7 +51,29 @@ fisherYatesShuffle(block3);
 fisherYatesShuffle(block4);
 fisherYatesShuffle(block5);
 
-const blocks = [...block1, ...block2, ...block3, ...block4, ...block5];
+const blocks = [
+  { ty: "ParticipantInfo" },
+  {
+    ty: "PepperResponse",
+    auto: true,
+    pepperInteractions: [{ text: "Hello", movement: "" }],
+    message: "We are going for another block",
+  },
+  ...block1.slice(0, Math.floor(block1.length / 2)),
+  {
+    ty: "PepperResponse",
+    auto: true,
+    pepperInteractions: [{ text: "Hello", movement: "" }],
+    message: "We are going for another block",
+  },
+  ...block1.slice(Math.floor(block1.length / 2), 10),
+  {
+    ty: "PepperResponse",
+    auto: false,
+    pepperInteractions: [],
+    message: "We are going for another block",
+  },
+];
 
 class App extends React.Component {
   render() {
@@ -58,6 +82,17 @@ class App extends React.Component {
         <Navigator
           layout={blocks.map((q, index) => {
             switch (q.ty) {
+              case "ParticipantInfo":
+                return <ParticipantInfoPage key={index} />;
+              case "PepperResponse":
+                return (
+                  <PepperInteractionPage
+                    key={index}
+                    auto={q.auto}
+                    message={q.message}
+                    pepperInteractions={q.pepperInteractions}
+                  />
+                );
               case "ImageButtonQuestion":
                 return (
                   <ImageButtonQuestion

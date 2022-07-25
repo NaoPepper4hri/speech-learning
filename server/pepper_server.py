@@ -9,25 +9,29 @@ from google.protobuf import empty_pb2
 
 
 class CommandBridge():
-    _instance = None
-
-    def __new__(cls):
-        if not isinstance(cls._instance, cls):
-            cls._instance = super(CommandBridge, cls).__new__(cls)
-        return cls._instance
-
     def __init__(self):
-        self.queue = Queue()
         self.accepting_cmds = True
+        self.is_pepper_done = False
+        self._queue = Queue()
 
     def stop(self):
         self.accepting_cmds = False
 
     def send_command(self, cmd: str) -> None:
-        self.queue.put(cmd)
+        self._queue.put(cmd)
+
+    def clear_queue(self) -> None:
+        try:
+            while True:
+                self._queue.get_nowait()
+        except Empty:
+            pass
+
+    def set_pepper_done(self) -> None:
+        self.is_pepper_done = True
 
     def get(self, timeout: float) -> pepper_command_pb2.Command:
-        cmd = self.queue.get(timeout=timeout)
+        cmd = self._queue.get(timeout=timeout)
         # cmd = {
         #     "movement": "asdf",
         #     "say": "ss",
@@ -41,12 +45,15 @@ class CommandBridge():
             halt_last=cmd.get("halt", True))
 
 
+COMMAND_BRIDGE = CommandBridge()
+
+
 class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
     QUEUE_TIMEOUT = 1
 
     def __init__(self):
         super().__init__()
-        self.queue = CommandBridge()
+        self.queue = COMMAND_BRIDGE
 
     def ListenMovementCommand(
             self,
@@ -57,6 +64,9 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
                 yield self.queue.get(timeout=self.QUEUE_TIMEOUT)
             except Empty:
                 continue
+
+    def NotifyAnimationEnded(self, request: empty_pb2.Empty, context) -> empty_pb2.Empty:
+        self.queue.is_pepper_done = True
 
 
 def serve_grpc() -> None:

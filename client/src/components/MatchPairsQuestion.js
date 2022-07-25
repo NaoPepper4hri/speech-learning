@@ -1,6 +1,6 @@
+import React from "react";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { Button, Fab, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
 import { fisherYatesShuffle } from "../utils";
 
 class MatchPairsQuestion extends React.Component {

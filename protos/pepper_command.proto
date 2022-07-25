@@ -8,6 +8,7 @@ import "google/protobuf/empty.proto";
 service Pepper {
     // Connects to server and waits for new movement commands
     rpc ListenMovementCommand(google.protobuf.Empty) returns (stream Command) {}
+    rpc NotifyAnimationEnded(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 }
 
 message Command {

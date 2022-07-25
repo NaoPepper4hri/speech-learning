@@ -1,6 +1,6 @@
 import { Button, Grid } from "@mui/material";
 import React from "react";
-import { sendPepperCommand } from "./utils";
+import { sendPepperCommand, setPepperDone } from "./utils";
 
 const actions = [
   "appraise",
@@ -30,6 +30,9 @@ class PepperControl extends React.Component {
           </Grid>
         ))}
         <Grid item xs={12}>
+          <Button variant="outlined" onClick={() => setPepperDone()}>
+            InteractionDone
+          </Button>
           Some other controls
         </Grid>
       </Grid>

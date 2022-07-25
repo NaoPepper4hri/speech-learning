@@ -1,8 +1,8 @@
 import React from "react";
 
-import { AppBar, Button, MobileStepper, Typography } from "@mui/material";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { AppBar, MobileStepper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { sendAnswer } from "../utils";
 
 export default class Navigator extends React.Component {
   constructor(props) {
@@ -26,7 +26,9 @@ export default class Navigator extends React.Component {
   }
 
   handleNext = (response) => {
-    console.log(response);
+    if (response !== undefined) {
+      sendAnswer(response);
+    }
     const { current: c } = this.state;
     this.setState({ current: c + 1 });
   };
