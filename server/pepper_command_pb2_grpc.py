@@ -23,7 +23,7 @@ class PepperStub(object):
                 )
         self.NotifyAnimationEnded = channel.unary_unary(
                 '/pepper_command.Pepper/NotifyAnimationEnded',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                request_serializer=pepper__command__pb2.Uuid.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 )
 
@@ -55,7 +55,7 @@ def add_PepperServicer_to_server(servicer, server):
             ),
             'NotifyAnimationEnded': grpc.unary_unary_rpc_method_handler(
                     servicer.NotifyAnimationEnded,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    request_deserializer=pepper__command__pb2.Uuid.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
     }
@@ -98,7 +98,7 @@ class Pepper(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/pepper_command.Pepper/NotifyAnimationEnded',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            pepper__command__pb2.Uuid.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

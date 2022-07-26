@@ -5,22 +5,65 @@ export function fisherYatesShuffle(arr) {
   }
 }
 
+export const requestPepperAnimation = async (animation, halt) => {
+  var cmd = {
+    animation: {
+      name: animation,
+      halt: halt,
+    }
+  }
+  await sendPepperCommand(cmd);
+}
+
+export const requestPepperText = async (text) => {
+  var cmd = {
+    say: text
+  }
+  await sendPepperCommand(cmd)
+}
+
+export const requestPepperLookAtParticipant = async () => {
+  var cmd = {
+    goto: {
+      x: 0.0,
+      y: 0.0,
+      theta: 1.0,
+    },
+    abilities: [
+      {
+        ty: "BASIC_AWARENESS",
+        enabled: true
+      }
+    ]
+  }
+
+  await sendPepperCommand(cmd);
+}
+
+export const requestPepperLookAtScreen = async () => {
+  var cmd = {
+    goto: {
+      x: 0.0,
+      y: 0.0,
+      theta: -1.0,
+    },
+    abilities: [
+      {
+        ty: "BASIC_AWARENESS",
+        enabled: false
+      }
+    ]
+  }
+
+  await sendPepperCommand(cmd);
+}
+
 export const sendPepperCommand = async (
   cmd,
-  text,
-  notify_end = false,
-  rot = 0,
-  halt = true
 ) => {
   await fetch("/pubCommand", {
     method: "POST",
-    body: JSON.stringify({
-      movement: cmd,
-      say: text,
-      rot: rot,
-      halt: halt,
-      notify: notify_end,
-    }),
+    body: JSON.stringify(cmd),
     headers: new Headers({
       "content-type": "application/json",
     }),
@@ -68,9 +111,41 @@ export const onPepperIsDone = async (callback) => {
   }, 1000);
 };
 
-export const setPepperDone = async () => {
-  await fetch("/setPepperDone", {
-    method: "GET",
+export const onConversationIsDone = async (callback) => {
+  var timer;
+  timer = setInterval(async () => {
+    await fetch("/isConversationDone", {
+      method: "GET",
+      headers: new Headers({
+        "content-type": "application/json",
+      }),
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          res.text().then((data) => {
+            console.warn(data);
+          });
+        } else {
+          res.json().then((js) => {
+            console.log(js);
+            if (js["done"]) {
+              console.log("jere");
+              clearInterval(timer);
+              callback();
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, 1000);
+};
+
+export const setConversationDone = async (value=true) => {
+  await fetch("/setConversationDone", {
+    method: "POST",
+    body: JSON.stringify({done: value}),
     headers: new Headers({
       "content-type": "application/json",
     }),

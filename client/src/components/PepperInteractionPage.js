@@ -1,7 +1,13 @@
 import React from "react";
 import { Fab, Stack, Typography } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
-import { sendPepperCommand, onPepperIsDone } from "../utils";
+import {
+  requestPepperLookAtParticipant,
+  requestPepperText,
+  requestPepperLookAtScreen,
+  onPepperIsDone,
+  onConversationIsDone,
+  setConversationDone } from "../utils";
 
 class PepperInteractionPage extends React.Component {
   state = {
@@ -16,9 +22,15 @@ class PepperInteractionPage extends React.Component {
           Math.floor(Math.random() * pepperInteractions.length)
         ];
 
-      sendPepperCommand(re["movement"], re["text"], true);
+      requestPepperLookAtParticipant()
+      requestPepperText(re["text"]);
+      requestPepperLookAtScreen()
+      onPepperIsDone(() => this.setState({ pepperIsDone: true }));
+    } else {
+      setConversationDone(false);
+      onConversationIsDone(() => this.setState({ pepperIsDone: true}));
     }
-    onPepperIsDone(() => this.setState({ pepperIsDone: true }));
+
   }
 
   render() {

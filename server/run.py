@@ -23,7 +23,7 @@ class ParticipantData:
         self._date = date
 
     def add_response(self, res: dict) -> None:
-        self._responses.push(res)
+        self._responses.append(res)
 
     def add_repeated_suffix(self, p: str, idx: Optional[int] = 1) -> str:
         df = p.format(idx)
@@ -48,6 +48,7 @@ class ParticipantData:
 
 
 participant = ParticipantData(0)
+conversation_done = True
 
 
 @app.route('/')
@@ -63,19 +64,27 @@ def pub_command():
     return "Ok"
 
 
-@app.route('/setPepperDone', methods=['GET'])
-def set_pepper_done():
-    COMMAND_BRIDGE.set_pepper_done()
+@app.route('/setConversationDone', methods=['POST'])
+def set_conversation_done():
+    req = request.get_json()
+    global conversation_done
+    conversation_done = req.get("done", False)
     return "Ok"
+
+
+@app.route('/isConversationDone', methods=['GET'])
+def is_conversation_done():
+    global conversation_done
+    return {"done": conversation_done}
 
 
 @app.route('/isPepperDone', methods=['GET'])
 def is_pepper_done():
-    return {"done": COMMAND_BRIDGE.is_pepper_done}
+    return {"done": COMMAND_BRIDGE.is_pepper_done()}
 
 
-@app.route("/sendAnswer", methods=['POST'])
-def send_answer():
+@app.route("/pubAnswer", methods=['POST'])
+def pub_answer():
     req = request.get_json()
     global participant
     participant.add_response(req)

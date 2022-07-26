@@ -1,6 +1,6 @@
 import { Button, Grid } from "@mui/material";
 import React from "react";
-import { sendPepperCommand, setPepperDone } from "./utils";
+import { sendPepperCommand, setConversationDone, requestPepperText, requestPepperLookAtParticipant, requestPepperLookAtScreen } from "./utils";
 
 const actions = [
   "appraise",
@@ -30,10 +30,24 @@ class PepperControl extends React.Component {
           </Grid>
         ))}
         <Grid item xs={12}>
-          <Button variant="outlined" onClick={() => setPepperDone()}>
+          <Button variant="outlined" onClick={() => requestPepperText("something")}>
+            Say something
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="outlined" onClick={() => requestPepperLookAtParticipant()}>
+            Look at participant
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="outlined" onClick={() => requestPepperLookAtScreen()}>
+            Look at screen
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="outlined" onClick={() => setConversationDone()}>
             InteractionDone
           </Button>
-          Some other controls
         </Grid>
       </Grid>
     );
