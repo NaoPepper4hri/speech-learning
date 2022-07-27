@@ -23,9 +23,15 @@ class PepperInteractionPage extends React.Component {
         ];
 
       requestPepperLookAtParticipant()
-      requestPepperText(re["text"]);
-      requestPepperLookAtScreen()
-      onPepperIsDone(() => this.setState({ pepperIsDone: true }));
+      onPepperIsDone(() => {
+        requestPepperText(re["text"]);
+        onPepperIsDone(() => {
+          requestPepperLookAtScreen()
+          onPepperIsDone(() => {
+            this.setState({ pepperIsDone: true })
+          })
+        })
+      });
     } else {
       setConversationDone(false);
       onConversationIsDone(() => this.setState({ pepperIsDone: true}));

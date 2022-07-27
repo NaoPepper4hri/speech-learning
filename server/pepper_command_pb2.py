@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14pepper_command.proto\x12\x0epepper_command\x1a\x1bgoogle/protobuf/empty.proto\"\x14\n\x04Uuid\x12\x0c\n\x04uuid\x18\x01 \x01(\t\"\xb8\x04\n\x07\x43ommand\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x39\n\tanimation\x18\x02 \x01(\x0b\x32!.pepper_command.Command.AnimationH\x00\x88\x01\x01\x12\x10\n\x03say\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x38\n\x04goto\x18\x04 \x01(\x0b\x32%.pepper_command.Command.Translation2DH\x02\x88\x01\x01\x12>\n\tabilities\x18\x05 \x03(\x0b\x32+.pepper_command.Command.AutonomousAbilities\x1a,\n\tAnimation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\thalt_last\x18\x02 \x01(\x08\x1a\x34\n\rTranslation2D\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\r\n\x05theta\x18\x03 \x01(\x01\x1a\xd4\x01\n\x13\x41utonomousAbilities\x12?\n\x02ty\x18\x01 \x01(\x0e\x32\x33.pepper_command.Command.AutonomousAbilities.Ability\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"k\n\x07\x41\x62ility\x12\x13\n\x0f\x42\x41SIC_AWARENESS\x10\x00\x12\x17\n\x13\x42\x41\x43KGROUND_MOVEMENT\x10\x01\x12\x17\n\x13\x41UTONOMOUS_BLINKING\x10\x02\x12\x19\n\x15UNSUPPORTED_ABILITIES\x10\x03\x42\x0c\n\n_animationB\x06\n\x04_sayB\x07\n\x05_goto2\x9e\x01\n\x06Pepper\x12L\n\x15ListenMovementCommand\x12\x16.google.protobuf.Empty\x1a\x17.pepper_command.Command\"\x00\x30\x01\x12\x46\n\x14NotifyAnimationEnded\x12\x14.pepper_command.Uuid\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14pepper_command.proto\x12\x0epepper_command\x1a\x1bgoogle/protobuf/empty.proto\"%\n\x04Uuid\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xb8\x04\n\x07\x43ommand\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x39\n\tanimation\x18\x02 \x01(\x0b\x32!.pepper_command.Command.AnimationH\x00\x88\x01\x01\x12\x10\n\x03say\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x38\n\x04goto\x18\x04 \x01(\x0b\x32%.pepper_command.Command.Translation2DH\x02\x88\x01\x01\x12>\n\tabilities\x18\x05 \x03(\x0b\x32+.pepper_command.Command.AutonomousAbilities\x1a,\n\tAnimation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\thalt_last\x18\x02 \x01(\x08\x1a\x34\n\rTranslation2D\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\r\n\x05theta\x18\x03 \x01(\x01\x1a\xd4\x01\n\x13\x41utonomousAbilities\x12?\n\x02ty\x18\x01 \x01(\x0e\x32\x33.pepper_command.Command.AutonomousAbilities.Ability\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"k\n\x07\x41\x62ility\x12\x13\n\x0f\x42\x41SIC_AWARENESS\x10\x00\x12\x17\n\x13\x42\x41\x43KGROUND_MOVEMENT\x10\x01\x12\x17\n\x13\x41UTONOMOUS_BLINKING\x10\x02\x12\x19\n\x15UNSUPPORTED_ABILITIES\x10\x03\x42\x0c\n\n_animationB\x06\n\x04_sayB\x07\n\x05_goto2\x9e\x01\n\x06Pepper\x12L\n\x15ListenMovementCommand\x12\x16.google.protobuf.Empty\x1a\x17.pepper_command.Command\"\x00\x30\x01\x12\x46\n\x14NotifyAnimationEnded\x12\x14.pepper_command.Uuid\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
 
 
 
@@ -68,17 +68,17 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _UUID._serialized_start=69
-  _UUID._serialized_end=89
-  _COMMAND._serialized_start=92
-  _COMMAND._serialized_end=660
-  _COMMAND_ANIMATION._serialized_start=316
-  _COMMAND_ANIMATION._serialized_end=360
-  _COMMAND_TRANSLATION2D._serialized_start=362
-  _COMMAND_TRANSLATION2D._serialized_end=414
-  _COMMAND_AUTONOMOUSABILITIES._serialized_start=417
-  _COMMAND_AUTONOMOUSABILITIES._serialized_end=629
-  _COMMAND_AUTONOMOUSABILITIES_ABILITY._serialized_start=522
-  _COMMAND_AUTONOMOUSABILITIES_ABILITY._serialized_end=629
-  _PEPPER._serialized_start=663
-  _PEPPER._serialized_end=821
+  _UUID._serialized_end=106
+  _COMMAND._serialized_start=109
+  _COMMAND._serialized_end=677
+  _COMMAND_ANIMATION._serialized_start=333
+  _COMMAND_ANIMATION._serialized_end=377
+  _COMMAND_TRANSLATION2D._serialized_start=379
+  _COMMAND_TRANSLATION2D._serialized_end=431
+  _COMMAND_AUTONOMOUSABILITIES._serialized_start=434
+  _COMMAND_AUTONOMOUSABILITIES._serialized_end=646
+  _COMMAND_AUTONOMOUSABILITIES_ABILITY._serialized_start=539
+  _COMMAND_AUTONOMOUSABILITIES_ABILITY._serialized_end=646
+  _PEPPER._serialized_start=680
+  _PEPPER._serialized_end=838
 # @@protoc_insertion_point(module_scope)

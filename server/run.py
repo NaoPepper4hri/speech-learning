@@ -3,13 +3,21 @@
 """
 
 import json
+import logging
 import os
+import sys
 from flask import Flask, request
 from threading import Thread
 from typing import Optional
 
 from pepper_server import serve_grpc, COMMAND_BRIDGE
 from slack_bot import publish_hostname
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+)
 
 app = Flask(__name__, static_url_path='')
 

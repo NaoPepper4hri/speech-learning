@@ -1,4 +1,5 @@
 import grpc
+import logging
 import pepper_command_pb2
 import pepper_command_pb2_grpc
 import uuid
@@ -6,7 +7,7 @@ import uuid
 from concurrent import futures
 from google.protobuf import empty_pb2
 from queue import Queue, Empty
-from typing import AsyncIterable, Dict, List
+from typing import AsyncIterable
 
 
 class CommandBridge():
@@ -53,7 +54,7 @@ class CommandBridge():
         #         },
         #         {
         #             "ty": pepper_command_pb2.Command.AutonomousAbilities.Ability.BACKGROUND_MOVEMENT,
-        #             "enabled": True,
+        #             "enabled": True,name
         #         },
         #     ]
         # }
@@ -100,11 +101,14 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
     def __init__(self):
         super().__init__()
         self.queue = COMMAND_BRIDGE
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
 
     def ListenMovementCommand(
             self,
             request: empty_pb2.Empty,
             context) -> AsyncIterable[pepper_command_pb2.Command]:
+        self.logger.info("Requested command stream.")
         while self.queue.accepting_cmds:
             try:
                 yield self.queue.get(timeout=self.QUEUE_TIMEOUT)
@@ -112,7 +116,11 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
                 continue
 
     def NotifyAnimationEnded(self, request: pepper_command_pb2.Uuid, context) -> empty_pb2.Empty:
-        self.queue.clear_action(request.uuid)
+        self.logger.info(self.queue.pepper_tasks)
+        self.logger.info(request)
+        if request.message.startswith("Command"):
+            self.queue.clear_action(request.uuid)
+        return empty_pb2.Empty()
 
 
 def serve_grpc() -> None:
