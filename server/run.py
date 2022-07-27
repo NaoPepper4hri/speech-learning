@@ -5,7 +5,6 @@
 import json
 import logging
 import os
-import sys
 from flask import Flask, request
 from threading import Thread
 from typing import Optional
@@ -108,10 +107,14 @@ def initialize():
     return "Ok"
 
 
-@app.route("/save", methods=['POST'])
+@app.route("/save", methods=['GET'])
 def save_data():
     global participant
-    participant.save_data()
+    try:
+        participant.save_data()
+    except Exception as e:
+        app.logger.error(e)
+    return "Ok"
 
 
 @app.route('/control', defaults={'path': ''})

@@ -184,8 +184,27 @@ export const sendAnswer = async (value) => {
 
 export const initialize = async (value) => {
   await fetch("/init", {
-    method: "Post",
+    method: "POST",
     body: JSON.stringify(value),
+    headers: new Headers({
+      "content-type": "application/json",
+    }),
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        res.text().then((data) => {
+          console.warn(data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const saveData = async (value) => {
+  await fetch("/save", {
+    method: "GET",
     headers: new Headers({
       "content-type": "application/json",
     }),

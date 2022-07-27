@@ -36,11 +36,10 @@ class PepperInteractionPage extends React.Component {
       setConversationDone(false);
       onConversationIsDone(() => this.setState({ pepperIsDone: true}));
     }
-
   }
 
   render() {
-    const { message, handleNext } = this.props;
+    const { message, handleNext, onContinue } = this.props;
     const { pepperIsDone } = this.state;
 
     return (
@@ -57,7 +56,12 @@ class PepperInteractionPage extends React.Component {
             position: "fixed",
           }}
           disabled={!pepperIsDone}
-          onClick={() => handleNext()}
+          onClick={() => {
+            if (onContinue != null) {
+              onContinue();
+            }
+            handleNext();
+          }}
         >
           Continue
           <KeyboardArrowRightRounded />

@@ -1,16 +1,19 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Divider, Grid } from "@mui/material";
 import React from "react";
-import { sendPepperCommand, setConversationDone, requestPepperText, requestPepperLookAtParticipant, requestPepperLookAtScreen } from "./utils";
+import { setConversationDone, requestPepperText, requestPepperLookAtParticipant, requestPepperLookAtScreen, saveData } from "./utils";
 
 const actions = [
-  "appraise",
-  "you_were_wrong",
-  "cheer",
-  "ohno",
-  "and",
-  "some",
-  "other",
-  "animations",
+  "Ok, let's try one more task and see if we can improve!",
+  "Well, you know what they say, practice makes perfect.",
+  "I'm glad to hear that, lets keep going.",
+  "I'm glad to hear that, lets keep going.",
+  "You got most of those correct, great job.",
+  "Lets see if we can do even better and faster in the next block.",
+  "Sorry I didn't get that, can you repeat what you just said.",
+  "Ok, I got that.",
+  "It was really fun learning Spanish with you.",
+  "This was really fun. Thanks for learning Spanish with me.",
+  "Thanks for doing the extra bonus round with me. I hope you had a good time, it was fun learning Spanish with you.",
 ];
 
 class PepperControl extends React.Component {
@@ -22,7 +25,7 @@ class PepperControl extends React.Component {
             <Button
               variant="outlined"
               onClick={() => {
-                sendPepperCommand(a, a);
+                requestPepperText(a);
               }}
             >
               {a}
@@ -30,9 +33,7 @@ class PepperControl extends React.Component {
           </Grid>
         ))}
         <Grid item xs={12}>
-          <Button variant="outlined" onClick={() => requestPepperText("something")}>
-            Say something
-          </Button>
+          <Divider/>
         </Grid>
         <Grid item xs={12}>
           <Button variant="outlined" onClick={() => requestPepperLookAtParticipant()}>
@@ -46,7 +47,12 @@ class PepperControl extends React.Component {
         </Grid>
         <Grid item xs={12}>
           <Button variant="outlined" onClick={() => setConversationDone()}>
-            InteractionDone
+            Interaction Done
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="outlined" onClick={() => saveData()}>
+            Save data
           </Button>
         </Grid>
       </Grid>
