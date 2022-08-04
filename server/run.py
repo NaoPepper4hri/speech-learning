@@ -123,7 +123,10 @@ def index(path):
 
 
 if __name__ == '__main__':
-    publish_hostname()
+    try:
+        publish_hostname()
+    except Exception as e:
+        app.logger.warn(e)
     grpc = Thread(target=serve_grpc)
     grpc.start()
     app.run(host='0.0.0.0', port='5002')
