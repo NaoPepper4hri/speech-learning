@@ -1,16 +1,18 @@
 import "./App.css";
 import React from "react";
+
+import questions from "./assets/questions.json";
 import {
+  EndExercisePage,
+  FillBlankQuestion,
+  ImageButtonQuestion,
   MatchPairsQuestion,
   Navigator,
-  ImageButtonQuestion,
-  FillBlankQuestion,
-  VocabularyQuestion,
-  SortWordsQuestion,
   ParticipantInfoPage,
   PepperInteractionPage,
+  SortWordsQuestion,
+  VocabularyQuestion,
 } from "./components";
-import questions from "./assets/questions.json";
 import {
   fisherYatesShuffle,
   getExpState,
@@ -223,6 +225,9 @@ const loadNewBlocks = () => {
       message: "End of Block 5. Done!",
       onContinue: saveData,
     },
+    {
+      ty: "EndExercise",
+    },
   ];
 
   return blocks;
@@ -260,6 +265,8 @@ class App extends React.Component {
             switch (q.ty) {
               case "ParticipantInfo":
                 return <ParticipantInfoPage key={index} />;
+              case "EndExercise":
+                return <EndExercisePage />;
               case "PepperResponse":
                 return (
                   <PepperInteractionPage

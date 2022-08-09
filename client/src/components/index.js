@@ -1,3 +1,4 @@
+import EndExercisePage from "./EndExercisePage";
 import FillBlankQuestion from "./FillBlankQuestion";
 import ImageButtonQuestion from "./ImageButtonQuestion";
 import MatchPairsQuestion from "./MatchPairsQuestion";
@@ -8,6 +9,7 @@ import SortWordsQuestion from "./SortWordsQuestion";
 import VocabularyQuestion from "./VocabularyQuestion";
 
 export {
+  EndExercisePage,
   FillBlankQuestion,
   ImageButtonQuestion,
   MatchPairsQuestion,
