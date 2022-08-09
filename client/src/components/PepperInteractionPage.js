@@ -7,7 +7,8 @@ import {
   requestPepperLookAtScreen,
   onPepperIsDone,
   onConversationIsDone,
-  setConversationDone } from "../utils";
+  setConversationDone,
+} from "../utils";
 
 class PepperInteractionPage extends React.Component {
   state = {
@@ -16,25 +17,36 @@ class PepperInteractionPage extends React.Component {
 
   componentDidMount() {
     const { auto, pepperInteractions } = this.props;
-    if (auto) {
-      const re =
-        pepperInteractions[
-          Math.floor(Math.random() * pepperInteractions.length)
-        ];
 
-      requestPepperLookAtParticipant()
+    const turnAndSpeak = (text, onDone) => {
+      requestPepperLookAtParticipant();
       onPepperIsDone(() => {
-        requestPepperText(re["text"]);
+        requestPepperText(text);
         onPepperIsDone(() => {
-          requestPepperLookAtScreen()
-          onPepperIsDone(() => {
-            this.setState({ pepperIsDone: true })
-          })
-        })
+          requestPepperLookAtScreen();
+          onPepperIsDone(onDone);
+        });
       });
-    } else {
+    };
+
+    const waitForConversationDone = () => {
       setConversationDone(false);
-      onConversationIsDone(() => this.setState({ pepperIsDone: true}));
+      onConversationIsDone(() => this.setState({ pepperIsDone: true }));
+    };
+
+    const re =
+      pepperInteractions[Math.floor(Math.random() * pepperInteractions.length)];
+
+    if (re) {
+      if (auto) {
+        turnAndSpeak(re["text"], () => {
+          this.setState({ pepperIsDone: true });
+        });
+      } else {
+        turnAndSpeak(re["text"], waitForConversationDone);
+      }
+    } else {
+      waitForConversationDone();
     }
   }
 

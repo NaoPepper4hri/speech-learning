@@ -83,7 +83,11 @@ const loadNewBlocks = () => {
     {
       ty: "PepperResponse",
       auto: false,
-      pepperInteractions: [],
+      pepperInteractions: [
+        {
+          text: "That's one block already done. How do you feel having completed the first block?",
+        },
+      ],
       message: "End of Block 1, press Continue to start Block 2",
       onContinue: saveData,
     },
@@ -110,7 +114,11 @@ const loadNewBlocks = () => {
     {
       ty: "PepperResponse",
       auto: false,
-      pepperInteractions: [],
+      pepperInteractions: [
+        {
+          text: "We've already completed half of the blocks. How confident are you feeling after block two?",
+        },
+      ],
       message: "End of Block 2, press Continue to start Block 3",
       onContinue: saveData,
     },
@@ -139,7 +147,11 @@ const loadNewBlocks = () => {
     {
       ty: "PepperResponse",
       auto: false,
-      pepperInteractions: [],
+      pepperInteractions: [
+        {
+          text: "Alright block three is all done, are you enjoying these blocks?",
+        },
+      ],
       message: "End of Block 3, press Continue to start Block 4",
       onContinue: saveData,
     },
@@ -170,7 +182,11 @@ const loadNewBlocks = () => {
     {
       ty: "PepperResponse",
       auto: false,
-      pepperInteractions: [],
+      pepperInteractions: [
+        {
+          text: "Great work. You've completed all 4 blocks in this learning task. We can end the task here if you wish, or would you like to complete one extra bonus block?",
+        },
+      ],
       message: "End of Block 4, press Continue to start Block 5",
       onContinue: saveData,
     },
@@ -199,7 +215,11 @@ const loadNewBlocks = () => {
     {
       ty: "PepperResponse",
       auto: false,
-      pepperInteractions: [],
+      pepperInteractions: [
+        {
+          text: "Awesome, you've completed all blocks including the bonus round. How do you think you went, and have you enjoyed this experience?",
+        },
+      ],
       message: "End of Block 5. Done!",
       onContinue: saveData,
     },
