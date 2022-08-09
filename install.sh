@@ -4,7 +4,6 @@
 src_path=$(dirname $(realpath $0))
 server_name=$(basename $src_path)
 
-read -p "Enter slackbot token, if any, otherwise leave empty: " SLACK_TOKEN
 read -p "Target ip address (default: 10.3.141.1) " TARGET_IP
 read -p "Target user (default: ubuntu):" TARGET_USER
 
@@ -43,6 +42,7 @@ read -r -p "Reconfigure Supervisor [Y/n] " response
 case "$response" in
     [nN][oO]|[nN]) ;;
     *)
+        read -p "Enter slackbot token, if any, otherwise leave empty: " SLACK_TOKEN
         supervisor_conf="[program:${server_name}]
         stopsignal=INT
         command=/usr/bin/python3 /home/$TARGET_USER/$server_name/run.py
