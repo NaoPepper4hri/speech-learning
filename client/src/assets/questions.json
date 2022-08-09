@@ -5,17 +5,17 @@
         "options": [
             {
                 "text": "la mujer",
-                "image": "",
+                "image": "Woman",
                 "correct": true
             },
             {
                 "text": "el hombre",
-                "image": "",
+                "image": "Man",
                 "correct": false
             },
             {
                 "text": "la niña",
-                "image": "",
+                "image": "Girl",
                 "correct": false
             }
         ]
@@ -26,17 +26,17 @@
         "options": [
             {
                 "text": "el niño",
-                "image": "",
+                "image": "Boy",
                 "correct": false
             },
             {
                 "text": "la niña",
-                "image": "",
+                "image": "Girl",
                 "correct": false
             },
             {
                 "text": "el hombre",
-                "image": "",
+                "image": "Man",
                 "correct": true
             }
         ]
@@ -47,17 +47,17 @@
         "options": [
             {
                 "text": "el niño",
-                "image": "",
+                "image": "Boy",
                 "correct": false
             },
             {
                 "text": "la niña",
-                "image": "",
+                "image": "Girl",
                 "correct": true
             },
             {
                 "text": "el hombre",
-                "image": "",
+                "image": "Man",
                 "correct": false
             }
         ]
@@ -68,17 +68,17 @@
         "options": [
             {
                 "text": "el niño",
-                "image": "",
+                "image": "Boy",
                 "correct": true
             },
             {
                 "text": "la niña",
-                "image": "",
+                "image": "Girl",
                 "correct": false
             },
             {
                 "text": "el hombre",
-                "image": "",
+                "image": "Man",
                 "correct": false
             }
         ]
@@ -89,17 +89,17 @@
         "options": [
             {
                 "text": "la mujer",
-                "image": "",
+                "image": "Woman",
                 "correct": false
             },
             {
                 "text": "el hombre",
-                "image": "",
+                "image": "Man",
                 "correct": false
             },
             {
                 "text": "la manzana",
-                "image": "",
+                "image": "Apple",
                 "correct": true
             }
         ]
@@ -110,17 +110,17 @@
         "options": [
             {
                 "text": "el agua",
-                "image": "",
+                "image": "Water",
                 "correct": true
             },
             {
                 "text": "el pan",
-                "image": "",
+                "image": "Bread",
                 "correct": false
             },
             {
                 "text": "la leche",
-                "image": "",
+                "image": "Milk",
                 "correct": false
             }
         ]
@@ -131,17 +131,17 @@
         "options": [
             {
                 "text": "el agua",
-                "image": "",
+                "image": "Water",
                 "correct": false
             },
             {
                 "text": "el pan",
-                "image": "",
+                "image": "Bread",
                 "correct": true
             },
             {
                 "text": "la leche",
-                "image": "",
+                "image": "Milk",
                 "correct": false
             }
         ]
@@ -152,17 +152,17 @@
         "options": [
             {
                 "text": "el agua",
-                "image": "",
+                "image": "Water",
                 "correct": false
             },
             {
                 "text": "el pan",
-                "image": "",
+                "image": "Bread",
                 "correct": false
             },
             {
                 "text": "la leche",
-                "image": "",
+                "image": "Milk",
                 "correct": true
             }
         ]
@@ -173,25 +173,25 @@
         "options": [
             {
                 "text": "el pasaporte",
-                "image": "",
+                "image": "Passport",
                 "correct": false
             },
             {
                 "text": "el taxi",
-                "image": "",
+                "image": "Taxi",
                 "correct": false
             },
             {
                 "text": "la maleta",
-                "image": "",
+                "image": "Suitcase",
                 "correct": true
             }
         ]
     },
     {
         "ty": "FillBlankQuestion",
-        "question": "una niña, una {}",
-        "image": null,
+        "question": "una niña y una una {}",
+        "image": "Girl&Woman",
         "options": {
             "o0": {
                 "id": "o0",
@@ -213,12 +213,13 @@
                 "text": "el",
                 "correct": false
             }
-        }
+        },
+        "translation": "a girl and a woman"
     },
     {
         "ty": "FillBlankQuestion",
         "question": "Él es un {}",
-        "image": null,
+        "image": "Man",
         "options": {
             "o0": {
                 "id": "o0",
@@ -235,12 +236,13 @@
                 "text": "manzana",
                 "correct": false
             }
-        }
+        },
+        "translation": "He is a man"
     },
     {
         "ty": "FillBlankQuestion",
         "question": "{} es una niña",
-        "image": null,
+        "image": "Girl",
         "options": {
             "o0": {
                 "id": "o0",
@@ -257,12 +259,13 @@
                 "text": "Él",
                 "correct": false
             }
-        }
+        },
+        "translation": "She is a girl"
     },
     {
         "ty": "FillBlankQuestion",
         "question": "Tú eres un {}",
-        "image": null,
+        "image": "Boy",
         "options": {
             "o0": {
                 "id": "o0",
@@ -284,12 +287,13 @@
                 "text": "una",
                 "correct": false
             }
-        }
+        },
+        "translation": "You are a boy"
     },
     {
         "ty": "FillBlankQuestion",
         "question": "Yo {} manzanas",
-        "image": null,
+        "image": "Apple",
         "options": {
             "o0": {
                 "id": "o0",
@@ -306,12 +310,13 @@
                 "text": "mujer",
                 "correct": false
             }
-        }
+        },
+        "translation": "I eat apples"
     },
     {
         "ty": "FillBlankQuestion",
         "question": "Tú bebes {}",
-        "image": null,
+        "image": "Water",
         "options": {
             "o0": {
                 "id": "o0",
@@ -328,16 +333,17 @@
                 "text": "pan",
                 "correct": false
             }
-        }
+        },
+        "translation": "You drink water"
     },
     {
         "ty": "FillBlankQuestion",
-        "question": "I {} agua",
-        "image": null,
+        "question": "{} agua",
+        "image": "Water",
         "options": {
             "o0": {
                 "id": "o0",
-                "text": "necesito",
+                "text": "Necesito",
                 "correct": true
             },
             "o1": {
@@ -350,21 +356,22 @@
                 "text": "maleta",
                 "correct": false
             }
-        }
+        },
+        "translation": "I need water"
     },
     {
         "ty": "FillBlankQuestion",
-        "question": "Necesito un {}, por favor",
-        "image": null,
+        "question": "{} un taxi por favor",
+        "image": "Taxi",
         "options": {
             "o0": {
                 "id": "o0",
-                "text": "taxi",
+                "text": "Necesito",
                 "correct": true
             },
             "o1": {
                 "id": "o1",
-                "text": "agua",
+                "text": "Necesitar",
                 "correct": false
             },
             "o2": {
@@ -372,7 +379,54 @@
                 "text": "perdón",
                 "correct": false
             }
-        }
+        },
+        "translation": "I need a taxi please"
+    },
+    {
+        "ty": "FillBlankQuestion",
+        "question": "hola buenos {}",
+        "image": "Sun",
+        "options": {
+            "o0": {
+                "id": "o0",
+                "text": "días",
+                "correct": true
+            },
+            "o1": {
+                "id": "o1",
+                "text": "pan",
+                "correct": false
+            },
+            "o2": {
+                "id": "o2",
+                "text": "necesito",
+                "correct": false
+            }
+        },
+        "translation": "Hello good morning"
+    },
+    {
+        "ty": "FillBlankQuestion",
+        "question": "adiós buenas {}",
+        "image": "Moon",
+        "options": {
+            "o0": {
+                "id": "o0",
+                "text": "noches",
+                "correct": true
+            },
+            "o1": {
+                "id": "o1",
+                "text": "necesitar",
+                "correct": false
+            },
+            "o2": {
+                "id": "o2",
+                "text": "niña",
+                "correct": false
+            }
+        },
+        "translation": "Bye good night"
     },
     {
         "ty": "VocabularyQuestion",
@@ -1285,11 +1339,39 @@
             },
             {
                 "p1": "phone",
-                "p2": "teléfone"
+                "p2": "teléfono"
             },
             {
                 "p1": "he",
                 "p2": "él"
+            },
+            {
+                "p1": "need ",
+                "p2": "necesitar"
+            },
+            {
+                "p1": "hi",
+                "p2": "hola"
+            },
+            {
+                "p1": "bye",
+                "p2": "Adiós"
+            },
+            {
+                "p1": "good",
+                "p2": "buenos"
+            },
+            {
+                "p1": "morning",
+                "p2": "días"
+            },
+            {
+                "p1": "night",
+                "p2": "noches"
+            },
+            {
+                "p1": "thanks",
+                "p2": "gracias"
             }
         ]
     }

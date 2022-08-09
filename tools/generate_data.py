@@ -49,9 +49,10 @@ class ImageButtonQuestion(Question):
 
 
 class FillBlankQuestion(Question):
-    def __init__(self, image, *args, **kwargs) -> None:
+    def __init__(self, image, translation, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.image = image
+        self.translation = translation
 
     def as_dict(self) -> Dict:
         return {
@@ -59,11 +60,12 @@ class FillBlankQuestion(Question):
             "question": self.question,
             "image": self.image,
             "options": self.options,
+            "translation": self.translation
         }
 
     @classmethod
     def from_row(cls, data: Tuple):
-        image, question, answer, options = data
+        image, question, answer, options, translation = data
         opt = {}
         counter = 0
         for o in options.split(","):
@@ -77,6 +79,7 @@ class FillBlankQuestion(Question):
             }
         return cls(
             image=image,
+            translation=translation,
             question=question,
             options=opt
         )

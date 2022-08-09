@@ -39,6 +39,7 @@ class ImageButtonQuestion extends React.Component {
 
   optionGrid = () => {
     const { options } = this.props;
+    console.log(options);
     const { showAnswer } = this.state;
     return (
       <Grid container spacing={3} justifyContent="center">
@@ -49,7 +50,7 @@ class ImageButtonQuestion extends React.Component {
           }
           return (
             <Grid key={idx} item>
-              <Card sx={{ width: 345, backgroundColor: bg }}>
+              <Card sx={{ width: 300, height: 300, backgroundColor: bg }}>
                 <CardActionArea
                   onClick={
                     showAnswer.length === 0
@@ -61,9 +62,19 @@ class ImageButtonQuestion extends React.Component {
                       : () => {}
                   }
                 >
-                  <CardMedia component="img" image={option.img}></CardMedia>
-                  <CardContent>
-                    <Typography>{option.text}</Typography>
+                  <CardContent sx={{ height: 300 }}>
+                    <Stack
+                      spacing={4}
+                      paddingTop={4}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + `${option.image}.png`}
+                        alt=""
+                      />
+                      <Typography>{option.text}</Typography>
+                    </Stack>
                   </CardContent>
                 </CardActionArea>
               </Card>

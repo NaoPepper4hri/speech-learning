@@ -288,6 +288,7 @@ class App extends React.Component {
                 return (
                   <FillBlankQuestion
                     key={index}
+                    image={q.image}
                     question={q.question}
                     options={q.options}
                   />

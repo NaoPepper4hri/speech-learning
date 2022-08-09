@@ -207,7 +207,12 @@ class FillBlankQuestion extends React.Component {
             <Typography key="title" variant="h4" gutterBottom>
               Fill in the blank.
             </Typography>
-            <img key="image" src={image} alt="" />
+            <img
+              key="image"
+              src={process.env.PUBLIC_URL + `${image}.png`}
+              alt=""
+              height={120}
+            />
             <Stack direction="row">{this.getTargetSentenceComp()}</Stack>
             <OptionsDroppable
               sx={{ border: "1px solid lightgrey" }}
