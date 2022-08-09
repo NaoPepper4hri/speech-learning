@@ -55,10 +55,23 @@ ImportError: /lib/arm-linux-gnueabihf/libc.so.6: version `GLIBC_2.33' not found 
 You will need to install manually grpc.
 Log into the Raspberry Pi via ssh end execute the following commands:
 
-1. `sudo pip uninstall grpcio`
-2. `sudo pip uninstall grpcio-status`
-3. `sudo pip install grpcio==1.44.0 --no-binary=grpcio`
-4. `sudo pip install grpcio-tools==1.44.0 --no-binary=grpcio-tools`
+1. ```
+   sudo pip uninstall grpcio
+   ```
+2. ```
+   sudo pip uninstall grpcio-status
+   ```
+3. ```
+   pip install grpcio==1.44.0 --no-binary=grpcio
+   ```
+4. ```
+   pip install grpcio-tools==1.44.0 --no-binary=grpcio-tools
+   ```
+5. This command depends on the version of python you are using.
+   It copies the packages that we have just installed to the global package library.
+   Please change the relevant paths for your python installation:
+   ```
+   sudo cp .local/lib/python3.8/site-packages/grpc* /usr/local/lib/python3.8/dist-packages/ -r```
 
 Each of these commands take a long time to complete (15-20 min), please be patient.
 Hopefully, this will solve the missing `GLIBC_2.33` issue.
