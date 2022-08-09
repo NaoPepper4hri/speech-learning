@@ -1,6 +1,21 @@
-import { Button, Divider, Grid } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Divider,
+  Grid,
+} from "@mui/material";
 import React from "react";
-import { setConversationDone, requestPepperText, requestPepperLookAtParticipant, requestPepperLookAtScreen, saveData } from "./utils";
+import {
+  setConversationDone,
+  requestPepperText,
+  requestPepperLookAtParticipant,
+  requestPepperLookAtScreen,
+  saveData,
+  restartExperiment,
+} from "./utils";
 
 const actions = [
   "Ok, let's try one more task and see if we can improve!",
@@ -17,6 +32,10 @@ const actions = [
 ];
 
 class PepperControl extends React.Component {
+  state = {
+    dialogOpen: false,
+  };
+
   render() {
     return (
       <Grid container padding={5} spacing={3}>
@@ -33,15 +52,21 @@ class PepperControl extends React.Component {
           </Grid>
         ))}
         <Grid item xs={12}>
-          <Divider/>
+          <Divider />
         </Grid>
         <Grid item xs={12}>
-          <Button variant="outlined" onClick={() => requestPepperLookAtParticipant()}>
+          <Button
+            variant="outlined"
+            onClick={() => requestPepperLookAtParticipant()}
+          >
             Look at participant
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Button variant="outlined" onClick={() => requestPepperLookAtScreen()}>
+          <Button
+            variant="outlined"
+            onClick={() => requestPepperLookAtScreen()}
+          >
             Look at screen
           </Button>
         </Grid>
@@ -55,6 +80,38 @@ class PepperControl extends React.Component {
             Save data
           </Button>
         </Grid>
+        <Divider />
+        <Grid item xs={12}>
+          <Button
+            variant="outlined"
+            onClick={() => this.setState({ dialogOpen: true })}
+          >
+            Restart experiment
+          </Button>
+        </Grid>
+        <Dialog
+          open={this.state.dialogOpen}
+          onclose={() => this.setState({ dialogOpen: false })}
+        >
+          <DialogContent>
+            <DialogContentText>
+              Restart experiment? All unsaved data will be lost.
+            </DialogContentText>
+            <DialogActions>
+              <Button onClick={() => this.setState({ dialogOpen: false })}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  restartExperiment();
+                  this.setState({ dialogOpen: false });
+                }}
+              >
+                Restart
+              </Button>
+            </DialogActions>
+          </DialogContent>
+        </Dialog>
       </Grid>
     );
   }

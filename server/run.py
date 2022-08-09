@@ -148,6 +148,15 @@ def save_data():
     return "Ok"
 
 
+@app.route("/restartExperiment", methods=['GET'])
+def restart_experiment():
+    save_data()
+    global manager
+    manager.current_page = 0
+    manager.layout = []
+    return "Ok"
+
+
 @app.route('/control', defaults={'path': ''})
 def index(path):
     return app.send_static_file('index.html')
