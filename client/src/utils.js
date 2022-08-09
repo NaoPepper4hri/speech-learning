@@ -5,22 +5,87 @@ export function fisherYatesShuffle(arr) {
   }
 }
 
+export const getExpState = async (onComplete) => {
+  var state = {};
+  await fetch("/getExpState", {
+    method: "GET",
+    headers: new Headers({
+      "content-type": "application/json",
+    }),
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        res.text().then((data) => {
+          console.warn(data);
+        });
+      } else {
+        res.json().then((data) => {
+          onComplete(data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  return state;
+};
+
+export const setNewQuestionLayout = async (layout) => {
+  await fetch("/setNewQuestionLayout", {
+    method: "POST",
+    body: JSON.stringify(layout),
+    headers: new Headers({
+      "content-type": "application/json",
+    }),
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        res.text().then((data) => {
+          console.warn(data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const setCurrentPage = async (page) => {
+  await fetch("/setCurrentPage", {
+    method: "POST",
+    body: JSON.stringify({ current: page }),
+    headers: new Headers({
+      "content-type": "application/json",
+    }),
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        res.text().then((data) => {
+          console.warn(data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const requestPepperAnimation = async (animation, halt) => {
   var cmd = {
     animation: {
       name: animation,
       halt: halt,
-    }
-  }
+    },
+  };
   await sendPepperCommand(cmd);
-}
+};
 
 export const requestPepperText = async (text) => {
   var cmd = {
-    say: text
-  }
-  await sendPepperCommand(cmd)
-}
+    say: text,
+  };
+  await sendPepperCommand(cmd);
+};
 
 export const requestPepperLookAtParticipant = async () => {
   var cmd = {
@@ -32,13 +97,13 @@ export const requestPepperLookAtParticipant = async () => {
     abilities: [
       {
         ty: "BASIC_AWARENESS",
-        enabled: true
-      }
-    ]
-  }
+        enabled: true,
+      },
+    ],
+  };
 
   await sendPepperCommand(cmd);
-}
+};
 
 export const requestPepperLookAtScreen = async () => {
   var cmd = {
@@ -50,17 +115,15 @@ export const requestPepperLookAtScreen = async () => {
     abilities: [
       {
         ty: "BASIC_AWARENESS",
-        enabled: false
-      }
-    ]
-  }
+        enabled: false,
+      },
+    ],
+  };
 
   await sendPepperCommand(cmd);
-}
+};
 
-export const sendPepperCommand = async (
-  cmd,
-) => {
+export const sendPepperCommand = async (cmd) => {
   await fetch("/pubCommand", {
     method: "POST",
     body: JSON.stringify(cmd),
@@ -98,7 +161,6 @@ export const onPepperIsDone = async (callback) => {
           res.json().then((js) => {
             console.log(js);
             if (js["done"]) {
-              console.log("jere");
               clearInterval(timer);
               callback();
             }
@@ -129,7 +191,6 @@ export const onConversationIsDone = async (callback) => {
           res.json().then((js) => {
             console.log(js);
             if (js["done"]) {
-              console.log("jere");
               clearInterval(timer);
               callback();
             }
@@ -142,10 +203,10 @@ export const onConversationIsDone = async (callback) => {
   }, 1000);
 };
 
-export const setConversationDone = async (value=true) => {
+export const setConversationDone = async (value = true) => {
   await fetch("/setConversationDone", {
     method: "POST",
-    body: JSON.stringify({done: value}),
+    body: JSON.stringify({ done: value }),
     headers: new Headers({
       "content-type": "application/json",
     }),

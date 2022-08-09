@@ -2,26 +2,14 @@ import React from "react";
 
 import { AppBar, MobileStepper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { sendAnswer } from "../utils";
+import { sendAnswer, setCurrentPage } from "../utils";
 
 export default class Navigator extends React.Component {
   constructor(props) {
     super(props);
 
-    if (!props.layout) {
-      this.layout = [
-        <Typography variant="h6">
-          No layout provided, please specify questionaire layout in index.js
-        </Typography>,
-      ];
-    } else {
-      this.layout = props.layout;
-    }
-
-    this.layout_length = this.layout.length;
-
     this.state = {
-      current: 0,
+      current: props.current,
     };
   }
 
@@ -30,17 +18,33 @@ export default class Navigator extends React.Component {
       sendAnswer(response);
     }
     const { current: c } = this.state;
+    setCurrentPage(c + 1);
     this.setState({ current: c + 1 });
   };
 
-  handleBack = () => {
-    const { current: c } = this.state;
-    this.setState({ current: c - 1 });
-  };
+  shouldComponentUpdate(nextProps) {
+    if (this.props.current !== nextProps.current) {
+      this.setState({
+        current: nextProps.current,
+      });
+    }
+    return true;
+  }
 
   render() {
     const { current: c } = this.state;
     const { isLoading: loading } = this.props;
+    var { layout } = this.props;
+    if (!layout) {
+      layout = [
+        <Typography variant="h6">
+          No layout provided, please specify questionaire layout in index.js
+        </Typography>,
+      ];
+    }
+
+    console.log(layout[c]);
+
     return (
       <Box
         position="sticky"
@@ -50,7 +54,7 @@ export default class Navigator extends React.Component {
         alignItems="center"
       >
         <Box>
-          {React.cloneElement(this.layout[c], {
+          {React.cloneElement(layout[c], {
             isLoading: loading,
             handleNext: this.handleNext,
           })}
@@ -58,7 +62,7 @@ export default class Navigator extends React.Component {
         <AppBar position="fixed" style={{ top: "auto", bottom: 0 }}>
           <MobileStepper
             variant="progress"
-            steps={this.layout_length}
+            steps={layout.length}
             position="static"
             activeStep={c}
             className={this.root}

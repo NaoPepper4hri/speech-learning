@@ -54,6 +54,13 @@ class ParticipantData:
             json.dump(json_obj, f, ensure_ascii=False, indent=4)
 
 
+class ExperimentManager:
+    def __init__(self):
+        self.current_page = 0
+        self.layout = []
+
+
+manager = ExperimentManager()
 participant = ParticipantData(0)
 conversation_done = True
 
@@ -61,6 +68,30 @@ conversation_done = True
 @app.route('/')
 def home():
     return app.send_static_file('index.html')
+
+
+@app.route('/getExpState', methods=['GET'])
+def get_exp_state():
+    global manager
+    return {
+        "current": manager.current_page,
+        "layout": manager.layout
+    }
+
+
+@app.route('/setNewQuestionLayout', methods=['POST'])
+def set_new_question_layout():
+    global manager
+    manager.layout = request.get_json()
+    return "Ok"
+
+
+@app.route('/setCurrentPage', methods=['POST'])
+def set_current_page():
+    global manager
+    req = request.get_json()
+    manager.current_page = req["current"]
+    return "Ok"
 
 
 @app.route('/pubCommand', methods=['POST'])
