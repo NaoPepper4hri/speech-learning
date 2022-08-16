@@ -6,9 +6,11 @@ import {
   DialogContentText,
   Divider,
   Grid,
+  TextField,
 } from "@mui/material";
 import React from "react";
 import {
+  initialize,
   setConversationDone,
   requestPepperText,
   requestPepperLookAtParticipant,
@@ -34,9 +36,11 @@ const actions = [
 class PepperControl extends React.Component {
   state = {
     dialogOpen: false,
+    participantId: "",
   };
 
   render() {
+    const { id } = this.state;
     return (
       <Grid container padding={5} spacing={3}>
         {actions.map((a) => (
@@ -76,11 +80,43 @@ class PepperControl extends React.Component {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Button variant="outlined" onClick={() => saveData()}>
-            Save data
-          </Button>
+          <Divider />
         </Grid>
-        <Divider />
+        <Grid
+          container
+          item
+          spacing={2}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <TextField
+              label="Participant ID"
+              variant="outlined"
+              value={id}
+              onChange={(event) => this.setState({ id: event.target.value })}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                initialize({ id: id, date: new Date().toLocaleString() });
+              }}
+            >
+              Initialize
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="outlined" onClick={() => saveData()}>
+              Save data
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
         <Grid item xs={12}>
           <Button
             variant="outlined"

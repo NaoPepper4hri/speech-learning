@@ -8,9 +8,9 @@ import {
   ImageButtonQuestion,
   MatchPairsQuestion,
   Navigator,
-  ParticipantInfoPage,
   PepperInteractionPage,
   SortWordsQuestion,
+  StartPage,
   VocabularyQuestion,
 } from "./components";
 import {
@@ -60,7 +60,7 @@ const loadNewBlocks = () => {
   fisherYatesShuffle(block5);
 
   const blocks = [
-    { ty: "ParticipantInfo" },
+    { ty: "Start" },
     // Block 1
     {
       ty: "PepperResponse",
@@ -263,8 +263,8 @@ class App extends React.Component {
           current={current}
           layout={layout.map((q, index) => {
             switch (q.ty) {
-              case "ParticipantInfo":
-                return <ParticipantInfoPage key={index} />;
+              case "Start":
+                return <StartPage key={index} />;
               case "EndExercise":
                 return <EndExercisePage />;
               case "PepperResponse":

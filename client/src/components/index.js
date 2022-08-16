@@ -6,6 +6,7 @@ import Navigator from "./Navigation";
 import ParticipantInfoPage from "./ParticipantInfoPage";
 import PepperInteractionPage from "./PepperInteractionPage";
 import SortWordsQuestion from "./SortWordsQuestion";
+import StartPage from "./StartPage";
 import VocabularyQuestion from "./VocabularyQuestion";
 
 export {
@@ -17,5 +18,6 @@ export {
   ParticipantInfoPage,
   PepperInteractionPage,
   SortWordsQuestion,
+  StartPage,
   VocabularyQuestion,
 };
