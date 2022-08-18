@@ -28,7 +28,6 @@ class StartPage extends React.Component {
             position: "fixed",
           }}
           onClick={() => {
-            initialize(this.state);
             handleNext();
           }}
         >

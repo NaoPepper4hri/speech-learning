@@ -29,7 +29,7 @@ class VocabularyQuestion extends React.Component {
   };
 
   render() {
-    const { question, options, handleNext } = this.props;
+    const { question, options, handleNext, id } = this.props;
     const { showAnswer, responded, response } = this.state;
     return (
       <React.Fragment>
@@ -90,7 +90,7 @@ class VocabularyQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext(response)}
+            onClick={() => handleNext({ id: id, response: response })}
           >
             Continue
             <KeyboardArrowRightRounded />

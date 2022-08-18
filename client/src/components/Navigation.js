@@ -10,16 +10,18 @@ export default class Navigator extends React.Component {
 
     this.state = {
       current: props.current,
+      timestamp: performance.now(),
     };
   }
 
   handleNext = (response) => {
     if (response !== undefined) {
-      sendAnswer(response);
+      const elapsed = performance.now() - this.state.timestamp;
+      sendAnswer({ time: elapsed, ...response });
     }
     const { current: c } = this.state;
     setCurrentPage(c + 1);
-    this.setState({ current: c + 1 });
+    this.setState({ current: c + 1, timestamp: performance.now() });
   };
 
   shouldComponentUpdate(nextProps) {
@@ -42,8 +44,6 @@ export default class Navigator extends React.Component {
         </Typography>,
       ];
     }
-
-    console.log(layout[c]);
 
     return (
       <Box

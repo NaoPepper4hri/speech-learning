@@ -3,7 +3,6 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
   Fab,
   Grid,
   Stack,
@@ -39,7 +38,6 @@ class ImageButtonQuestion extends React.Component {
 
   optionGrid = () => {
     const { options } = this.props;
-    console.log(options);
     const { showAnswer } = this.state;
     return (
       <Grid container spacing={3} justifyContent="center">
@@ -86,7 +84,7 @@ class ImageButtonQuestion extends React.Component {
   };
 
   render() {
-    const { question, handleNext } = this.props;
+    const { question, handleNext, id } = this.props;
     const { responded, response } = this.state;
     return (
       <React.Fragment>
@@ -107,7 +105,7 @@ class ImageButtonQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext(response)}
+            onClick={() => handleNext({ id: id, response: response })}
           >
             Continue
             <KeyboardArrowRightRounded />

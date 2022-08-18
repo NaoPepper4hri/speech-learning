@@ -236,7 +236,7 @@ const loadNewBlocks = () => {
 class App extends React.Component {
   state = {
     current: 0,
-    layout: [{ ty: "ParticipantInfo" }],
+    layout: [{ ty: "Start" }],
   };
 
   getBlocks = () => {
@@ -246,7 +246,6 @@ class App extends React.Component {
         setNewQuestionLayout(layout);
         state["layout"] = layout;
       }
-      console.log(state);
       this.setState(state);
     });
   };
@@ -257,6 +256,7 @@ class App extends React.Component {
 
   render() {
     const { current, layout } = this.state;
+    console.log(layout);
     return (
       <div className="App">
         <Navigator
@@ -280,6 +280,7 @@ class App extends React.Component {
                 return (
                   <ImageButtonQuestion
                     key={index}
+                    id={q.id}
                     question={q.question}
                     options={q.options}
                   />
@@ -288,6 +289,7 @@ class App extends React.Component {
                 return (
                   <FillBlankQuestion
                     key={index}
+                    id={q.id}
                     image={q.image}
                     question={q.question}
                     options={q.options}
@@ -297,6 +299,7 @@ class App extends React.Component {
                 return (
                   <VocabularyQuestion
                     key={index}
+                    id={q.id}
                     question={q.question}
                     options={q.options}
                   />
@@ -305,6 +308,7 @@ class App extends React.Component {
                 return (
                   <SortWordsQuestion
                     key={index}
+                    id={q.id}
                     header={q.header}
                     question={q.question}
                     answer={q.answer}
@@ -315,6 +319,7 @@ class App extends React.Component {
                 return (
                   <MatchPairsQuestion
                     key={index}
+                    id={q.id}
                     question={q.question}
                     options={q.options}
                   />

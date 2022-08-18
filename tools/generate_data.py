@@ -2,7 +2,7 @@
 import argparse
 import json
 import openpyxl as xml
-from typing import Dict, Iterator, Optional, Tuple
+from typing import Any, Dict, Iterator, Optional, Tuple
 
 
 class DataSheets:
@@ -15,13 +15,15 @@ class DataSheets:
 
 
 class Question:
-    def __init__(self, question, options) -> None:
+    def __init__(self, id: Any, question: Any, options: Any) -> None:
+        self.id = id
         self.question = question
         self.options = options
 
     def as_dict(self) -> Dict:
         return {
             "ty": self.__class__.__name__,
+            "id": self.id,
             "question": self.question,
             "options": self.options,
         }
@@ -29,8 +31,8 @@ class Question:
 
 class ImageButtonQuestion(Question):
     @classmethod
-    def from_row(cls, data: Tuple):
-        images, question, answer, options = data
+    def from_row(cls, id: str, data: Tuple):
+        images, question, answer, options = data[0:4]
         if images is None:
             images = ",,"
         opt = []
@@ -43,6 +45,7 @@ class ImageButtonQuestion(Question):
                 "correct": text == answer
             })
         return cls(
+            id=id,
             question=question,
             options=opt
         )
@@ -55,17 +58,14 @@ class FillBlankQuestion(Question):
         self.translation = translation
 
     def as_dict(self) -> Dict:
-        return {
-            "ty": self.__class__.__name__,
-            "question": self.question,
-            "image": self.image,
-            "options": self.options,
-            "translation": self.translation
-        }
+        base = super().as_dict()
+        base["image"] = self.image
+        base["translation"] = self.translation
+        return base
 
     @classmethod
-    def from_row(cls, data: Tuple):
-        image, question, answer, options, translation = data
+    def from_row(cls, id: int, data: Tuple):
+        image, question, answer, options, translation = data[0:5]
         opt = {}
         counter = 0
         for o in options.split(","):
@@ -78,6 +78,7 @@ class FillBlankQuestion(Question):
                     "correct": o == answer
             }
         return cls(
+            id=id,
             image=image,
             translation=translation,
             question=question,
@@ -87,8 +88,9 @@ class FillBlankQuestion(Question):
 
 class VocabularyQuestion(Question):
     @classmethod
-    def from_row(cls, data: Tuple):
-        question, answer, options = data
+    def from_row(cls, id: int, data: Tuple):
+        print(data)
+        question, answer, options = data[0:3]
         opts = []
         for o in options.split(","):
             o = o.strip()
@@ -97,6 +99,7 @@ class VocabularyQuestion(Question):
                 "correct": o == answer
             })
         return cls(
+            id=id,
             question=question,
             options=opts,
         )
@@ -109,16 +112,13 @@ class SortWordsQuestion(Question):
         self.answer = answer
 
     def as_dict(self) -> Dict:
-        return {
-            "ty": self.__class__.__name__,
-            "question": self.question,
-            "answer": self.answer,
-            "header": self.header,
-            "options": self.options,
-        }
+        base = super().as_dict()
+        base["answer"] = self.answer
+        base["header"] = self.header
+        return base
 
     @classmethod
-    def from_row(cls, data: Tuple, task: Optional[str] = ""):
+    def from_row(cls, id: int, data: Tuple, task: Optional[str] = ""):
         question, answer, options = data[0:3]
         opts = {}
         counter = 0
@@ -136,6 +136,7 @@ class SortWordsQuestion(Question):
         return cls(
             header=task,
             answer=answer,
+            id=id,
             question=question,
             options=opts,
         )
@@ -152,6 +153,7 @@ class MatchPairsQuestion(Question):
                 })
 
         return cls(
+            id="pairs",
             question=question,
             options=opts,
         )
@@ -178,22 +180,46 @@ if __name__ == "__main__":
                         task,
                         sheet.iter_rows(min_row=3, values_only=True))
             else:
+                idx = 0
                 for entry in sheet.iter_rows(min_row=3, values_only=True):
+                    idx += 1
                     match question_type:
                         case DataSheets.IMAGE_BUTTON_SHEET:
-                            questions.append(ImageButtonQuestion.from_row(entry))
+                            questions.append(
+                                    ImageButtonQuestion.from_row(
+                                        "{}_{}".format(name, idx),
+                                        entry)
+                                    )
                         case DataSheets.FILL_BLANK_SHEET:
-                            questions.append(FillBlankQuestion.from_row(entry))
+                            questions.append(
+                                    FillBlankQuestion.from_row(
+                                        "{}_{}".format(name, idx),
+                                        entry)
+                                    )
                         case DataSheets.VOCABULARY_SHEET:
-                            questions.append(VocabularyQuestion.from_row(entry))
+                            questions.append(
+                                    VocabularyQuestion.from_row(
+                                        "{}_{}".format(name, idx),
+                                        entry)
+                                    )
                         case DataSheets.SORT_WORDS_SHEET:
                             try:
-                                questions.append(SortWordsQuestion.from_row(entry, task))
+                                questions.append(
+                                        SortWordsQuestion.from_row(
+                                            "{}_{}".format(name, idx),
+                                            entry,
+                                            task)
+                                        )
                             except Exception as e:
                                 print(e)
                         case DataSheets.SORT_WORDS_SHEET_2:
                             try:
-                                questions.append(SortWordsQuestion.from_row(entry, task))
+                                questions.append(
+                                        SortWordsQuestion.from_row(
+                                            "{}_{}".format(name, idx),
+                                            entry,
+                                            task)
+                                        )
                             except Exception as e:
                                 print(e)
 

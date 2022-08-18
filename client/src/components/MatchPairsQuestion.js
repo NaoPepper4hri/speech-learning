@@ -54,7 +54,7 @@ class MatchPairsQuestion extends React.Component {
   };
 
   render() {
-    const { question, handleNext } = this.props;
+    const { id, question, handleNext } = this.props;
     const { answers, correct, buttons, clicked } = this.state;
     return (
       <React.Fragment>
@@ -93,7 +93,13 @@ class MatchPairsQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext(answers)}
+            onClick={() =>
+              handleNext({
+                id: id,
+                options: this.state.buttons.map((b) => b.text),
+                response: answers,
+              })
+            }
           >
             Continue
             <KeyboardArrowRightRounded />

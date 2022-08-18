@@ -196,7 +196,7 @@ class FillBlankQuestion extends React.Component {
   };
 
   render() {
-    const { image, options, handleNext } = this.props;
+    const { image, options, handleNext, id } = this.props;
     const { optionArea, responded, response } = this.state;
     const optInArea = optionArea.map((optIdx) => options[optIdx]);
 
@@ -232,7 +232,7 @@ class FillBlankQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext(response)}
+            onClick={() => handleNext({ id: id, response: response })}
           >
             Continue
             <KeyboardArrowRightRounded />

@@ -167,6 +167,7 @@ class SortWordsQuestion extends React.Component {
       question,
       options,
       handleNext,
+      id,
       answer: correctAnswer,
     } = this.props;
     const { answerList, optionList, responded, response } = this.state;
@@ -224,7 +225,7 @@ class SortWordsQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext(response)}
+            onClick={() => handleNext({ id: id, response: response })}
           >
             Continue
             <KeyboardArrowRightRounded />

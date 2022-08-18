@@ -263,7 +263,7 @@ export const initialize = async (value) => {
     });
 };
 
-export const saveData = async (value) => {
+export const saveData = async () => {
   await fetch("/save", {
     method: "GET",
     headers: new Headers({
