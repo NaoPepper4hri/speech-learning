@@ -25,6 +25,14 @@ cd ~/speech-learning
    Please note that our lab's configuration is set up as default.
    You can change any entries or simply press enter when asked for input to follow the defaults.
 
+4. When  the first time you run this script, you will probably see this warning:
+
+```
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+Simply type `yes` and press enter.
+
 4. If everything went well, you should now be able to access the server from your web browser.
 
 # Troubleshooting

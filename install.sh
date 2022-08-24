@@ -24,7 +24,9 @@ read -s PASSWORD
 cd $src_path/client
 npm run build
 cd $src_path
-rsync -a server/ $TARGET_USER@$TARGET_IP:~/$server_name
+scp -pr server/* $TARGET_USER@$TARGET_IP:~/$server_name
+echo "———————> Server updated."
+echo
 
 # Install required python packages
 read -r -p "Update required Python packages? [Y/n] " response
