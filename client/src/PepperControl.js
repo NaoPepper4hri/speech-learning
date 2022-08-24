@@ -37,14 +37,44 @@ class PepperControl extends React.Component {
   state = {
     dialogOpen: false,
     participantId: "",
+    dyntext: "",
+    id: "",
+  };
+
+  pepperSayText = () => {
+    const { dyntext } = this.state;
+    if (dyntext.length !== 0) {
+      requestPepperText(dyntext);
+      this.setState({ dyntext: "" });
+    }
   };
 
   render() {
-    const { id } = this.state;
+    const { id, dyntext } = this.state;
     return (
-      <Grid container padding={5} spacing={3}>
-        {actions.map((a) => (
-          <Grid item xs={3} justifyContent="center">
+      <Grid container padding={5} spacing={3} alignItems="center">
+        <Grid item xs={1} justifyContent="center">
+          <Button variant="outlined" onClick={() => requestPepperText(dyntext)}>
+            Say text
+          </Button>
+        </Grid>
+        <Grid item xs={11}>
+          <TextField
+            label="Insert text"
+            variant="outlined"
+            fullWidth
+            multiline
+            value={dyntext}
+            onKeyPress={(ev) => {
+              if (ev.shiftKey && ev.key === "Enter") {
+                requestPepperText(dyntext);
+              }
+            }}
+            onChange={(event) => this.setState({ dyntext: event.target.value })}
+          />
+        </Grid>
+        {actions.map((a, idx) => (
+          <Grid key={idx} item xs={3} justifyContent="center">
             <Button
               variant="outlined"
               onClick={() => {
