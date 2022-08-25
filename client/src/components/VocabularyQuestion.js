@@ -74,7 +74,7 @@ class VocabularyQuestion extends React.Component {
                     : () => {}
                 }
               >
-                {option.text}
+                <Typography variant="h5">{option.text}</Typography>
               </Button>
             );
           })}

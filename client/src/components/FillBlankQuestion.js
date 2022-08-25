@@ -34,14 +34,14 @@ const OptionContainer = styled.div`
 `;
 
 const AnswerContainer = styled.div`
-  border: 1px solid lightgrey;
+  border: ${(props) => (props.border ? props.border : "1px solid lightgrey")};
   border-radius: 6px;
   margin-bottom: 10px;
   margin-left: 8px;
   margin-right: 8px;
   background-color: white;
-  min-height: 25px;
-  min-width: 40px;
+  min-height: 40px;
+  min-width: 100px;
 `;
 
 class DraggableAnswer extends React.Component {
@@ -56,7 +56,7 @@ class DraggableAnswer extends React.Component {
             {...provided.dragHandleProps}
             color={color}
           >
-            <Typography>{text}</Typography>
+            <Typography variant="h6">{text}</Typography>
           </Card>
         )}
       </Draggable>
@@ -68,9 +68,18 @@ class QuestionDroppable extends React.Component {
   render() {
     const { id, answer, color } = this.props;
     return (
-      <Droppable droppableId={id} direction="horizontal">
+      <Droppable
+        droppableId={id}
+        direction="horizontal"
+        alignItems="center"
+        justifyContent="center"
+      >
         {(provided) => (
-          <AnswerContainer ref={provided.innerRef} {...provided.droppableProps}>
+          <AnswerContainer
+            border={answer !== undefined ? "none" : ""}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
             <Stack direction="row">
               {answer !== undefined ? (
                 <DraggableAnswer
@@ -135,7 +144,11 @@ class FillBlankQuestion extends React.Component {
     var comps = [];
     const answer = answerArea.length > 0 ? options[answerArea[0]] : undefined;
     question.split("{}").forEach((text) => {
-      comps.push(<Typography key={text}>{text}</Typography>);
+      comps.push(
+        <Typography variant="h6" key={text}>
+          {text}
+        </Typography>
+      );
       comps.push(
         <QuestionDroppable
           key={this.dropAnswerArea}
@@ -213,7 +226,9 @@ class FillBlankQuestion extends React.Component {
               alt=""
               height={120}
             />
-            <Stack direction="row">{this.getTargetSentenceComp()}</Stack>
+            <Stack direction="row" alignItems="center">
+              {this.getTargetSentenceComp()}
+            </Stack>
             <OptionsDroppable
               sx={{ border: "1px solid lightgrey" }}
               id={this.dropOptionArea}

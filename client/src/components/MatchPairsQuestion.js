@@ -75,7 +75,7 @@ class MatchPairsQuestion extends React.Component {
                     }}
                     disabled={done}
                   >
-                    {b.text}
+                    <Typography variant="h5">{b.text}</Typography>
                   </Button>
                 </Grid>
               );

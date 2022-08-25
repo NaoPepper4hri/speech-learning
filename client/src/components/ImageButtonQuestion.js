@@ -70,8 +70,11 @@ class ImageButtonQuestion extends React.Component {
                       <img
                         src={process.env.PUBLIC_URL + `${option.image}.png`}
                         alt=""
+                        style={{
+                          maxHeight: 150,
+                        }}
                       />
-                      <Typography>{option.text}</Typography>
+                      <Typography variant="h4">{option.text}</Typography>
                     </Stack>
                   </CardContent>
                 </CardActionArea>
@@ -89,7 +92,7 @@ class ImageButtonQuestion extends React.Component {
     return (
       <React.Fragment>
         <Stack spacing={4} padding={5}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h3" gutterBottom>
             {question}
           </Typography>
           {this.optionGrid()}

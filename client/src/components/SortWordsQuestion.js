@@ -45,7 +45,7 @@ class DraggableWord extends React.Component {
             {...provided.dragHandleProps}
             color={color}
           >
-            <Typography>{text}</Typography>
+            <Typography variant="h5">{text}</Typography>
           </Card>
         )}
       </Draggable>
@@ -100,14 +100,6 @@ class SortWordsQuestion extends React.Component {
       responded: true,
       response: this.isAnswerCorrect(answerList, optionList),
     });
-  };
-
-  answerCorrect = () => {
-    console.log(true);
-  };
-
-  answerIncorrect = () => {
-    console.log(false);
   };
 
   isAnswerCorrect = (answerList, optionList) => {
@@ -186,7 +178,7 @@ class SortWordsQuestion extends React.Component {
             <Typography key="title" variant="h4" gutterBottom>
               {header}
             </Typography>
-            <Typography key="question" variant="h5" gutterBottom>
+            <Typography key="question" variant="h4" gutterBottom>
               {question}
             </Typography>
             <Divider />
@@ -198,8 +190,8 @@ class SortWordsQuestion extends React.Component {
               color={!responded ? "" : response ? "success" : "error"}
             />
             {responded && !response ? (
-              <Typography key="correct_answer" variant="body1">
-                {correctAnswer}
+              <Typography key="correct_answer" variant="h5">
+                {`The answer is: "${correctAnswer}"`}
               </Typography>
             ) : (
               <></>
