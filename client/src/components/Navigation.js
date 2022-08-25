@@ -14,14 +14,23 @@ export default class Navigator extends React.Component {
     };
   }
 
-  handleNext = (response) => {
+  handleNext = (response, gotoIdx) => {
     if (response !== undefined) {
       const elapsed = performance.now() - this.state.timestamp;
       sendAnswer({ time: elapsed, ...response });
     }
-    const { current: c } = this.state;
-    setCurrentPage(c + 1);
-    this.setState({ current: c + 1, timestamp: performance.now() });
+    const { current } = this.state;
+    const { layout } = this.props;
+    var nextPage = 0;
+    if (gotoIdx === undefined) {
+      nextPage = current + 1;
+    } else if (gotoIdx < 0) {
+      nextPage = layout.length + gotoIdx;
+    } else {
+      nextPage = gotoIdx;
+    }
+    setCurrentPage(nextPage);
+    this.setState({ current: nextPage, timestamp: performance.now() });
   };
 
   shouldComponentUpdate(nextProps) {

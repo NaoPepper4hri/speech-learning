@@ -8,6 +8,7 @@ import {
   ImageButtonQuestion,
   MatchPairsQuestion,
   Navigator,
+  PepperInteractionOptionalPage,
   PepperInteractionPage,
   SortWordsQuestion,
   StartPage,
@@ -182,7 +183,7 @@ const loadNewBlocks = () => {
     },
     ...block4.slice(Math.floor(block4.length / 2), 10),
     {
-      ty: "PepperResponse",
+      ty: "PepperResponseOption",
       auto: false,
       pepperInteractions: [
         {
@@ -190,6 +191,7 @@ const loadNewBlocks = () => {
         },
       ],
       message: "End of Block 4, press Continue to start Block 5",
+      options: [{ text: "Continue" }, { text: "End experiment", goto: -1 }],
       onContinue: saveData,
     },
 
@@ -273,6 +275,16 @@ class App extends React.Component {
                     key={index}
                     auto={q.auto}
                     message={q.message}
+                    pepperInteractions={q.pepperInteractions}
+                  />
+                );
+              case "PepperResponseOption":
+                return (
+                  <PepperInteractionOptionalPage
+                    key={index}
+                    auto={q.auto}
+                    message={q.message}
+                    options={q.options}
                     pepperInteractions={q.pepperInteractions}
                   />
                 );

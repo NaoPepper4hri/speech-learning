@@ -5,6 +5,7 @@ import MatchPairsQuestion from "./MatchPairsQuestion";
 import Navigator from "./Navigation";
 import ParticipantInfoPage from "./ParticipantInfoPage";
 import PepperInteractionPage from "./PepperInteractionPage";
+import PepperInteractionOptionalPage from "./PepperInteractionOptionalPage";
 import SortWordsQuestion from "./SortWordsQuestion";
 import StartPage from "./StartPage";
 import VocabularyQuestion from "./VocabularyQuestion";
@@ -16,6 +17,7 @@ export {
   MatchPairsQuestion,
   Navigator,
   ParticipantInfoPage,
+  PepperInteractionOptionalPage,
   PepperInteractionPage,
   SortWordsQuestion,
   StartPage,
