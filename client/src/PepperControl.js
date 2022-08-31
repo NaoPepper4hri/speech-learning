@@ -16,6 +16,7 @@ import {
 import React from "react";
 import {
   initialize,
+  sendComment,
   setConversationDone,
   requestPepperText,
   requestPepperLookAtParticipant,
@@ -84,7 +85,11 @@ class PepperControl extends React.Component {
     console.log(ncols, r, r.length, cols);
     return r.map((t, idx) => (
       <Grid key={`r${key}c${idx}`} item xs={cols} justifyContent="center">
-        <CardButton>
+        <CardButton
+          onClick={() => {
+            requestPepperText(t.text);
+          }}
+        >
           <Stack direction="row" spacing={3}>
             <Typography key="idx">
               <strong>{`${key}${t.label ? `.- ${t.label}:` : "."}`}</strong>
@@ -97,7 +102,7 @@ class PepperControl extends React.Component {
     ));
   };
 
-  insertText = (value, hint, onSubmit) => {
+  insertText = (value, hint, onSubmit, onChange) => {
     return (
       <React.Fragment>
         <Grid item xs={1} justifyContent="center">
@@ -113,11 +118,11 @@ class PepperControl extends React.Component {
             multiline
             value={value}
             onKeyPress={(ev) => {
-              if (ev.shiftKey && ev.key === "Enter") {
+              if (ev.ctrlKey && ev.key === "Enter") {
                 onSubmit();
               }
             }}
-            onChange={(event) => this.setState({ dyntext: event.target.value })}
+            onChange={onChange}
           />
         </Grid>
       </React.Fragment>
@@ -129,9 +134,15 @@ class PepperControl extends React.Component {
     return (
       <React.Fragment>
         <Grid container padding={5} spacing={3} alignItems="center">
-          {this.insertText(dyntext, "Say text!", () => {
-            requestPepperText(dyntext);
-          })}
+          {this.insertText(
+            dyntext,
+            "Say text!",
+            () => {
+              requestPepperText(dyntext);
+              this.setState({ dyntext: "" });
+            },
+            (event) => this.setState({ dyntext: event.target.value })
+          )}
           {scheduled_actions.map((a, idx) => this.wOzStageReaction(a, idx))}
           <Grid item xs={12}>
             <Divider />
@@ -206,9 +217,15 @@ class PepperControl extends React.Component {
               </CardButton>
             </Grid>
           </Grid>
-          {this.insertText(notes, "Send notes!", () => {
-            // TODO: backend method for note taking
-          })}
+          {this.insertText(
+            notes,
+            "Send notes!",
+            () => {
+              sendComment(notes);
+              this.setState({ notes: "" });
+            },
+            (event) => this.setState({ notes: event.target.value })
+          )}
         </Grid>
         <Dialog
           open={this.state.dialogOpen}

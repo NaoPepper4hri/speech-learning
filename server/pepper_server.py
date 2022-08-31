@@ -1,31 +1,44 @@
-import grpc
+"""Server implementation for Grpc communication with Pepper."""
 import logging
+import uuid
+from concurrent import futures
+from queue import Empty, Queue
+from typing import AsyncIterable, Dict
+
+import grpc
 import pepper_command_pb2
 import pepper_command_pb2_grpc
-import uuid
-
-from concurrent import futures
 from google.protobuf import empty_pb2
-from queue import Queue, Empty
-from typing import AsyncIterable
 
 
-class CommandBridge():
+class CommandBridge:
+    """
+    A GRPC command manager.
+
+    All commands are added to a queue, which sends them off in order, and keeps track of the
+    updates on each command.
+    """
+
     def __init__(self) -> None:
+        """Initialize the CommandBridge."""
         self.accepting_cmds = True
-        self.pepper_tasks = {}
-        self._queue = Queue()
+        self.pepper_tasks: Dict[str, str] = {}
+        self._queue: Queue = Queue()
 
     def stop(self) -> None:
+        """Stop sending out commands."""
         self.accepting_cmds = False
 
     def send_command(self, cmd: str) -> None:
+        """Add a new command to command queue."""
         self._queue.put(cmd)
 
     def is_pepper_done(self) -> bool:
+        """Check if all commands have been executed in server."""
         return len(list(self.pepper_tasks.keys())) == 0
 
     def clear_queue(self) -> None:
+        """Clear command queue."""
         try:
             while True:
                 self._queue.get_nowait()
@@ -33,9 +46,11 @@ class CommandBridge():
             pass
 
     def clear_action(self, uid: str) -> None:
+        """Remove command with uid."""
         self.pepper_tasks.pop(uid)
 
     def get(self, timeout: float) -> pepper_command_pb2.Command:
+        """Produce a new command from the queue."""
         # cmd = {
         #     "animation": {
         #         "name": "asdf",
@@ -53,7 +68,8 @@ class CommandBridge():
         #             "enabled": False,
         #         },
         #         {
-        #             "ty": pepper_command_pb2.Command.AutonomousAbilities.Ability.BACKGROUND_MOVEMENT,
+        #             "ty":
+        #                pepper_command_pb2.Command.AutonomousAbilities.Ability.BACKGROUND_MOVEMENT,
         #             "enabled": True,name
         #         },
         #     ]
@@ -84,8 +100,7 @@ class CommandBridge():
             for ability in cmd["abilities"]:
                 message.abilities.append(
                     pepper_command_pb2.Command.AutonomousAbilities(
-                        ty=ability["ty"],
-                        enabled=ability["enabled"]
+                        ty=ability["ty"], enabled=ability["enabled"]
                     )
                 )
 
@@ -96,18 +111,21 @@ COMMAND_BRIDGE = CommandBridge()
 
 
 class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
+    """Pepper Grpc command server servicer."""
+
     QUEUE_TIMEOUT = 1
 
     def __init__(self):
+        """Initialize server."""
         super().__init__()
         self.queue = COMMAND_BRIDGE
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
 
     def ListenMovementCommand(
-            self,
-            request: empty_pb2.Empty,
-            context) -> AsyncIterable[pepper_command_pb2.Command]:
+        self, request: empty_pb2.Empty, context
+    ) -> AsyncIterable[pepper_command_pb2.Command]:
+        """Send commands to client."""
         self.logger.info("Requested command stream.")
         while self.queue.accepting_cmds:
             try:
@@ -116,6 +134,7 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
                 continue
 
     def NotifyAnimationEnded(self, request: pepper_command_pb2.Uuid, context) -> empty_pb2.Empty:
+        """Check a command has finished, and remove it from the queue."""
         self.logger.info(self.queue.pepper_tasks)
         self.logger.info(request)
         if request.message.startswith("Command"):
@@ -124,9 +143,10 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
 
 
 def serve_grpc() -> None:
+    """Start and wait for server termination."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
     pepper_command_pb2_grpc.add_PepperServicer_to_server(PepperServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port("[::]:50051")
     server.start()
     server.wait_for_termination()
 

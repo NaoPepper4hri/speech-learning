@@ -18,13 +18,17 @@ class PepperInteractionPage extends React.Component {
   componentDidMount() {
     const { auto, pepperInteractions } = this.props;
 
-    const turnAndSpeak = (text, onDone) => {
+    const turnAndSpeak = (text, onDone, lookAtScreen) => {
       requestPepperLookAtParticipant();
       onPepperIsDone(() => {
         requestPepperText(text);
         onPepperIsDone(() => {
-          requestPepperLookAtScreen();
-          onPepperIsDone(onDone);
+          if (lookAtScreen) {
+            requestPepperLookAtScreen();
+            onPepperIsDone(onDone);
+          } else {
+            onDone();
+          }
         });
       });
     };
@@ -39,11 +43,15 @@ class PepperInteractionPage extends React.Component {
 
     if (re) {
       if (auto) {
-        turnAndSpeak(re["text"], () => {
-          this.setState({ pepperIsDone: true });
-        });
+        turnAndSpeak(
+          re["text"],
+          () => {
+            this.setState({ pepperIsDone: true });
+          },
+          true
+        );
       } else {
-        turnAndSpeak(re["text"], waitForConversationDone);
+        turnAndSpeak(re["text"], waitForConversationDone, false);
       }
     } else {
       waitForConversationDone();

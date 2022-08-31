@@ -223,6 +223,26 @@ export const setConversationDone = async (value = true) => {
     });
 };
 
+export const sendComment = async (comment) => {
+  await fetch("/pubComment", {
+    method: "POST",
+    body: JSON.stringify({ text: comment }),
+    headers: new Headers({
+      "content-type": "application/json",
+    }),
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        res.text().then((data) => {
+          console.warn(data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const sendAnswer = async (value) => {
   await fetch("/pubAnswer", {
     method: "POST",
