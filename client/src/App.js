@@ -305,6 +305,7 @@ class App extends React.Component {
                     image={q.image}
                     question={q.question}
                     options={q.options}
+                    translation={q.translation}
                   />
                 );
               case "VocabularyQuestion":

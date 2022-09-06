@@ -26,19 +26,40 @@ import {
 } from "./utils";
 
 const scheduled_actions = [
-  [{ text: "Ok, let's try one more task and see if we can improve!" }],
-  [{ text: "Well, you know what they say, practice makes perfect." }],
-  [{ text: "You’re really making good progress, hang in there." }],
-  [
-    {
-      text: "Let's see if we can do even better and faster in the next block.",
-    },
-  ],
-  [
-    { text: "You got most of those correct, great job.", label: "continue" },
-    { text: "How confident are you about learning Spanish now?", label: "end" },
-  ],
-  [{ text: "You got most of those correct, great job." }],
+  // { text: "Ok, let's try one more task and see if we can improve!" },
+  {
+    text: "Well, you know what they say, practice makes perfect.",
+    label: "1.",
+    showComment: true,
+  },
+  {
+    text: "You’re really making good progress, keep it up.",
+    label: "2.",
+    showComment: true,
+  },
+
+  {
+    text: "Let's see if we can do even better in the next block.",
+    label: "3.",
+    showComment: true,
+  },
+
+  {
+    text: "You got most of those correct, great job.",
+    label: "4.- continue",
+    showComment: true,
+  },
+  {
+    text: "How confident are you about learning Spanish now?",
+    label: "4.- end",
+    showComment: false,
+  },
+
+  {
+    text: "You got most of those correct, great job.",
+    label: "5.",
+    showComment: true,
+  },
 ];
 
 const other_actions = [
@@ -97,70 +118,89 @@ class InsertTextField extends React.Component {
 
 class WofOzReaction extends React.Component {
   state = {
-    value: "",
+    comment: "",
+    rating: "",
   };
 
   render() {
-    const { value } = this.state;
+    const { comment, rating } = this.state;
     const { response, idx: key } = this.props;
     var { ncols } = this.props;
     ncols = ncols ? ncols : 12;
     console.log("key", key);
 
-    return response.map((t, idx) => (
-      <Grid key={`r${key}c${idx}`} container item spacing={1} xs={ncols}>
-        <Grid item xs={ncols / 2} justifyContent="center">
+    return (
+      <Grid
+        key={`r${key}c${response.label}`}
+        container
+        item
+        spacing={1}
+        xs={ncols}
+      >
+        <Grid item xs={6} justifyContent="center">
           <CardButton
             onClick={() => {
-              requestPepperText(t.text);
+              requestPepperText(response.text);
             }}
             background="#ffffcc"
           >
             <Stack direction="row" spacing={3}>
               <Typography key="idx">
-                <strong>{`${key}${t.label ? `.- ${t.label}:` : "."}`}</strong>
+                <strong>{response.label}</strong>
               </Typography>
               <Divider key="divider" orientation="vertical" flexItem />
-              <Typography key="text">{t.text}</Typography>
+              <Typography key="text">{response.text}</Typography>
             </Stack>
           </CardButton>
         </Grid>
-        <Grid item xs={ncols / 4}>
-          <TextField
-            label="Insert text (send with `ctrl + Enter`)"
-            variant="outlined"
-            fullWidth
-            multiline
-            sx={{ background: "#ccffcc88" }}
-            value={value}
-            onKeyPress={(ev) => {
-              if (ev.ctrlKey && ev.key === "Enter") {
-                sendComment(value);
-                this.setState({ value: "" });
+        <Grid item xs={4}>
+          {response.showComment ? (
+            <TextField
+              label="Insert text (send with `ctrl + Enter`)"
+              variant="outlined"
+              fullWidth
+              multiline
+              sx={{ background: "#ccffcc88" }}
+              value={comment}
+              onKeyPress={(ev) => {
+                if (ev.ctrlKey && ev.key === "Enter") {
+                  sendComment(comment);
+                  this.setState({ comment: "" });
+                }
+              }}
+              onChange={(event) =>
+                this.setState({ comment: event.target.value })
               }
-            }}
-            onChange={(event) => this.setState({ value: event.target.value })}
-          />
+            />
+          ) : (
+            <></>
+          )}
         </Grid>
-        <Grid item xs={ncols / 4}>
-          <TextField
-            label="Insert rating (1-3): (send with `ctrl + Enter`)"
-            variant="outlined"
-            fullWidth
-            multiline
-            sx={{ background: "#ccecff88" }}
-            value={value}
-            onKeyPress={(ev) => {
-              if (ev.ctrlKey && ev.key === "Enter") {
-                sendComment(value);
-                this.setState({ value: "" });
+        <Grid item xs={2}>
+          {response.showComment ? (
+            <TextField
+              label="Insert rating (1-3): (send with `ctrl + Enter`)"
+              variant="outlined"
+              fullWidth
+              multiline
+              sx={{ background: "#ccecff88" }}
+              value={rating}
+              onKeyPress={(ev) => {
+                if (ev.ctrlKey && ev.key === "Enter") {
+                  sendComment(rating);
+                  this.setState({ rating: "" });
+                }
+              }}
+              onChange={(event) =>
+                this.setState({ rating: event.target.value })
               }
-            }}
-            onChange={(event) => this.setState({ value: event.target.value })}
-          />
+            />
+          ) : (
+            <></>
+          )}
         </Grid>
       </Grid>
-    ));
+    );
   }
 }
 
@@ -185,14 +225,25 @@ class PepperControl extends React.Component {
     const { id, dyntext, notes } = this.state;
     return (
       <React.Fragment>
-        <Grid container padding={5} spacing={1.5} alignItems="center">
+        <Grid container padding={5} spacing={1.5} textAlign="center">
+          <Grid item xs={12} textAlign="left">
+            <Divider />
+            <Typography
+              sx={{ mt: 0.5, ml: 2 }}
+              color="text.secondary"
+              display="block"
+              variant="caption"
+            >
+              Experiment Functions
+            </Typography>
+          </Grid>
           <Grid
             container
             item
             spacing={2}
             direction="row"
             justifyContent="flex-start"
-            alignItems="center"
+            textAlign="center"
           >
             <Grid item>
               <TextField
@@ -235,6 +286,17 @@ class PepperControl extends React.Component {
               </CardButton>
             </Grid>
           </Grid>
+          <Grid item xs={12} textAlign="left">
+            <Divider />
+            <Typography
+              sx={{ mt: 0.5, ml: 2 }}
+              color="text.secondary"
+              display="block"
+              variant="caption"
+            >
+              Non-verbal Responses
+            </Typography>
+          </Grid>
           <Grid item container direction="row" spacing={1}>
             <Grid item>
               <CardButton
@@ -255,24 +317,52 @@ class PepperControl extends React.Component {
           </Grid>
           <Grid item xs={12}>
             <Divider />
-          </Grid>
-          <InsertTextField
-            value={dyntext}
-            hint="Say text!"
-            onSubmit={() => {
-              requestPepperText(dyntext);
-              this.setState({ dyntext: "" });
-            }}
-            onChange={(event) => this.setState({ dyntext: event.target.value })}
-          />
-          <Grid item xs={12}>
-            <Divider />
+            <Grid container spacing={2} textAlign="left">
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ mt: 0.5, ml: 2 }}
+                  color="text.secondary"
+                  display="block"
+                  variant="caption"
+                >
+                  Block-specific Verbal Responses
+                </Typography>{" "}
+              </Grid>
+              <Grid item xs={4}>
+                <Typography
+                  sx={{ mt: 0.5, ml: 2 }}
+                  color="text.secondary"
+                  display="block"
+                  variant="caption"
+                >
+                  Block-specific Notes
+                </Typography>{" "}
+              </Grid>
+              <Grid item xs={2}>
+                <Typography
+                  sx={{ mt: 0.5, ml: 2 }}
+                  color="text.secondary"
+                  display="block"
+                  variant="caption"
+                >
+                  Experimenter Rating
+                </Typography>{" "}
+              </Grid>
+            </Grid>
           </Grid>
           {scheduled_actions.map((a, idx) => (
             <WofOzReaction response={a} idx={idx} />
           ))}
-          <Grid item xs={12}>
+          <Grid item xs={12} textAlign="left">
             <Divider />
+            <Typography
+              sx={{ mt: 0.5, ml: 2 }}
+              color="text.secondary"
+              display="block"
+              variant="caption"
+            >
+              Aditional Verbal Responses
+            </Typography>
           </Grid>
           {other_actions.map((a, idx) => (
             <Grid key={idx} item xs={4} justifyContent="center">
@@ -286,12 +376,40 @@ class PepperControl extends React.Component {
               </CardButton>
             </Grid>
           ))}
-          <Grid item xs={12}>
+          <Grid item xs={12} textAlign="left">
             <Divider />
+            <Typography
+              sx={{ mt: 0.5, ml: 2 }}
+              color="text.secondary"
+              display="block"
+              variant="caption"
+            >
+              General Text to Speech Command
+            </Typography>
+          </Grid>
+          <InsertTextField
+            value={dyntext}
+            hint="Say text"
+            onSubmit={() => {
+              requestPepperText(dyntext);
+              this.setState({ dyntext: "" });
+            }}
+            onChange={(event) => this.setState({ dyntext: event.target.value })}
+          />
+          <Grid item xs={12} textAlign="left">
+            <Divider />
+            <Typography
+              sx={{ mt: 0.5, ml: 2 }}
+              color="text.secondary"
+              display="block"
+              variant="caption"
+            >
+              General Experiment Notes
+            </Typography>
           </Grid>
           <InsertTextField
             value={notes}
-            hint="Send notes!"
+            hint="Send notes"
             background="#ccffcc"
             onSubmit={() => {
               sendComment(notes);

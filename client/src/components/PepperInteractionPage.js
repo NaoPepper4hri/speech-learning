@@ -64,7 +64,19 @@ class PepperInteractionPage extends React.Component {
 
     return (
       <Stack padding={5} spacing={3}>
-        <Typography>{message}</Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            position: "fixed",
+            margin: "auto",
+            left: 0,
+            right: 0,
+            top: window.innerHeight / 2 - 100,
+            bottom: 0,
+          }}
+        >
+          {message}
+        </Typography>
         <Fab
           variant="extended"
           sx={{

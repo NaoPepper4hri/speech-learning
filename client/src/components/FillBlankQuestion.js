@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Stack, Typography, Fab } from "@mui/material";
+import { Stack, Typography, Fab, Divider } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -102,7 +102,7 @@ class QuestionDroppable extends React.Component {
 
 class OptionsDroppable extends React.Component {
   render() {
-    const { id, options } = this.props;
+    const { id, options, responded } = this.props;
     return (
       <Droppable droppableId={id} direction="horizontal">
         {(provided) => (
@@ -114,6 +114,7 @@ class OptionsDroppable extends React.Component {
                   id={option.id}
                   text={option.text}
                   index={index}
+                  color={responded && option.correct ? "success" : undefined}
                 />
               ))}
               {provided.placeholder}
@@ -209,7 +210,7 @@ class FillBlankQuestion extends React.Component {
   };
 
   render() {
-    const { image, options, handleNext, id } = this.props;
+    const { image, options, handleNext, id, translation } = this.props;
     const { optionArea, responded, response } = this.state;
     const optInArea = optionArea.map((optIdx) => options[optIdx]);
 
@@ -232,8 +233,21 @@ class FillBlankQuestion extends React.Component {
             <OptionsDroppable
               sx={{ border: "1px solid lightgrey" }}
               id={this.dropOptionArea}
+              responded={responded}
               options={optInArea}
             />
+            {responded ? (
+              <React.Fragment>
+                <Divider sx={{ width: "100%" }}>
+                  The answer translates to
+                </Divider>
+                <Typography key="translation" variant="h6" gutterBottom>
+                  {translation}
+                </Typography>
+              </React.Fragment>
+            ) : (
+              <></>
+            )}
           </Stack>
         </DragDropContext>
         {responded ? (
