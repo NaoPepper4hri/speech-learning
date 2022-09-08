@@ -79,11 +79,12 @@ class ExperimentManager:
         self.comments = []
         self.experiment_log.reset()
 
-    def add_comment(self, text: str):
+    def add_comment(self, ty: str, value: str):
         """Add new note to experiment."""
         self.comments.append(
             {
-                "text": text,
+                "type": ty,
+                "value": value,
                 "date": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
                 "experiment_page": self.current_page,
             }
@@ -194,7 +195,7 @@ def pub_comment():
     """Add a new comment from experimenter."""
     req = request.get_json() or {}
     global manager
-    manager.add_comment(req["text"])
+    manager.add_comment(req.get("type", "note"), req.get("text", ""))
     return "Ok"
 
 

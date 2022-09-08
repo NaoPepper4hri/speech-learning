@@ -172,7 +172,7 @@ class WofOzReaction extends React.Component {
                 if (ev.ctrlKey && ev.key === "Enter") {
                   logAction("experimenter", {
                     id: "sendCommentWoz",
-                    text: response.text,
+                    text: comment,
                     label: response.label,
                   });
                   sendComment("note", comment);
@@ -200,7 +200,7 @@ class WofOzReaction extends React.Component {
                 if (ev.ctrlKey && ev.key === "Enter") {
                   logAction("experimenter", {
                     id: "sendRating",
-                    text: response.text,
+                    text: rating,
                     label: response.label,
                   });
                   sendComment("rating", rating);
