@@ -45,7 +45,7 @@ const scheduled_actions = [
   },
 
   {
-    text: "You got most of those correct, great job.",
+    text: "OK, let's try one more block and see if we can improve.",
     label: "4.- continue",
     showComment: true,
   },
