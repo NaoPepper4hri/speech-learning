@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Stack, Typography, Fab, Divider } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { logAction } from "../utils";
 
 const Card = styled.div`
   border: 1px solid lightgrey;
@@ -201,6 +202,10 @@ class FillBlankQuestion extends React.Component {
       console.warn("Drop option area unknown:", this.dropOptionArea);
     }
 
+    if (res) {
+      logAction("participant", { id: "answer", qId: this.props.id });
+    }
+
     this.setState({
       optionArea: newOptionArea,
       answerArea: newAnswerArea,
@@ -261,7 +266,10 @@ class FillBlankQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext({ id: id, response: response })}
+            onClick={() => {
+              logAction("participant", { id: "nextButton", qId: id });
+              handleNext({ id: id, response: response });
+            }}
           >
             Continue
             <KeyboardArrowRightRounded />

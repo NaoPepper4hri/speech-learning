@@ -8,6 +8,7 @@ import {
   onPepperIsDone,
   onConversationIsDone,
   setConversationDone,
+  logAction,
 } from "../utils";
 
 class PepperInteractionPage extends React.Component {
@@ -19,11 +20,14 @@ class PepperInteractionPage extends React.Component {
     const { auto, pepperInteractions } = this.props;
 
     const turnAndSpeak = (text, onDone, lookAtScreen) => {
+      logAction("automatic", { id: "lookAtParticipant" });
       requestPepperLookAtParticipant();
       onPepperIsDone(() => {
+        logAction("automatic", { id: "sendText", text: text });
         requestPepperText(text);
         onPepperIsDone(() => {
           if (lookAtScreen) {
+            logAction("automatic", { id: "lookAtScreen" });
             requestPepperLookAtScreen();
             onPepperIsDone(onDone);
           } else {
@@ -89,6 +93,7 @@ class PepperInteractionPage extends React.Component {
           }}
           disabled={!pepperIsDone}
           onClick={() => {
+            logAction("participant", { id: "pressContinue" });
             if (onContinue != null) {
               onContinue();
             }

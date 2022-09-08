@@ -23,6 +23,7 @@ import {
   requestPepperLookAtScreen,
   saveData,
   restartExperiment,
+  logAction,
 } from "./utils";
 
 const scheduled_actions = [
@@ -140,6 +141,11 @@ class WofOzReaction extends React.Component {
         <Grid item xs={6} justifyContent="center">
           <CardButton
             onClick={() => {
+              logAction("experimenter", {
+                id: "sayWofOzText",
+                text: response.text,
+                label: response.label,
+              });
               requestPepperText(response.text);
             }}
             background="#ffffcc"
@@ -164,7 +170,12 @@ class WofOzReaction extends React.Component {
               value={comment}
               onKeyPress={(ev) => {
                 if (ev.ctrlKey && ev.key === "Enter") {
-                  sendComment(comment);
+                  logAction("experimenter", {
+                    id: "sendCommentWoz",
+                    text: response.text,
+                    label: response.label,
+                  });
+                  sendComment("note", comment);
                   this.setState({ comment: "" });
                 }
               }}
@@ -187,7 +198,12 @@ class WofOzReaction extends React.Component {
               value={rating}
               onKeyPress={(ev) => {
                 if (ev.ctrlKey && ev.key === "Enter") {
-                  sendComment(rating);
+                  logAction("experimenter", {
+                    id: "sendRating",
+                    text: response.text,
+                    label: response.label,
+                  });
+                  sendComment("rating", rating);
                   this.setState({ rating: "" });
                 }
               }}
@@ -257,6 +273,7 @@ class PepperControl extends React.Component {
             <Grid item>
               <CardButton
                 onClick={() => {
+                  logAction("experimenter", { id: "initialize" });
                   initialize({ id: id, date: new Date().toLocaleString() });
                 }}
                 background={"#ffcccc"}
@@ -266,20 +283,31 @@ class PepperControl extends React.Component {
             </Grid>
             <Grid item>
               <CardButton
-                onClick={() => setConversationDone()}
+                onClick={() => {
+                  logAction("experimenter", { id: "setConversationDone" });
+                  setConversationDone();
+                }}
                 background={"#ffcccc"}
               >
                 <Typography>Conversation Done</Typography>
               </CardButton>
             </Grid>
             <Grid item>
-              <CardButton onClick={() => saveData()} background={"#ffcccc"}>
+              <CardButton
+                onClick={() => {
+                  logAction("experimenter", { id: "saveData" });
+                  saveData();
+                }}
+                background={"#ffcccc"}
+              >
                 <Typography>Save data</Typography>
               </CardButton>
             </Grid>
             <Grid item>
               <CardButton
-                onClick={() => this.setState({ dialogOpen: true })}
+                onClick={() => {
+                  this.setState({ dialogOpen: true });
+                }}
                 background={"#ffcccc"}
               >
                 <Typography>Restart experiment</Typography>
@@ -300,7 +328,12 @@ class PepperControl extends React.Component {
           <Grid item container direction="row" spacing={1}>
             <Grid item>
               <CardButton
-                onClick={() => requestPepperLookAtParticipant()}
+                onClick={() => {
+                  logAction("experimenter", {
+                    id: "requestPepperLookAtParticipant",
+                  });
+                  requestPepperLookAtParticipant();
+                }}
                 background={"#ffd3a7"}
               >
                 <Typography>Look at participant</Typography>
@@ -308,7 +341,12 @@ class PepperControl extends React.Component {
             </Grid>
             <Grid item>
               <CardButton
-                onClick={() => requestPepperLookAtScreen()}
+                onClick={() => {
+                  logAction("experimenter", {
+                    id: "requestPepperLookAtScreen",
+                  });
+                  requestPepperLookAtScreen();
+                }}
                 background={"#ffd3a7"}
               >
                 <Typography>Look at screen</Typography>
@@ -368,6 +406,7 @@ class PepperControl extends React.Component {
             <Grid key={idx} item xs={4} justifyContent="center">
               <CardButton
                 onClick={() => {
+                  logAction("experimenter", { id: "sayOtherText", text: a });
                   requestPepperText(a);
                 }}
                 background="#ccccff"
@@ -391,6 +430,10 @@ class PepperControl extends React.Component {
             value={dyntext}
             hint="Say text"
             onSubmit={() => {
+              logAction("experimenter", {
+                id: "sayDynamicText",
+                text: dyntext,
+              });
               requestPepperText(dyntext);
               this.setState({ dyntext: "" });
             }}
@@ -412,7 +455,11 @@ class PepperControl extends React.Component {
             hint="Send notes"
             background="#ccffcc"
             onSubmit={() => {
-              sendComment(notes);
+              logAction("experimenter", {
+                id: "logGeneralComment",
+                text: notes,
+              });
+              sendComment("comment", notes);
               this.setState({ notes: "" });
             }}
             onChange={(event) => this.setState({ notes: event.target.value })}
@@ -432,6 +479,7 @@ class PepperControl extends React.Component {
               </Button>
               <Button
                 onClick={() => {
+                  logAction("experimenter", { id: "restartExperiment" });
                   restartExperiment();
                   this.setState({ dialogOpen: false });
                 }}

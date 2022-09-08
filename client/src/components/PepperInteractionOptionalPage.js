@@ -2,6 +2,7 @@ import React from "react";
 import { Fab, Stack, Typography } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { PepperInteractionPage } from ".";
+import { logAction } from "../utils";
 
 class PepperInteractionOptionalPage extends PepperInteractionPage {
   render() {
@@ -21,6 +22,10 @@ class PepperInteractionOptionalPage extends PepperInteractionPage {
           }}
           disabled={pepperIsDone}
           onClick={() => {
+            logAction("participant", {
+              id: "pressContinue",
+              option: option.text,
+            });
             if (onContinue != null) {
               onContinue();
             }

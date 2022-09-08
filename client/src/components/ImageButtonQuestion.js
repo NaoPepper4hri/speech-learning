@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
+import { logAction } from "../utils";
 
 class ImageButtonQuestion extends React.Component {
   state = {
@@ -37,7 +38,7 @@ class ImageButtonQuestion extends React.Component {
   };
 
   optionGrid = () => {
-    const { options } = this.props;
+    const { options, id } = this.props;
     const { showAnswer } = this.state;
     return (
       <Grid container spacing={3} justifyContent="center">
@@ -50,15 +51,14 @@ class ImageButtonQuestion extends React.Component {
             <Grid key={idx} item>
               <Card sx={{ width: 300, height: 300, backgroundColor: bg }}>
                 <CardActionArea
-                  onClick={
-                    showAnswer.length === 0
-                      ? () => {
-                          option.correct
-                            ? this.correctAnswer(idx)
-                            : this.incorrectAnswer(idx);
-                        }
-                      : () => {}
-                  }
+                  onClick={() => {
+                    if (showAnswer.length === 0) {
+                      logAction("participant", { id: "answer", qId: id });
+                      option.correct
+                        ? this.correctAnswer(idx)
+                        : this.incorrectAnswer(idx);
+                    }
+                  }}
                 >
                   <CardContent sx={{ height: 300 }}>
                     <Stack
@@ -108,7 +108,10 @@ class ImageButtonQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext({ id: id, response: response })}
+            onClick={() => {
+              logAction("participant", { id: "nextButton", qId: id });
+              handleNext({ id: id, response: response });
+            }}
           >
             Continue
             <KeyboardArrowRightRounded />

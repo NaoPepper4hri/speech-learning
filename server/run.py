@@ -70,6 +70,14 @@ class ExperimentManager:
         self.current_page = 0
         self.layout = []
         self.comments = []
+        self.experiment_log = ExperimentLog()
+
+    def reset(self):
+        """Clean up experiment."""
+        self.current_page = 0
+        self.layout = []
+        self.comments = []
+        self.experiment_log.reset()
 
     def add_comment(self, text: str):
         """Add new note to experiment."""
@@ -80,7 +88,30 @@ class ExperimentManager:
                 "experiment_page": self.current_page,
             }
         )
-        pass
+
+    def add_log(self, log):
+        """Add new log event."""
+        self.experiment_log.add_log(log)
+
+    def get_log(self):
+        """Return the experiment log."""
+        return self.experiment_log._log_array
+
+
+class ExperimentLog:
+    """Collect information about the flow of the experiment."""
+
+    def __init__(self):
+        """Initialize experiment log."""
+        self._log_array = []
+
+    def add_log(self, log):
+        """Add a new log event."""
+        self._log_array.append(log)
+
+    def reset(self):
+        """Clean up log."""
+        self._log_array.clear()
 
 
 manager = ExperimentManager()
@@ -167,6 +198,15 @@ def pub_comment():
     return "Ok"
 
 
+@app.route("/logAction", methods=["POST"])
+def log_client():
+    """Add an entry to the experiment log."""
+    req = request.get_json() or {}
+    global manager
+    manager.add_log(req)
+    return "Ok"
+
+
 @app.route("/init", methods=["POST"])
 def initialize():
     """Initialize the experiment."""
@@ -182,7 +222,7 @@ def save_data():
     """Store the experiment data."""
     global participant, manager
     try:
-        participant.save_data(manager.comments)
+        participant.save_data({"comments": manager.comments, "log": manager.get_log()})
     except Exception as e:
         app.logger.error(e)
     return "Ok"
@@ -193,9 +233,7 @@ def restart_experiment():
     """Reset the experiment."""
     save_data()
     global manager
-    manager.current_page = 0
-    manager.layout = []
-    manager.comments = []
+    manager.reset()
     return "Ok"
 
 

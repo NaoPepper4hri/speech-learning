@@ -1,6 +1,7 @@
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { Button, Fab, Stack, Typography } from "@mui/material";
 import React from "react";
+import { logAction } from "../utils";
 
 class VocabularyQuestion extends React.Component {
   state = {
@@ -64,15 +65,14 @@ class VocabularyQuestion extends React.Component {
                 color={c}
                 variant={v}
                 key={`btn${idx}`}
-                onClick={
-                  showAnswer.length === 0
-                    ? () => {
-                        option.correct
-                          ? this.correctAnswer(idx)
-                          : this.incorrectAnswer(idx);
-                      }
-                    : () => {}
-                }
+                onClick={() => {
+                  if (showAnswer.length === 0) {
+                    logAction("participant", { id: "answer", qId: id });
+                    option.correct
+                      ? this.correctAnswer(idx)
+                      : this.incorrectAnswer(idx);
+                  }
+                }}
               >
                 <Typography variant="h5">{option.text}</Typography>
               </Button>
@@ -90,7 +90,10 @@ class VocabularyQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext({ id: id, response: response })}
+            onClick={() => {
+              logAction("participant", { id: "nextButton", qId: id });
+              handleNext({ id: id, response: response });
+            }}
           >
             Continue
             <KeyboardArrowRightRounded />

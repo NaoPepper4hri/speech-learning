@@ -223,10 +223,10 @@ export const setConversationDone = async (value = true) => {
     });
 };
 
-export const sendComment = async (comment) => {
+export const sendComment = async (ty, comment) => {
   await fetch("/pubComment", {
     method: "POST",
-    body: JSON.stringify({ text: comment }),
+    body: JSON.stringify({ type: ty, text: comment }),
     headers: new Headers({
       "content-type": "application/json",
     }),
@@ -318,5 +318,26 @@ export const restartExperiment = async () => {
     })
     .catch((error) => {
       console.error(error);
+    });
+};
+
+export const logAction = async (user, payload) => {
+  const time = Date.now();
+  await fetch("/logAction", {
+    method: "Post",
+    body: JSON.stringify({ user: user, info: payload, time: time }),
+    headers: new Headers({
+      "content-type": "application/json",
+    }),
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        res.text().then((data) => {
+          console.warn(data);
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };

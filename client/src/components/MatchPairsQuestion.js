@@ -1,7 +1,7 @@
 import React from "react";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { Button, Fab, Grid, Stack, Typography } from "@mui/material";
-import { fisherYatesShuffle } from "../utils";
+import { fisherYatesShuffle, logAction } from "../utils";
 
 class MatchPairsQuestion extends React.Component {
   constructor(props) {
@@ -114,13 +114,14 @@ class MatchPairsQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() =>
+            onClick={() => {
+              logAction("participant", { id: "nextButton", qId: id });
               handleNext({
                 id: id,
                 options: this.state.buttons.map((b) => b.text),
                 response: answers,
-              })
-            }
+              });
+            }}
           >
             Continue
             <KeyboardArrowRightRounded />

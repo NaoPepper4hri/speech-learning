@@ -3,6 +3,7 @@ import { Divider, Fab, Stack, Typography } from "@mui/material";
 import { Check, KeyboardArrowRightRounded } from "@mui/icons-material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import { logAction } from "../utils";
 
 const Card = styled.div`
   border: 1px solid lightgrey;
@@ -96,6 +97,7 @@ class SortWordsQuestion extends React.Component {
 
   checkAnswer = () => {
     const { answerList, optionList } = this.state;
+    logAction("participant", { id: "answer", qId: this.props.id });
     this.setState({
       responded: true,
       response: this.isAnswerCorrect(answerList, optionList),
@@ -217,7 +219,10 @@ class SortWordsQuestion extends React.Component {
               left: "auto",
               position: "fixed",
             }}
-            onClick={() => handleNext({ id: id, response: response })}
+            onClick={() => {
+              logAction("participant", { id: "nextButton", qId: id });
+              handleNext({ id: id, response: response });
+            }}
           >
             Continue
             <KeyboardArrowRightRounded />

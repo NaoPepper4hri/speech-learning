@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Fab, Grid, Typography } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
+import { logAction } from "../utils";
 
 class StartPage extends React.Component {
   render() {
@@ -27,6 +28,7 @@ class StartPage extends React.Component {
             position: "fixed",
           }}
           onClick={() => {
+            logAction("participant", { id: "StartExperiment" });
             handleNext();
           }}
         >
