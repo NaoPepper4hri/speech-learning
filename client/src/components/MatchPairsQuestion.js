@@ -8,19 +8,24 @@ class MatchPairsQuestion extends React.Component {
     super(props);
     const opts = Array.from(props.options);
     fisherYatesShuffle(opts);
-    const buttons = opts
-      .slice(0, 8)
-      .map((o, i) => [
-        { text: o.p1, idx: i },
-        { text: o.p2, idx: i },
-      ])
-      .flat();
-    fisherYatesShuffle(buttons);
+
+    var bl = [];
+    var br = [];
+
+    opts.slice(0, 8).forEach((o, i) => {
+      bl.push({ text: o.p1, idx: i });
+      br.push({ text: o.p2, idx: i });
+    });
+
+    fisherYatesShuffle(bl);
+    fisherYatesShuffle(br);
 
     this.state = {
       correct: [],
       clicked: [],
-      buttons: buttons,
+      bl: bl,
+      br: br,
+      buttons: bl.concat(br),
       answers: [],
     };
   }
@@ -55,31 +60,47 @@ class MatchPairsQuestion extends React.Component {
 
   render() {
     const { id, question, handleNext } = this.props;
-    const { answers, correct, buttons, clicked } = this.state;
+    const { answers, correct, bl, br, buttons, clicked } = this.state;
+
+    const renderButton = (button, index) => {
+      const done = correct.includes(index);
+      const clk = clicked.includes(index);
+      return (
+        <Grid key={index} item>
+          <Button
+            variant={clk ? "contained" : "outlined"}
+            onClick={() => {
+              this.toogleButton(index);
+            }}
+            disabled={done}
+          >
+            <Typography variant="h5">{button.text}</Typography>
+          </Button>
+        </Grid>
+      );
+    };
     return (
       <React.Fragment>
         <Stack maxWidth={600} padding={5} spacing={3} alignItems="center">
           <Typography variant="h4" gutterBottom>
             {question}
           </Typography>
-          <Grid container justifyContent="space-evenly" spacing={3}>
-            {buttons.map((b, index) => {
-              const done = correct.includes(index);
-              const clk = clicked.includes(index);
-              return (
-                <Grid key={index} item>
-                  <Button
-                    variant={clk ? "contained" : "outlined"}
-                    onClick={() => {
-                      this.toogleButton(index);
-                    }}
-                    disabled={done}
-                  >
-                    <Typography variant="h5">{b.text}</Typography>
-                  </Button>
-                </Grid>
-              );
-            })}
+          <Grid container justifyContent="center" spacing={10}>
+            <Grid
+              container
+              item
+              spacing={3}
+              xs={6}
+              direction="column"
+              alignItems="center"
+            >
+              {bl.map(renderButton)}
+            </Grid>
+            <Grid container item spacing={3} xs={6} direction="column">
+              {br.map((button, index) =>
+                renderButton(button, index + bl.length)
+              )}
+            </Grid>
           </Grid>
         </Stack>
         {correct.length === buttons.length ? (
