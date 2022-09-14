@@ -17,6 +17,10 @@ class ImageButtonQuestion extends React.Component {
     responded: false,
   };
 
+  componentDidMount() {
+    logAction("auto_ui", { id: "question_presented", qId: this.props.id });
+  }
+
   correctAnswer = (index) => {
     this.setState({ showAnswer: [index], response: true });
     setTimeout(() => this.setState({ responded: true }), 500);

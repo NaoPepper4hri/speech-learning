@@ -29,6 +29,10 @@ class VocabularyQuestion extends React.Component {
     setTimeout(() => this.setState({ responded: true }), 1000);
   };
 
+  componentDidMount() {
+    logAction("auto_ui", { id: "question_presented", qId: this.props.id });
+  }
+
   render() {
     const { question, options, handleNext, id } = this.props;
     const { showAnswer, responded, response } = this.state;

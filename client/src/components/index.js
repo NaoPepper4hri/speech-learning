@@ -3,7 +3,6 @@ import FillBlankQuestion from "./FillBlankQuestion";
 import ImageButtonQuestion from "./ImageButtonQuestion";
 import MatchPairsQuestion from "./MatchPairsQuestion";
 import Navigator from "./Navigation";
-import ParticipantInfoPage from "./ParticipantInfoPage";
 import PepperInteractionPage from "./PepperInteractionPage";
 import PepperInteractionOptionalPage from "./PepperInteractionOptionalPage";
 import SortWordsQuestion from "./SortWordsQuestion";
@@ -16,7 +15,6 @@ export {
   ImageButtonQuestion,
   MatchPairsQuestion,
   Navigator,
-  ParticipantInfoPage,
   PepperInteractionOptionalPage,
   PepperInteractionPage,
   SortWordsQuestion,

@@ -65,6 +65,7 @@ const loadNewBlocks = () => {
     // Block 1
     {
       ty: "PepperResponse",
+      id: "block1_0",
       auto: true,
       pepperInteractions: [
         {
@@ -76,6 +77,7 @@ const loadNewBlocks = () => {
     ...block1.slice(0, Math.floor(block1.length / 2)),
     {
       ty: "PepperResponse",
+      id: "block1_1",
       auto: true,
       pepperInteractions: [
         { text: "You're doing really great! Lets keep going." },
@@ -85,6 +87,7 @@ const loadNewBlocks = () => {
     ...block1.slice(Math.floor(block1.length / 2), 10),
     {
       ty: "PepperResponse",
+      id: "block1_2",
       auto: false,
       pepperInteractions: [
         {
@@ -98,6 +101,7 @@ const loadNewBlocks = () => {
     // Block 2
     {
       ty: "PepperResponse",
+      id: "block2_0",
       auto: true,
       pepperInteractions: [{ text: "Let's get ready to go. " }],
       message: "Block 2",
@@ -105,6 +109,7 @@ const loadNewBlocks = () => {
     ...block2.slice(0, Math.floor(block2.length / 2)),
     {
       ty: "PepperResponse",
+      id: "block2_1",
       auto: true,
       pepperInteractions: [
         {
@@ -116,6 +121,7 @@ const loadNewBlocks = () => {
     ...block2.slice(Math.floor(block2.length / 2), 10),
     {
       ty: "PepperResponse",
+      id: "block2_2",
       auto: false,
       pepperInteractions: [
         {
@@ -129,6 +135,7 @@ const loadNewBlocks = () => {
     // Block 3
     {
       ty: "PepperResponse",
+      id: "block3_0",
       auto: true,
       pepperInteractions: [
         { text: "We have done two blocks so far, only two more to go." },
@@ -138,6 +145,7 @@ const loadNewBlocks = () => {
     ...block3.slice(0, Math.floor(block3.length / 2)),
     {
       ty: "PepperResponse",
+      id: "block3_1",
       auto: true,
       pepperInteractions: [
         {
@@ -149,6 +157,7 @@ const loadNewBlocks = () => {
     ...block3.slice(Math.floor(block3.length / 2), 10),
     {
       ty: "PepperResponse",
+      id: "block3_2",
       auto: false,
       pepperInteractions: [
         {
@@ -162,6 +171,7 @@ const loadNewBlocks = () => {
     // Block 4
     {
       ty: "PepperResponse",
+      id: "block4_0",
       auto: true,
       pepperInteractions: [
         {
@@ -173,6 +183,7 @@ const loadNewBlocks = () => {
     ...block4.slice(0, Math.floor(block4.length / 2)),
     {
       ty: "PepperResponse",
+      id: "block4_1",
       auto: true,
       pepperInteractions: [
         {
@@ -184,6 +195,7 @@ const loadNewBlocks = () => {
     ...block4.slice(Math.floor(block4.length / 2), 10),
     {
       ty: "PepperResponseOption",
+      id: "block4_2",
       auto: false,
       pepperInteractions: [
         {
@@ -198,6 +210,7 @@ const loadNewBlocks = () => {
     // Block 5
     {
       ty: "PepperResponse",
+      id: "block5_0",
       auto: true,
       pepperInteractions: [
         { text: "Ok, lets start the bonus block, are you ready to go?" },
@@ -207,6 +220,7 @@ const loadNewBlocks = () => {
     ...block5.slice(0, Math.floor(block5.length / 2)),
     {
       ty: "PepperResponse",
+      id: "block5_1",
       auto: true,
       pepperInteractions: [
         {
@@ -218,6 +232,7 @@ const loadNewBlocks = () => {
     ...block5.slice(Math.floor(block5.length / 2), 10),
     {
       ty: "PepperResponse",
+      id: "block5_2",
       auto: false,
       pepperInteractions: [
         {
@@ -273,6 +288,7 @@ class App extends React.Component {
                 return (
                   <PepperInteractionPage
                     key={index}
+                    id={q.id}
                     auto={q.auto}
                     message={q.message}
                     pepperInteractions={q.pepperInteractions}
@@ -282,6 +298,7 @@ class App extends React.Component {
                 return (
                   <PepperInteractionOptionalPage
                     key={index}
+                    id={q.id}
                     auto={q.auto}
                     message={q.message}
                     options={q.options}

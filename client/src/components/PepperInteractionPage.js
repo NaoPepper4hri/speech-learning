@@ -17,7 +17,12 @@ class PepperInteractionPage extends React.Component {
   };
 
   componentDidMount() {
-    const { auto, pepperInteractions } = this.props;
+    const { auto, id, pepperInteractions } = this.props;
+
+    logAction("auto_ui", {
+      id: "interaction_page_presented",
+      qId: id,
+    });
 
     const turnAndSpeak = (text, onDone, lookAtScreen) => {
       logAction("automatic", { id: "lookAtParticipant" });

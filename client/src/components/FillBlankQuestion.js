@@ -139,6 +139,10 @@ class FillBlankQuestion extends React.Component {
     };
   }
 
+  componentDidMount() {
+    logAction("auto_ui", { id: "question_presented", qId: this.props.id });
+  }
+
   getTargetSentenceComp = () => {
     const { question, options } = this.props;
     const { answerArea, response } = this.state;

@@ -1,11 +1,16 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
+import { logAction } from "../utils";
 
 class EndExercisePage extends React.Component {
   state = {
     id: "",
     date: new Date().toLocaleString(),
   };
+
+  componentDidMount() {
+    logAction("auto_ui", { id: "EndExperiment" });
+  }
 
   render() {
     return (

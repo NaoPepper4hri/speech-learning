@@ -30,6 +30,10 @@ class MatchPairsQuestion extends React.Component {
     };
   }
 
+  componentDidMount() {
+    logAction("auto_ui", { id: "question_presented", qId: this.props.id });
+  }
+
   toogleButton = (index) => {
     const { answers, buttons, clicked, correct } = this.state;
 

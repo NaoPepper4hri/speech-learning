@@ -155,6 +155,10 @@ class SortWordsQuestion extends React.Component {
     });
   };
 
+  componentDidMount() {
+    logAction("auto_ui", { id: "question_presented", qId: this.props.id });
+  }
+
   render() {
     const {
       header,
