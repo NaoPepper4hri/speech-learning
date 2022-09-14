@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { logAction } from "../utils";
+import { logAction, saveData } from "../utils";
 
 class EndExercisePage extends React.Component {
   state = {
@@ -10,6 +10,7 @@ class EndExercisePage extends React.Component {
 
   componentDidMount() {
     logAction("auto_ui", { id: "EndExperiment" });
+    saveData();
   }
 
   render() {

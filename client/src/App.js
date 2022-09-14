@@ -14,12 +14,7 @@ import {
   StartPage,
   VocabularyQuestion,
 } from "./components";
-import {
-  fisherYatesShuffle,
-  getExpState,
-  saveData,
-  setNewQuestionLayout,
-} from "./utils";
+import { fisherYatesShuffle, getExpState, setNewQuestionLayout } from "./utils";
 
 const loadNewBlocks = () => {
   const MATCH_PAIR_QUESTION_NUMBER = 5;
@@ -95,7 +90,6 @@ const loadNewBlocks = () => {
         },
       ],
       message: "End of Block 1, press Continue to start Block 2",
-      onContinue: saveData,
     },
 
     // Block 2
@@ -129,7 +123,6 @@ const loadNewBlocks = () => {
         },
       ],
       message: "End of Block 2, press Continue to start Block 3",
-      onContinue: saveData,
     },
 
     // Block 3
@@ -165,7 +158,6 @@ const loadNewBlocks = () => {
         },
       ],
       message: "End of Block 3, press Continue to start Block 4",
-      onContinue: saveData,
     },
 
     // Block 4
@@ -204,7 +196,6 @@ const loadNewBlocks = () => {
       ],
       message: "End of Block 4, press Continue to start Block 5",
       options: [{ text: "Continue" }, { text: "End experiment", goto: -1 }],
-      onContinue: saveData,
     },
 
     // Block 5
@@ -240,7 +231,6 @@ const loadNewBlocks = () => {
         },
       ],
       message: "End of Block 5. Done!",
-      onContinue: saveData,
     },
     {
       ty: "EndExercise",
