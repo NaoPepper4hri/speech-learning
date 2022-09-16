@@ -108,28 +108,55 @@ class MatchPairsQuestion extends React.Component {
           </Grid>
         </Stack>
         {correct.length === buttons.length ? (
-          <Fab
-            variant="extended"
-            sx={{
-              margin: 0,
-              top: "auto",
-              right: 20,
-              bottom: 40,
-              left: "auto",
-              position: "fixed",
-            }}
-            onClick={() => {
-              logAction("participant", { id: "nextButton", qId: id });
-              handleNext({
-                id: id,
-                options: this.state.buttons.map((b) => b.text),
-                response: answers,
-              });
-            }}
-          >
-            Continue
-            <KeyboardArrowRightRounded />
-          </Fab>
+          <React.Fragment>
+            <Fab
+              variant="extended"
+              sx={{
+                margin: 0,
+                top: "auto",
+                right: 20,
+                bottom: 100,
+                left: "auto",
+                position: "fixed",
+              }}
+              onClick={() => {
+                logAction("participant", { id: "nextButton", qId: id });
+                handleNext({
+                  id: id,
+                  options: this.state.buttons.map((b) => b.text),
+                  response: answers,
+                });
+              }}
+            >
+              Continue
+              <KeyboardArrowRightRounded />
+            </Fab>
+            <Fab
+              variant="extended"
+              sx={{
+                margin: 0,
+                top: "auto",
+                right: 20,
+                bottom: 40,
+                left: "auto",
+                position: "fixed",
+              }}
+              onClick={() => {
+                logAction("participant", { id: "quitButton", qId: id });
+                handleNext(
+                  {
+                    id: id,
+                    options: this.state.buttons.map((b) => b.text),
+                    response: answers,
+                  },
+                  -1
+                );
+              }}
+            >
+              End experiment
+              <KeyboardArrowRightRounded />
+            </Fab>
+          </React.Fragment>
         ) : (
           <></>
         )}

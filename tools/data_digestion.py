@@ -22,7 +22,7 @@ class Line:
     def __init__(self, intercept: float, slope: float, score: Optional[float] = 1.0):
         """Initialize class."""
         self.intercept = intercept
-        self.slope = slope[0]
+        self.slope = slope
         self.score = score
 
     @classmethod
@@ -33,7 +33,7 @@ class Line:
         model = LinearRegression()
         model.fit(x, y)
         score = model.score(x, y)
-        return cls(intercept=model.intercept_, slope=model.coef_, score=score)
+        return cls(intercept=model.intercept_, slope=model.coef_[0], score=score)
 
 
 def mean(values: List) -> Tuple[float, float]:
