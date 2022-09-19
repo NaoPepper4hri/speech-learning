@@ -120,6 +120,14 @@ participant = ParticipantData(0)
 conversation_done = True
 
 
+def _log_command_done(command):
+    global manager
+    manager.add_log({"user": "pepper", "info": command, "time": datetime.now().timestamp()})
+
+
+COMMAND_BRIDGE.set_clear_action(_log_command_done)
+
+
 @app.route("/")
 def home():
     """Send the webapp."""

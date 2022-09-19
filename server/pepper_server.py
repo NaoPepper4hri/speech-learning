@@ -2,8 +2,9 @@
 import logging
 import uuid
 from concurrent import futures
+from datetime import datetime
 from queue import Empty, Queue
-from typing import AsyncIterable, Dict
+from typing import AsyncIterable, Callable, Dict, Optional
 
 import grpc
 import pepper_command_pb2
@@ -24,6 +25,7 @@ class CommandBridge:
         self.accepting_cmds = True
         self.pepper_tasks: Dict[str, str] = {}
         self._queue: Queue = Queue()
+        self._on_clear_action: Optional[Callable] = None
 
     def stop(self) -> None:
         """Stop sending out commands."""
@@ -45,9 +47,15 @@ class CommandBridge:
         except Empty:
             pass
 
+    def set_clear_action(self, callback: Callable) -> None:
+        """Set a callback to be run when an action has finished."""
+        self._on_clear_action = callback
+
     def clear_action(self, uid: str) -> None:
         """Remove command with uid."""
-        self.pepper_tasks.pop(uid)
+        removed = self.pepper_tasks.pop(uid)
+        if self._on_clear_action is not None:
+            self._on_clear_action(removed)
 
     def get(self, timeout: float) -> pepper_command_pb2.Command:
         """Produce a new command from the queue."""
@@ -57,22 +65,17 @@ class CommandBridge:
         #         "halt_last": False,
         #     },
         #     "say": "ss",
-        #     "goto": {
-        #         "x": 0.0,
-        #         "y": 0.0,
-        #         "theta": 0.0 #  <- Radians
-        #     },
+        #     "goto": {"x": 0.0, "y": 0.0, "theta": 0.0},  # <- Radians
         #     "abilities": [
         #         {
         #             "ty": pepper_command_pb2.Command.AutonomousAbilities.Ability.BASIC_AWARENESS,
         #             "enabled": False,
         #         },
         #         {
-        #             "ty":
-        #                pepper_command_pb2.Command.AutonomousAbilities.Ability.BACKGROUND_MOVEMENT,
-        #             "enabled": True,name
+        #             "ty": pepper_command_pb2.Command.AutonomousAbilities.Ability.BACKGROUND_MOVEMENT,
+        #             "enabled": True,
         #         },
-        #     ]
+        #     ],
         # }
         cmd = self._queue.get(timeout=timeout)
         _uid = str(uuid.uuid1())
@@ -83,8 +86,6 @@ class CommandBridge:
         message.uuid = _uid
 
         if "animation" in cmd:
-            print("here")
-            print("message.hasAnimation()")
             message.animation.name = cmd["animation"].get("name", "")
             message.animation.halt_last = cmd["animation"].get("halt_last", "")
 
@@ -151,5 +152,10 @@ def serve_grpc() -> None:
     server.wait_for_termination()
 
 
+def _print_clear_id(id: str) -> None:
+    print("{} - cleared: {}".format(datetime.now().timestamp(), id))
+
+
 if __name__ == "__main__":
+    COMMAND_BRIDGE.set_clear_action(_print_clear_id)
     serve_grpc()
