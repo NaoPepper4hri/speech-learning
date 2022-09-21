@@ -33,7 +33,7 @@ class Line:
         model = LinearRegression()
         model.fit(x, y)
         score = model.score(x, y)
-        return cls(intercept=model.intercept_, slope=model.coef_[0], score=score)
+        return cls(intercept=model.intercept_, slope=model.coef_[0], score=float(score))
 
 
 def mean(values: List) -> Tuple[float, float]:
@@ -67,7 +67,7 @@ class QuestionBlock:
         name = id.replace(" ", "_")
         return cls(name=name, ids=ids, time=time, answers=answers)
 
-    def _process_data(self, data, label) -> dict:
+    def _process_data(self, data, label) -> Dict:
         t_m, t_std = mean(data)
         t_l = linear_regression(data)
         return {
@@ -78,19 +78,99 @@ class QuestionBlock:
             "{}_{}_lr_score".format(self._name, label): t_l.score,
         }
 
-    def to_json(self) -> dict:
+    def to_json(self) -> Dict:
         """Produce a JSON object with processed data for CSV representation."""
         time = self._process_data(self._time, "time")
         answers = self._process_data(self._answers, "answers")
         time.update(answers)
         return time
 
-    def to_json_raw(self) -> dict:
+    def to_json_raw(self) -> Dict:
         data: Dict[str, float] = {}
         for i, (t, a) in enumerate(zip(self._time, self._answers)):
             data["time_{}_q{}".format(self._name, i)] = t
             data["answer_{}_q{}".format(self._name, i)] = float(a)
         return data
+
+
+class MatchBlock:
+    """Compilation of response data from match pair optional block."""
+
+    def __init__(self, time: List[float], answers: List[List[Dict]]) -> None:
+        self._name = "pairs_block"
+        self._time = time
+        self._answers = answers
+
+    @classmethod
+    def from_data(cls, data):
+        time = [x["time"] for x in data if x["id"].startswith("pairs")]
+        answers = [x["response"] for x in data if x["id"].startswith("pairs")]
+        return cls(time=time, answers=answers)
+
+    def _process_data(self, data, label) -> Dict:
+        t_m, t_std = mean(data)
+        return {
+            "{}_{}_mean".format(self._name, label): t_m,
+            "{}_{}_std_dev".format(self._name, label): t_std,
+        }
+
+    def to_json(self) -> Dict:
+        data = self._process_data(self._time, "time")
+        nf = [len([x for x in a if not x["correct"]]) for a in self._answers]
+        failures = self._process_data(nf, "failures")
+        data.update(failures)
+        data["number_of_trials"] = len(self._time)
+        return data
+
+
+class InteractionBlock:
+    """Interaction page data."""
+
+    def __init__(self, ty: str, name: str, init_time: float) -> None:
+        self._name = name
+        self._type = ty
+        self._init_time = init_time
+
+
+class PepperAction:
+    """Time tracker for pepper reaction times."""
+
+    def __init__(self, user: str, ty: str, info: Dict, time: float, uuid: str) -> None:
+        self._trigger = user
+        self._info = info
+        self._init_time = time
+        self._uid = uuid
+        self.ty = ty
+        self._closed = False
+
+    def try_close(self, entry: Dict) -> None:
+        if not self._closed and self._uid == entry.get("uuid"):
+            self._end_time = entry["timestamp"]
+            self._closed = True
+
+    def get_time(self) -> float:
+        return self._end_time - self._init_time
+
+    @classmethod
+    def from_log(cls, entry: Dict):
+        return cls(
+            user=entry.pop("user"),
+            ty=entry.pop("type"),
+            time=entry.pop("timestamp"),
+            uuid=entry.pop("uuid"),
+            info=entry,
+        )
+
+
+def process_logs(logs: List) -> List:
+    actions = []
+    for lo in logs:
+        if lo["user"] == "pepper":
+            for a in actions:
+                a.try_close(lo)
+        elif "uuid" in lo:
+            actions.append(PepperAction.from_log(lo))
+    return actions
 
 
 if __name__ == "__main__":
@@ -121,10 +201,23 @@ if __name__ == "__main__":
         block_results.update(block3.to_json_raw())
         block_results.update(block4.to_json())
         block_results.update(block4.to_json_raw())
-        print(block_results)
-        # 2. Same, with number of trials and time for optional block (leave blank if not performed)
-        # 3. Responses from experimenter ? Comments, ratings, per block.
 
+        # 2. Same, with number of trials and time for optional block
+        optional_block = MatchBlock.from_data(data_raw["responses"])
+        block_results.update(optional_block.to_json())
+
+        # 3. Pepper response time (mean and std dev for look at participant and screen).
+        log_data = process_logs(data_raw["other"]["log"])
+        lookat_participant = [x.get_time() for x in log_data if x.ty == "LookAtParticipant"]
+        lookat_screen = [x.get_time() for x in log_data if x.ty == "LookAtScreen"]
+        m, std_d = mean(lookat_participant)
+        block_results["LookAtParticipant_time_mean"] = m
+        block_results["LookAtParticipant_time_std_dev"] = std_d
+        m, std_d = mean(lookat_participant)
+        block_results["LookAtScreen_time_mean"] = m
+        block_results["LookAtScreen_time_std_dev"] = std_d
+
+        # 3. Responses from experimenter ? Comments, ratings, per block.
         if not os.path.isfile(args.output):
             with open(args.output, "w") as f:
                 csv_fieldnames = list(block_results.keys())
