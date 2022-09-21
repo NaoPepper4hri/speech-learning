@@ -70,24 +70,30 @@ export const setCurrentPage = async (page) => {
     });
 };
 
-export const requestPepperAnimation = async (animation, halt) => {
+export const requestPepperAnimation = async (animation, halt, meta) => {
   var cmd = {
     animation: {
       name: animation,
       halt: halt,
     },
+    timestamp: Date.now(),
+    type: "Animation",
+    ...meta,
   };
   await sendPepperCommand(cmd);
 };
 
-export const requestPepperText = async (text) => {
+export const requestPepperText = async (text, meta) => {
   var cmd = {
     say: text,
+    timestamp: Date.now(),
+    type: "TextToSpeech",
+    ...meta,
   };
   await sendPepperCommand(cmd);
 };
 
-export const requestPepperLookAtParticipant = async () => {
+export const requestPepperLookAtParticipant = async (meta) => {
   var cmd = {
     goto: {
       x: 0.0,
@@ -100,12 +106,14 @@ export const requestPepperLookAtParticipant = async () => {
         enabled: true,
       },
     ],
+    timestamp: Date.now(),
+    type: "LookAtParticipant",
+    ...meta,
   };
-
   await sendPepperCommand(cmd);
 };
 
-export const requestPepperLookAtScreen = async () => {
+export const requestPepperLookAtScreen = async (meta) => {
   var cmd = {
     goto: {
       x: 0.0,
@@ -118,8 +126,10 @@ export const requestPepperLookAtScreen = async () => {
         enabled: false,
       },
     ],
+    timestamp: Date.now(),
+    type: "LookAtScreen",
+    ...meta,
   };
-
   await sendPepperCommand(cmd);
 };
 
@@ -206,7 +216,7 @@ export const onConversationIsDone = async (callback) => {
 export const setConversationDone = async (value = true) => {
   await fetch("/setConversationDone", {
     method: "POST",
-    body: JSON.stringify({ done: value }),
+    body: JSON.stringify({ done: value, timestamp: Date.now() }),
     headers: new Headers({
       "content-type": "application/json",
     }),
@@ -226,7 +236,7 @@ export const setConversationDone = async (value = true) => {
 export const sendComment = async (ty, comment) => {
   await fetch("/pubComment", {
     method: "POST",
-    body: JSON.stringify({ type: ty, text: comment }),
+    body: JSON.stringify({ type: ty, text: comment, timestamp: Date.now() }),
     headers: new Headers({
       "content-type": "application/json",
     }),

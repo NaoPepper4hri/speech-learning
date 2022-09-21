@@ -141,12 +141,10 @@ class WofOzReaction extends React.Component {
         <Grid item xs={6} justifyContent="center">
           <CardButton
             onClick={() => {
-              logAction("experimenter", {
-                id: "sayWofOzText",
-                text: response.text,
-                label: response.label,
+              requestPepperText(response.text, {
+                user: "experimenter",
+                info: { id: "sayWofOzText", label: response.label },
               });
-              requestPepperText(response.text);
             }}
             background="#ffffcc"
           >
@@ -329,10 +327,7 @@ class PepperControl extends React.Component {
             <Grid item>
               <CardButton
                 onClick={() => {
-                  logAction("experimenter", {
-                    id: "requestPepperLookAtParticipant",
-                  });
-                  requestPepperLookAtParticipant();
+                  requestPepperLookAtParticipant({ user: "experimenter" });
                 }}
                 background={"#ffd3a7"}
               >
@@ -342,10 +337,7 @@ class PepperControl extends React.Component {
             <Grid item>
               <CardButton
                 onClick={() => {
-                  logAction("experimenter", {
-                    id: "requestPepperLookAtScreen",
-                  });
-                  requestPepperLookAtScreen();
+                  requestPepperLookAtScreen({ user: "experimenter" });
                 }}
                 background={"#ffd3a7"}
               >
@@ -406,8 +398,10 @@ class PepperControl extends React.Component {
             <Grid key={idx} item xs={4} justifyContent="center">
               <CardButton
                 onClick={() => {
-                  logAction("experimenter", { id: "sayOtherText", text: a });
-                  requestPepperText(a);
+                  requestPepperText(a, {
+                    user: "experimenter",
+                    info: { id: "sayOtherText", text: a },
+                  });
                 }}
                 background="#ccccff"
               >
@@ -430,11 +424,10 @@ class PepperControl extends React.Component {
             value={dyntext}
             hint="Say text"
             onSubmit={() => {
-              logAction("experimenter", {
-                id: "sayDynamicText",
-                text: dyntext,
+              requestPepperText(dyntext, {
+                user: "experimenter",
+                info: { id: "sayDynamicText" },
               });
-              requestPepperText(dyntext);
               this.setState({ dyntext: "" });
             }}
             onChange={(event) => this.setState({ dyntext: event.target.value })}

@@ -1,8 +1,10 @@
 """Web server for the speech learning task app."""
 
+import copy
 import json
 import logging
 import os
+import uuid
 from datetime import datetime
 from threading import Thread
 from typing import Any, Dict, List, Optional
@@ -108,7 +110,7 @@ class ExperimentLog:
 
     def add_log(self, log):
         """Add a new log event."""
-        self._log_array.append(log)
+        self._log_array.append(copy.deepcopy(log))
 
     def reset(self):
         """Clean up log."""
@@ -122,7 +124,9 @@ conversation_done = True
 
 def _log_command_done(command):
     global manager
-    manager.add_log({"user": "pepper", "info": command, "time": datetime.now().timestamp()})
+    command["user"] = "pepper"
+    command["timestamp"] = datetime.now().timestamp() * 1000
+    manager.add_log(command)
 
 
 COMMAND_BRIDGE.set_clear_action(_log_command_done)
@@ -161,8 +165,11 @@ def set_current_page():
 @app.route("/pubCommand", methods=["POST"])
 def pub_command():
     """Send command to Pepper."""
-    req = request.get_json() or ""
+    req = request.get_json() or {}
+    req["uuid"] = str(uuid.uuid1())
     print(req)
+    global manager
+    manager.add_log(req)
     COMMAND_BRIDGE.send_command(req)
     return "Ok"
 

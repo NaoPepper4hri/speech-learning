@@ -31,7 +31,7 @@ class CommandBridge:
         """Stop sending out commands."""
         self.accepting_cmds = False
 
-    def send_command(self, cmd: str) -> None:
+    def send_command(self, cmd: Dict) -> None:
         """Add a new command to command queue."""
         self._queue.put(cmd)
 
