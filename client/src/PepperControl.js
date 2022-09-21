@@ -31,34 +31,40 @@ const scheduled_actions = [
   {
     text: "Well, you know what they say, practice makes perfect.",
     label: "1.",
+    id: "b1",
     showComment: true,
   },
   {
     text: "You’re really making good progress, keep it up.",
     label: "2.",
+    id: "b2",
     showComment: true,
   },
 
   {
     text: "Let's see if we can do even better in the next block.",
     label: "3.",
+    id: "b3",
     showComment: true,
   },
 
   {
     text: "OK, let's try one more block and see if we can improve.",
     label: "4.- continue",
+    id: "b4",
     showComment: true,
   },
   {
     text: "How confident are you about learning Spanish now?",
     label: "4.- end",
+    id: "b4_b",
     showComment: false,
   },
 
   {
     text: "You got most of those correct, great job.",
     label: "5.",
+    id: "b5",
     showComment: true,
   },
 ];
@@ -173,7 +179,7 @@ class WofOzReaction extends React.Component {
                     text: comment,
                     label: response.label,
                   });
-                  sendComment("note", comment);
+                  sendComment(`note_${response.id}`, comment);
                   this.setState({ comment: "" });
                 }
               }}
@@ -201,7 +207,7 @@ class WofOzReaction extends React.Component {
                     text: rating,
                     label: response.label,
                   });
-                  sendComment("rating", rating);
+                  sendComment(`rating_${response.id}`, rating);
                   this.setState({ rating: "" });
                 }
               }}

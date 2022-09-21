@@ -218,6 +218,40 @@ if __name__ == "__main__":
         block_results["LookAtScreen_time_std_dev"] = std_d
 
         # 3. Responses from experimenter ? Comments, ratings, per block.
+        block_results["note_b1"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b1"]
+        )
+        block_results["rating_b1"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b1"]
+        )
+        block_results["note_b2"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b2"]
+        )
+        block_results["rating_b2"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b2"]
+        )
+        block_results["note_b3"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b3"]
+        )
+        block_results["rating_b3"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b3"]
+        )
+        block_results["note_b4a"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b4"]
+        )
+        block_results["rating_b4a"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b4"]
+        )
+        block_results["note_b5"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b5"]
+        )
+        block_results["rating_b5"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b5"]
+        )
+        block_results["other_notes"] = "|".join(
+            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "comment"]
+        )
+
         if not os.path.isfile(args.output):
             with open(args.output, "w") as f:
                 csv_fieldnames = list(block_results.keys())
