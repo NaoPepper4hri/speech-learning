@@ -2,7 +2,7 @@
 """ Preprocessing script for raw experiment data.
 
 Generates a csv file with accuracy and time data for each block of questions, as well as
-experimenter statistics.
+experimenter input.
 """
 
 import argparse
@@ -173,95 +173,121 @@ def process_logs(logs: List) -> List:
     return actions
 
 
+def _clip_trailing_slash(s: str) -> str:
+    return s[:-1] if s.endswith("/") else s
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("data_file", type=str, help="Source data file (.json)")
-    parser.add_argument("output", type=str, help="Destination js file (.csv)")
+    parser.add_argument("data_folder", type=str, help="Source data file (.json)")
+    parser.add_argument("--output", type=str, help="Destination js file (.csv)", default=None)
 
     args = parser.parse_args()
+    output = "{}/speech_learning_data.csv"
+    data_folder = _clip_trailing_slash(args.data_folder)
 
-    with open(args.data_file, "r", encoding="utf-8") as f:
-        data_raw = json.load(f)
-        # 0. Extract data
-        p_id = data_raw["id"]
-        date = data_raw["date"]
-        block1 = QuestionBlock.from_data(data_raw["responses"], "Block 1")
-        block2 = QuestionBlock.from_data(data_raw["responses"], "Block 2")
-        block3 = QuestionBlock.from_data(data_raw["responses"], "Block 3")
-        block4 = QuestionBlock.from_data(data_raw["responses"], "Block 4")
+    if args.output:
+        output = args.output
+    else:
+        output = output.format(data_folder)
 
-        # 1. Mean, std deviation and line regression representation for each mandatory block (time
-        # and accuracy)
-        block_results = {}
-        block_results.update(block1.to_json())
-        block_results.update(block1.to_json_raw())
-        block_results.update(block2.to_json())
-        block_results.update(block2.to_json_raw())
-        block_results.update(block3.to_json())
-        block_results.update(block3.to_json_raw())
-        block_results.update(block4.to_json())
-        block_results.update(block4.to_json_raw())
+    data_files = {}
+    all_files = os.listdir(args.data_folder)
+    all_files.sort()
+    for file in all_files:
+        if file.endswith(".json"):
+            id_root = file[22:-5].split("_")[0]
+            data_files[id_root] = file
 
-        # 2. Same, with number of trials and time for optional block
-        optional_block = MatchBlock.from_data(data_raw["responses"])
-        block_results.update(optional_block.to_json())
+    write_header = True
+    for pid, data_file in data_files.items():
+        print("Using {} file for participant {}".format(data_file, pid))
+        with open("/".join([data_folder, data_file]), "r", encoding="utf-8") as f:
+            data_raw = json.load(f)
+            # 0. Extract data
+            p_id = data_raw["id"]
+            date = data_raw["date"]
+            block_results = {
+                "participant": p_id,
+                "date": date,
+            }
 
-        # 3. Pepper response time (mean and std dev for look at participant and screen).
-        log_data = process_logs(data_raw["other"]["log"])
-        lookat_participant = [x.get_time() for x in log_data if x.ty == "LookAtParticipant"]
-        lookat_screen = [x.get_time() for x in log_data if x.ty == "LookAtScreen"]
-        m, std_d = mean(lookat_participant)
-        block_results["LookAtParticipant_time_mean"] = m
-        block_results["LookAtParticipant_time_std_dev"] = std_d
-        m, std_d = mean(lookat_participant)
-        block_results["LookAtScreen_time_mean"] = m
-        block_results["LookAtScreen_time_std_dev"] = std_d
+            # 1. Mean, std deviation and line regression representation for each mandatory
+            # block (time and accuracy)
+            block1 = QuestionBlock.from_data(data_raw["responses"], "Block 1")
+            block2 = QuestionBlock.from_data(data_raw["responses"], "Block 2")
+            block3 = QuestionBlock.from_data(data_raw["responses"], "Block 3")
+            block4 = QuestionBlock.from_data(data_raw["responses"], "Block 4")
+            block_results.update(block1.to_json())
+            block_results.update(block1.to_json_raw())
+            block_results.update(block2.to_json())
+            block_results.update(block2.to_json_raw())
+            block_results.update(block3.to_json())
+            block_results.update(block3.to_json_raw())
+            block_results.update(block4.to_json())
+            block_results.update(block4.to_json_raw())
 
-        # 3. Responses from experimenter ? Comments, ratings, per block.
-        block_results["note_b1"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b1"]
-        )
-        block_results["rating_b1"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b1"]
-        )
-        block_results["note_b2"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b2"]
-        )
-        block_results["rating_b2"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b2"]
-        )
-        block_results["note_b3"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b3"]
-        )
-        block_results["rating_b3"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b3"]
-        )
-        block_results["note_b4a"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b4"]
-        )
-        block_results["rating_b4a"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b4"]
-        )
-        block_results["note_b5"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b5"]
-        )
-        block_results["rating_b5"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b5"]
-        )
-        block_results["other_notes"] = "|".join(
-            [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "comment"]
-        )
+            # 2. Same, with number of trials and time for optional block
+            optional_block = MatchBlock.from_data(data_raw["responses"])
+            block_results.update(optional_block.to_json())
 
-        if not os.path.isfile(args.output):
-            with open(args.output, "w") as f:
-                csv_fieldnames = list(block_results.keys())
-                csv_fieldnames.sort()
-                writer = csv.DictWriter(f, csv_fieldnames)
-                writer.writeheader()
-                writer.writerow(block_results)
-        else:
-            with open(args.output, "a") as f:
-                csv_fieldnames = list(block_results.keys())
-                csv_fieldnames.sort()
-                writer = csv.DictWriter(f, csv_fieldnames)
-                writer.writerow(block_results)
+            # 3. Pepper response time (mean and std dev for look at participant and screen).
+            log_data = process_logs(data_raw["other"]["log"])
+            lookat_participant = [x.get_time() for x in log_data if x.ty == "LookAtParticipant"]
+            lookat_screen = [x.get_time() for x in log_data if x.ty == "LookAtScreen"]
+            m, std_d = mean(lookat_participant)
+            block_results["LookAtParticipant_time_mean"] = m
+            block_results["LookAtParticipant_time_std_dev"] = std_d
+            m, std_d = mean(lookat_participant)
+            block_results["LookAtScreen_time_mean"] = m
+            block_results["LookAtScreen_time_std_dev"] = std_d
+
+            # 3. Responses from experimenter ? Comments, ratings, per block.
+            block_results["note_b1"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b1"]
+            )
+            block_results["rating_b1"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b1"]
+            )
+            block_results["note_b2"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b2"]
+            )
+            block_results["rating_b2"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b2"]
+            )
+            block_results["note_b3"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b3"]
+            )
+            block_results["rating_b3"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b3"]
+            )
+            block_results["note_b4a"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b4"]
+            )
+            block_results["rating_b4a"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b4"]
+            )
+            block_results["note_b5"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "note_b5"]
+            )
+            block_results["rating_b5"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "rating_b5"]
+            )
+            block_results["other_notes"] = "|".join(
+                [x["value"] for x in data_raw["other"]["comments"] if x["type"] == "comment"]
+            )
+
+            if write_header:
+                with open(output, "w") as f:
+                    csv_fieldnames = list(block_results.keys())
+                    csv_fieldnames.sort()
+                    writer = csv.DictWriter(f, csv_fieldnames)
+                    writer.writeheader()
+                    writer.writerow(block_results)
+                    write_header = False
+            else:
+                with open(output, "a") as f:
+                    csv_fieldnames = list(block_results.keys())
+                    csv_fieldnames.sort()
+                    writer = csv.DictWriter(f, csv_fieldnames)
+                    writer.writerow(block_results)

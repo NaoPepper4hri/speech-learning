@@ -1,5 +1,6 @@
 """Web server for the speech learning task app."""
 
+import argparse
 import copy
 import json
 import logging
@@ -19,6 +20,7 @@ logging.basicConfig(
 )
 
 app = Flask(__name__, static_url_path="")
+OUTPUT_FOLDER = "/data"
 
 
 class ParticipantData:
@@ -28,7 +30,7 @@ class ParticipantData:
     It includes all responses, as well as the participant id.
     """
 
-    DATA_FILE = "/data/speech_learning_data_p{}.json"
+    DATA_FILE = "{}/speech_learning_data_p{}.json"
 
     def __init__(self, id: int, date: Optional[str] = ""):
         """Initialize ParticipantData."""
@@ -49,9 +51,11 @@ class ParticipantData:
 
     def save_data(self, extra: Optional[Dict[str, Any]] = None):
         """Store the collected data."""
-        df = self.DATA_FILE.format(self._id)
+        df = self.DATA_FILE.format(OUTPUT_FOLDER, self._id)
         if os.path.exists(df):
-            df = self.add_repeated_suffix(self.DATA_FILE.format(str(self._id) + "_{}"))
+            df = self.add_repeated_suffix(
+                self.DATA_FILE.format(OUTPUT_FOLDER, str(self._id) + "_{}")
+            )
 
         json_obj = {
             "id": self._id,
@@ -260,6 +264,17 @@ def control(path):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--output-folder",
+        type=str,
+        help="Target location for experiment data. Default location: /data",
+        default="/data",
+    )
+
+    output_folder = parser.parse_args().output_folder
+    OUTPUT_FOLDER = output_folder[:-1] if output_folder.endswith("/") else output_folder
+
     try:
         publish_hostname()
     except Exception as e:
