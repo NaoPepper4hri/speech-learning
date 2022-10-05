@@ -1,6 +1,9 @@
 # Speech Learning Task
 
-experiment app
+This application depends on the [PepperBase](https://github.com/NaoPepper4hri/PepperBase) project.
+When this server is running and the PepperBase application is started in the Pepper Robot, Pepper
+will connect to the server and start listening to the commands sent from the server to speak and
+perform different actions.
 
 # Retrieve the results
 
@@ -73,6 +76,69 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 Simply type `yes` and press enter.
 
 4. If everything went well, you should now be able to access the server from your web browser.
+
+
+# Running the application locally.
+
+You can run the application in any machine, by giving Pepper the IP of the computer where this
+server is running.
+To do so, Pepper and the server need to be in the same network, and the IP of the computer in the
+network mus be known.
+
+1. Update this project and the PepperBase application to have the latest changes.
+
+2. Connect both Pepper and the computer to the same network.
+   For this to work in WSU, you'll need to connect the devices using an account without
+   restrictions in the network.
+
+3. Find the IP of the computer by running the following command in a PowerShell:
+   ```
+   Get-NetIPAddress -AddressFamily IPV4 -IntefaceAlias Wi-Fi
+   ```
+   If you are on Linux or Mac, you can find your IP with:
+   ```
+   ip a
+   ```
+
+4. Open the PepperBase project in Android Studio.
+   You will need to change the IP address in line 100 of the main activity to match the one of your
+   computer.
+
+5. Open a terminal in the `speech-learning` project.
+
+6. `cd` into the `client` folder and run:
+```
+npm run build
+```
+
+7. `cd` back into the root of the project.
+
+8. Create a folder to store the data with:
+```
+mkdir data
+```
+
+8. Start the server with:
+```
+python ./server/run.py --output-folder data
+```
+
+9. Go back to Android Studio and run the project in Pepper.
+
+10. If everything went well, you should see a message in the log of the server saying
+   `Requested command stream`.
+
+
+## What can go wrong
+
+You might be missing some Python packages in your setup.
+If that is the case, the required packages are listed in `requirements.txt`.
+You should install those packages in either a virtual environment, or globally in your machine.
+
+If you don't specify a `data` folder for the server application, the default `/data` is used.
+The server will fail to save the data (and give an error) if you don't specify an existing folder,
+or you don't have permission to edit the folder you provide.
+Please ensure that you always provide an existing folder to store the data of a participant.
 
 # Troubleshooting
 
