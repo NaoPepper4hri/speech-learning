@@ -101,7 +101,8 @@ network mus be known.
    ```
 
 4. Open the PepperBase project in Android Studio.
-   You will need to change the IP address in line 100 of the main activity to match the one of your
+   You will need to change the IP address in
+   [line 100 of the main activity](https://github.com/NaoPepper4hri/PepperBase/blob/9a7713c3ed578aaf87c59dc3133d719ee83989c0/app/src/main/kotlin/com/example/pepperbase/MainActivity.kt#L100) to match the one of your
    computer.
 
 5. Open a terminal in the `speech-learning` project.
