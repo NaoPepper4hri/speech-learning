@@ -142,6 +142,12 @@ def home():
     return app.send_static_file("index.html")
 
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    """Confirm server is running"""
+    return "Ok"
+
+
 @app.route("/getExpState", methods=["GET"])
 def get_exp_state():
     """Retrieve the state of the experiment."""
