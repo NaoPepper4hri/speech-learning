@@ -27,9 +27,10 @@ logging system) as a JSON file.
 This file can be loaded directly in different languages like Python for data analysis, and contains
 all the available information about a trial.
 
-You can use the [data_digestion.py](https://github.com/NaoPepper4hri/speech-learning/blob/main/tools/data_digestion.py)
-script to process this data and obtain a csv version of the data, including preprocessed stats
-for each trial.
+You can use
+[data_digestion.py](https://github.com/NaoPepper4hri/speech-learning/blob/main/tools/data_digestion.py)
+to process this data and obtain a csv version of the data, including preprocessed stats for each
+trial.
 
 ## Convert the JSON to CSV
 
@@ -42,6 +43,40 @@ python data_digestion.py /path/to/data/folder
 
 By default, the script will write a `speech_learning_data.csv` file in the data folder.
 If you want to save the CSV in another location, use the `--output` option.
+
+# General Architecture
+
+This application has been developed as a base for the Speech Learning project.
+It provides a set of exercises with focus on learning a second language, as well as the necessary
+features required to make Pepper interact with the participant during the experiment.
+
+In order for this to work, this project requires Pepper to be running the
+[PepperBase](https://github.com/NaoPepper4hri/PepperBase) application, to control the robot.
+This application opens a gRPC stream with the `speech-learning` server, and executes the commands
+sent on this stream.
+
+In the following image, we can see a scheme of the elements required for this experiment:
+![Alt text](./arquitecture.svg)
+<img src="./arquitecture.svg">
+
+Besides Pepper and the computer running the speech-learning server, there will be at least one
+more device: The tablet or PC that the participant will use.
+It would also be possible to use an extra PC for the control page (used by the experimenter),
+however the same device running the server could be used for this.
+These changes in configuration can be done easily thanks to the application being a webapp.
+Any device with a browser can be used to interact with the experiment.
+
+This arquitecture also allows us to bring the experiment outside the lab.
+Using a Raspberry Pi as a WiFi hotspot hosting the server, we can easily run the experiment in
+locations without internet access.
+
+However, in the case of the second part of this experiment (an online interaction between the
+participant and Pepper), we require internet access.
+We open a Zoom call between Pepper and the participant, allowing the robot to interact on real time
+with the participant remotely.
+Since we expect both Pepper, the experimenter, and the participant to have access to their required
+services in the server, we have one last constraint: We need all devices to run in the same local
+network.
 
 # Installation in Raspberry Pi:
 
@@ -77,7 +112,6 @@ Simply type `yes` and press enter.
 
 4. If everything went well, you should now be able to access the server from your web browser.
 
-
 # Running the application locally.
 
 You can run the application in any machine, by giving Pepper the IP of the computer where this
@@ -92,10 +126,13 @@ network mus be known.
    restrictions in the network.
 
 3. Find the IP of the computer by running the following command in a PowerShell:
+
    ```
    Get-NetIPAddress -AddressFamily IPV4 -IntefaceAlias Wi-Fi
    ```
+
    If you are on Linux or Mac, you can find your IP with:
+
    ```
    ip a
    ```
@@ -108,6 +145,7 @@ network mus be known.
 5. Open a terminal in the `speech-learning` project.
 
 6. `cd` into the `client` folder and run:
+
 ```
 npm run build
 ```
@@ -115,11 +153,13 @@ npm run build
 7. `cd` back into the root of the project.
 
 8. Create a folder to store the data with:
+
 ```
 mkdir data
 ```
 
 8. Start the server with:
+
 ```
 python ./server/run.py --output-folder data
 ```
@@ -127,8 +167,7 @@ python ./server/run.py --output-folder data
 9. Go back to Android Studio and run the project in Pepper.
 
 10. If everything went well, you should see a message in the log of the server saying
-   `Requested command stream`.
-
+    `Requested command stream`.
 
 ## What can go wrong
 
