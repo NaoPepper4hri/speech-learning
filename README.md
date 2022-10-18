@@ -56,8 +56,7 @@ This application opens a gRPC stream with the `speech-learning` server, and exec
 sent on this stream.
 
 In the following image, we can see a scheme of the elements required for this experiment:
-![Alt text](./arquitecture.svg)
-<img src="./arquitecture.svg">
+<img src="./arquitecture.png">
 
 Besides Pepper and the computer running the speech-learning server, there will be at least one
 more device: The tablet or PC that the participant will use.
