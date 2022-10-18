@@ -1,4 +1,12 @@
-"""Server implementation for Grpc communication with Pepper."""
+"""
+    Server implementation for Grpc communication with Pepper.
+
+    When this server is running, it will await for a client to connect to the ListenMovementCommand
+    service.
+    From that moment on, any commands stored in the COMMAND_BRIDGE will be sent to the client.
+    The COMMAND_BRIDGE object provides thread-safe methods allowing the inclusion of new commands
+    in a queue, to then be sent in order to the client.
+"""
 import logging
 import uuid
 from concurrent import futures

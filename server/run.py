@@ -1,4 +1,15 @@
-"""Web server for the speech learning task app."""
+"""
+    Web server for the speech learning task app.
+
+    This application starts a second thread to run the gRPC server used by Pepper.
+    When this script runs, it will serve the single page application for this experiment, and
+    await for a connection from Pepper.
+    This means that both Pepper and the device presenting the experiment to the participant need to
+    be in the same network as the one running this server.
+
+    This is a development server, and should not be used in a production environment.
+    All experiments should be done inhouse, in a secure network.
+"""
 
 import argparse
 import copy

@@ -1,3 +1,4 @@
+"""A simple client used to test pepper_server.py."""
 import grpc
 import pepper_command_pb2
 import pepper_command_pb2_grpc
