@@ -1,8 +1,12 @@
 #!/usr/bin/python
-""" Preprocessing script for raw experiment data.
+"""
+    Preprocessing script for raw experiment data.
 
-Generates a csv file with accuracy and time data for each block of questions, as well as
-experimenter input.
+    Generates a csv file with accuracy and time data for each block of questions, as well as
+    experimenter input.
+
+    See parameter details with:
+        ./data_digestion.py --help
 """
 
 import argparse

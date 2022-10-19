@@ -1,4 +1,10 @@
 #!/usr/bin/python
+"""
+Generate a JSON description of the questions in the experiment.
+
+Given their original excel description, we can create a set of questions in JSON format that can be
+loaded directly from the webapp.
+"""
 import argparse
 import json
 import openpyxl as xml
@@ -6,6 +12,8 @@ from typing import Any, Dict, Iterator, Optional, Tuple
 
 
 class DataSheets:
+    """Name of the excel sheets corresponding to each question type."""
+
     IMAGE_BUTTON_SHEET = "Block 1"
     FILL_BLANK_SHEET = "Block 2"
     VOCABULARY_SHEET = "Block 3"
@@ -15,12 +23,16 @@ class DataSheets:
 
 
 class Question:
+    """Base description of a question."""
+
     def __init__(self, id: Any, question: Any, options: Any) -> None:
+        """Initialize the class, given the question id, content and other options."""
         self.id = id
         self.question = question
         self.options = options
 
     def as_dict(self) -> Dict:
+        """Convert this question into a dictionary (defines the shape of the JSON written.)."""
         return {
             "ty": self.__class__.__name__,
             "id": self.id,
@@ -30,8 +42,11 @@ class Question:
 
 
 class ImageButtonQuestion(Question):
+    """Question including a set of buttons with images."""
+
     @classmethod
     def from_row(cls, id: str, data: Tuple):
+        """Create a Question from a excel row."""
         images, question, answer, options = data[0:4]
         if images is None:
             images = ",,"
@@ -39,32 +54,29 @@ class ImageButtonQuestion(Question):
         for image, text in zip(images.split(","), options.split(",")):
             image = image.strip()
             text = text.strip()
-            opt.append({
-                "text": text,
-                "image": image,
-                "correct": text == answer
-            })
-        return cls(
-            id=id,
-            question=question,
-            options=opt
-        )
+            opt.append({"text": text, "image": image, "correct": text == answer})
+        return cls(id=id, question=question, options=opt)
 
 
 class FillBlankQuestion(Question):
+    """A sentence with a missing word.Several options are given, but only one is correct."""
+
     def __init__(self, image, translation, *args, **kwargs) -> None:
+        """Create a question, adding the specific fields for this type."""
         super().__init__(*args, **kwargs)
         self.image = image
         self.translation = translation
 
     def as_dict(self) -> Dict:
+        """Convert this question into a dictionary (defines the shape of the JSON written.)."""
         base = super().as_dict()
         base["image"] = self.image
         base["translation"] = self.translation
         return base
 
     @classmethod
-    def from_row(cls, id: int, data: Tuple):
+    def from_row(cls, id: Any, data: Tuple):
+        """Create a Question from a excel row."""
         image, question, answer, options, translation = data[0:5]
         opt = {}
         counter = 0
@@ -72,32 +84,22 @@ class FillBlankQuestion(Question):
             key = "o{}".format(counter)
             counter += 1
             o = o.strip()
-            opt[key] = {
-                    "id": key,
-                    "text": o,
-                    "correct": o == answer
-            }
-        return cls(
-            id=id,
-            image=image,
-            translation=translation,
-            question=question,
-            options=opt
-        )
+            opt[key] = {"id": key, "text": o, "correct": o == answer}
+        return cls(id=id, image=image, translation=translation, question=question, options=opt)
 
 
 class VocabularyQuestion(Question):
+    """A selection of words and images from which a translation should be selected."""
+
     @classmethod
-    def from_row(cls, id: int, data: Tuple):
+    def from_row(cls, id: Any, data: Tuple):
+        """Create a Question from a excel row."""
         print(data)
         question, answer, options = data[0:3]
         opts = []
         for o in options.split(","):
             o = o.strip()
-            opts.append({
-                "text": o,
-                "correct": o == answer
-            })
+            opts.append({"text": o, "correct": o == answer})
         return cls(
             id=id,
             question=question,
@@ -106,19 +108,24 @@ class VocabularyQuestion(Question):
 
 
 class SortWordsQuestion(Question):
+    """Given a sentence in language A, sort the options in language B to find its translation."""
+
     def __init__(self, header, answer, *args, **kwargs) -> None:
+        """Create a question, adding the specific fields for this type."""
         super().__init__(*args, **kwargs)
         self.header = header
         self.answer = answer
 
     def as_dict(self) -> Dict:
+        """Convert this question into a dictionary (defines the shape of the JSON written.)."""
         base = super().as_dict()
         base["answer"] = self.answer
         base["header"] = self.header
         return base
 
     @classmethod
-    def from_row(cls, id: int, data: Tuple, task: Optional[str] = ""):
+    def from_row(cls, id: Any, data: Tuple, task: Optional[str] = ""):
+        """Create a Question from a excel row."""
         question, answer, options = data[0:3]
         opts = {}
         counter = 0
@@ -143,14 +150,19 @@ class SortWordsQuestion(Question):
 
 
 class MatchPairsQuestion(Question):
+    """Present a set of word pairs (e.g. `arbol` - `tree`)."""
+
     @classmethod
     def from_sheet(cls, question: str, data: Iterator):
+        """Create a Question from a excel sheet."""
         opts = []
         for row in data:
-            opts.append({
-                "p1": row[0],
-                "p2": row[1],
-                })
+            opts.append(
+                {
+                    "p1": row[0],
+                    "p2": row[1],
+                }
+            )
 
         return cls(
             id="pairs",
@@ -177,8 +189,8 @@ if __name__ == "__main__":
             task = sheet["A2"].value
             if question_type == DataSheets.MATCH_PAIRS_SHEET:
                 pairs = MatchPairsQuestion.from_sheet(
-                        task,
-                        sheet.iter_rows(min_row=3, values_only=True))
+                    task, sheet.iter_rows(min_row=3, values_only=True)
+                )
             else:
                 idx = 0
                 for entry in sheet.iter_rows(min_row=3, values_only=True):
@@ -186,45 +198,38 @@ if __name__ == "__main__":
                     match question_type:
                         case DataSheets.IMAGE_BUTTON_SHEET:
                             questions.append(
-                                    ImageButtonQuestion.from_row(
-                                        "{}_{}".format(name, idx),
-                                        entry)
-                                    )
+                                ImageButtonQuestion.from_row("{}_{}".format(name, idx), entry)
+                            )
                         case DataSheets.FILL_BLANK_SHEET:
                             questions.append(
-                                    FillBlankQuestion.from_row(
-                                        "{}_{}".format(name, idx),
-                                        entry)
-                                    )
+                                FillBlankQuestion.from_row("{}_{}".format(name, idx), entry)
+                            )
                         case DataSheets.VOCABULARY_SHEET:
                             questions.append(
-                                    VocabularyQuestion.from_row(
-                                        "{}_{}".format(name, idx),
-                                        entry)
-                                    )
+                                VocabularyQuestion.from_row("{}_{}".format(name, idx), entry)
+                            )
                         case DataSheets.SORT_WORDS_SHEET:
                             try:
                                 questions.append(
-                                        SortWordsQuestion.from_row(
-                                            "{}_{}".format(name, idx),
-                                            entry,
-                                            task)
-                                        )
+                                    SortWordsQuestion.from_row(
+                                        "{}_{}".format(name, idx), entry, task
+                                    )
+                                )
                             except Exception as e:
                                 print(e)
                         case DataSheets.SORT_WORDS_SHEET_2:
                             try:
                                 questions.append(
-                                        SortWordsQuestion.from_row(
-                                            "{}_{}".format(name, idx),
-                                            entry,
-                                            task)
-                                        )
+                                    SortWordsQuestion.from_row(
+                                        "{}_{}".format(name, idx), entry, task
+                                    )
+                                )
                             except Exception as e:
                                 print(e)
 
         json_obj = [q.as_dict() for q in questions]
-        json_obj.append(pairs.as_dict())
+        if pairs is not None:
+            json_obj.append(pairs.as_dict())
 
-        with open(args.output, 'w', encoding='utf-8') as f:
+        with open(args.output, "w", encoding="utf-8") as f:
             json.dump(json_obj, f, ensure_ascii=False, indent=4)
