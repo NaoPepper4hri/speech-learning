@@ -71,7 +71,7 @@ export function loadNewBlocks() {
       ],
       message: "Half way, press continue.",
     },
-    ...block1.slice(Math.floor(block1.length / 2), 10),
+    ...block1.slice(Math.floor(block1.length / 2), block1.length),
     {
       ty: "PepperResponse",
       id: "block1_2",
@@ -104,7 +104,7 @@ export function loadNewBlocks() {
       ],
       message: "Half way, press continue.",
     },
-    ...block2.slice(Math.floor(block2.length / 2), 10),
+    ...block2.slice(Math.floor(block2.length / 2), block2.length),
     {
       ty: "PepperResponse",
       id: "block2_2",
@@ -139,7 +139,7 @@ export function loadNewBlocks() {
       ],
       message: "Half way, press continue.",
     },
-    ...block3.slice(Math.floor(block3.length / 2), 10),
+    ...block3.slice(Math.floor(block3.length / 2), block3.length),
     {
       ty: "PepperResponse",
       id: "block3_2",
@@ -176,7 +176,7 @@ export function loadNewBlocks() {
       ],
       message: "Half way, press continue.",
     },
-    ...block4.slice(Math.floor(block4.length / 2), 10),
+    ...block4.slice(Math.floor(block4.length / 2), block4.length),
     {
       ty: "PepperResponseOption",
       id: "block4_2",
@@ -212,7 +212,7 @@ export function loadNewBlocks() {
       ],
       message: "Half way, press continue.",
     },
-    ...block5.slice(Math.floor(block5.length / 2), 10),
+    ...block5.slice(Math.floor(block5.length / 2), block5.length),
     {
       ty: "PepperResponse",
       id: "block5_2",
