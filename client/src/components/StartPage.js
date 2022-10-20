@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Fab, Grid, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Fab,
+  Grid,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { logAction } from "../utils";
 
@@ -9,8 +16,19 @@ import { logAction } from "../utils";
  * @extends {React.Component}
  */
 class StartPage extends React.Component {
+  state = {
+    showSpinner: false,
+  };
+
   render() {
     const { handleNext } = this.props;
+    const { showSpinner } = this.state;
+
+    const snd = new Audio(process.env.PUBLIC_URL + "beep.wav");
+    snd.onended = () => {
+      logAction("participant", { id: "StartExperiment" });
+      handleNext();
+    };
 
     return (
       <React.Fragment>
@@ -33,13 +51,19 @@ class StartPage extends React.Component {
             position: "fixed",
           }}
           onClick={() => {
-            logAction("participant", { id: "StartExperiment" });
-            handleNext();
+            this.setState({ showSpinner: true });
+            snd.play();
           }}
         >
           Start
           <KeyboardArrowRightRounded />
         </Fab>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={showSpinner}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </React.Fragment>
     );
   }
