@@ -3,6 +3,11 @@ import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { Button, Fab, Grid, Stack, Typography } from "@mui/material";
 import { fisherYatesShuffle, logAction } from "../utils";
 
+/**
+ * MatchPairsQuestion.
+ *
+ * @extends {React.Component}
+ */
 class MatchPairsQuestion extends React.Component {
   constructor(props) {
     super(props);

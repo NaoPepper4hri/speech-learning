@@ -4,6 +4,12 @@ import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { PepperInteractionPage } from ".";
 import { logAction } from "../utils";
 
+/**
+ * A blank page shown when Peper interacts with the participant.
+ * This page provides a set of options to continue onto the next phase.
+ *
+ * @extends {PepperInteractionPage}
+ */
 class PepperInteractionOptionalPage extends PepperInteractionPage {
   render() {
     const { message, handleNext, onContinue, options } = this.props;

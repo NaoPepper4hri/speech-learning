@@ -3,6 +3,11 @@ import { Box, Fab, Grid, Typography } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { logAction } from "../utils";
 
+/**
+ * Initial page for the experiment.
+ *
+ * @extends {React.Component}
+ */
 class StartPage extends React.Component {
   render() {
     const { handleNext } = this.props;

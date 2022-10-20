@@ -34,6 +34,11 @@ const OptionContainer = styled.div`
   min-width: 40px;
 `;
 
+/**
+ * A card that can be dragged around the screen.
+ *
+ * @extends {React.Component}
+ */
 class DraggableWord extends React.Component {
   render() {
     const { id, index, text, color } = this.props;
@@ -54,6 +59,11 @@ class DraggableWord extends React.Component {
   }
 }
 
+/**
+ * Drop area for DraggableWord components.
+ *
+ * @extends {React.Component}
+ */
 class OptionsDroppable extends React.Component {
   render() {
     const { id, options, justifyContent, spacing, color } = this.props;
@@ -84,6 +94,12 @@ class OptionsDroppable extends React.Component {
   }
 }
 
+/**
+ * A page where a sentence is provided in a language and multiple words, the words need to be
+ * sorted to form the translated sentence.
+ *
+ * @extends {React.Component}
+ */
 class SortWordsQuestion extends React.Component {
   dropAnswerArea = "daa";
   dropOptionArea = "doa";

@@ -2,12 +2,12 @@ import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import { logAction, saveData } from "../utils";
 
+/**
+ * Final page of the experiment. When open, it will request to save the experiment data.
+ *
+ * @extends {React.Component}
+ */
 class EndExercisePage extends React.Component {
-  state = {
-    id: "",
-    date: new Date().toLocaleString(),
-  };
-
   componentDidMount() {
     logAction("auto_ui", { id: "EndExperiment" });
     saveData();

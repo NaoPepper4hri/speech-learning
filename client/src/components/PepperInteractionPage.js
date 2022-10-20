@@ -11,6 +11,11 @@ import {
   logAction,
 } from "../utils";
 
+/**
+ * A blank page shown when Peper interacts with the participant.
+ *
+ * @extends {React.Component}
+ */
 class PepperInteractionPage extends React.Component {
   state = {
     pepperIsDone: false,

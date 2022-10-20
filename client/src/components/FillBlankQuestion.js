@@ -45,6 +45,11 @@ const AnswerContainer = styled.div`
   min-width: 100px;
 `;
 
+/**
+ * A card that can be dragged around the screen.
+ *
+ * @extends {React.Component}
+ */
 class DraggableAnswer extends React.Component {
   render() {
     const { id, index, text, color } = this.props;
@@ -65,6 +70,11 @@ class DraggableAnswer extends React.Component {
   }
 }
 
+/**
+ * Drop area for DraggableAnswer components corresponding to the question area.
+ *
+ * @extends {React.Component}
+ */
 class QuestionDroppable extends React.Component {
   render() {
     const { id, answer, color } = this.props;
@@ -101,6 +111,11 @@ class QuestionDroppable extends React.Component {
   }
 }
 
+/**
+ * Drop area for DraggableAnswer components corresponding to the option area.
+ *
+ * @extends {React.Component}
+ */
 class OptionsDroppable extends React.Component {
   render() {
     const { id, options, responded } = this.props;
@@ -127,6 +142,12 @@ class OptionsDroppable extends React.Component {
   }
 }
 
+/**
+ * A question type where a sentence is provided with a missing word, and a set of options are given
+ * to complete it.
+ *
+ * @extends {React.Component}
+ */
 class FillBlankQuestion extends React.Component {
   dropAnswerArea = "dropAnswerArea";
   dropOptionArea = "dropOptionArea";

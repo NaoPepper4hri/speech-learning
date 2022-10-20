@@ -11,6 +11,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PepperControl from "./PepperControl";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+// Create two different routes, one for the main app and one for the Control Page.
 root.render(
   <BrowserRouter>
     <Routes>

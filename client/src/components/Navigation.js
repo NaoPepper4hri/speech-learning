@@ -4,6 +4,13 @@ import { AppBar, MobileStepper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { sendAnswer, setCurrentPage } from "../utils";
 
+/**
+ * A page manager and navigator.
+ *
+ * Shows the current page and allows moving back and forth between pages.
+ *
+ * @extends {React.Component}
+ */
 export default class Navigator extends React.Component {
   constructor(props) {
     super(props);

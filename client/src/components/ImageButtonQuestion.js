@@ -11,6 +11,12 @@ import {
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 import { logAction } from "../utils";
 
+/**
+ * Click on the button with the image and word corresponding to the question. Multiple options are
+ * provided as buttons with a description and an image.
+ *
+ * @extends {React.Component}
+ */
 class ImageButtonQuestion extends React.Component {
   state = {
     showAnswer: [],

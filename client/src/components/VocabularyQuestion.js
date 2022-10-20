@@ -3,6 +3,11 @@ import { Button, Fab, Stack, Typography } from "@mui/material";
 import React from "react";
 import { logAction } from "../utils";
 
+/**
+ * Select the translation that corresponds to the given word.
+ *
+ * @extends {React.Component}
+ */
 class VocabularyQuestion extends React.Component {
   state = {
     showAnswer: [],
