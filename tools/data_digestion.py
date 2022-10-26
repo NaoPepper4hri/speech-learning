@@ -1,12 +1,12 @@
 #!/usr/bin/python
 """
-    Preprocessing script for raw experiment data.
+Preprocessing script for raw experiment data.
 
-    Generates a csv file with accuracy and time data for each block of questions, as well as
-    experimenter input.
+Generates a csv file with accuracy and time data for each block of questions, as well as
+experimenter input.
 
-    See parameter details with:
-        ./data_digestion.py --help
+See parameter details with:
+    ./data_digestion.py --help
 """
 
 import argparse
@@ -90,6 +90,7 @@ class QuestionBlock:
         return time
 
     def to_json_raw(self) -> Dict:
+        """Produce a JSON object with processed data for CSV representation."""
         data: Dict[str, float] = {}
         for i, (t, a) in enumerate(zip(self._time, self._answers)):
             data["time_{}_q{}".format(self._name, i)] = t
@@ -101,12 +102,14 @@ class MatchBlock:
     """Compilation of response data from match pair optional block."""
 
     def __init__(self, time: List[float], answers: List[List[Dict]]) -> None:
+        """Initialize match pairs block object."""
         self._name = "pairs_block"
         self._time = time
         self._answers = answers
 
     @classmethod
     def from_data(cls, data):
+        """Build block object from JSON data."""
         time = [x["time"] for x in data if x["id"].startswith("pairs")]
         answers = [x["response"] for x in data if x["id"].startswith("pairs")]
         return cls(time=time, answers=answers)
@@ -119,6 +122,7 @@ class MatchBlock:
         }
 
     def to_json(self) -> Dict:
+        """Produce a JSON object with processed data for CSV representation."""
         data = self._process_data(self._time, "time")
         nf = [len([x for x in a if not x["correct"]]) for a in self._answers]
         failures = self._process_data(nf, "failures")
@@ -131,6 +135,7 @@ class InteractionBlock:
     """Interaction page data."""
 
     def __init__(self, ty: str, name: str, init_time: float) -> None:
+        """Initialize block object."""
         self._name = name
         self._type = ty
         self._init_time = init_time
@@ -140,6 +145,7 @@ class PepperAction:
     """Time tracker for pepper reaction times."""
 
     def __init__(self, user: str, ty: str, info: Dict, time: float, uuid: str) -> None:
+        """Initialize Pepper action object."""
         self._trigger = user
         self._info = info
         self._init_time = time
@@ -148,15 +154,18 @@ class PepperAction:
         self._closed = False
 
     def try_close(self, entry: Dict) -> None:
+        """Check if the given `entry` is the finalized signal for this action."""
         if not self._closed and self._uid == entry.get("uuid"):
             self._end_time = entry["timestamp"]
             self._closed = True
 
     def get_time(self) -> float:
+        """Return elapsed time for this action."""
         return self._end_time - self._init_time
 
     @classmethod
     def from_log(cls, entry: Dict):
+        """Create object from log entry."""
         return cls(
             user=entry.pop("user"),
             ty=entry.pop("type"),
@@ -167,6 +176,7 @@ class PepperAction:
 
 
 def process_logs(logs: List) -> List:
+    """Retrieve all pepper actions from the log."""
     actions = []
     for lo in logs:
         if lo["user"] == "pepper":
