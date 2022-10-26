@@ -15,7 +15,8 @@ perform different actions.
 
 You can find detailed information about the experiment in the documentation:
 
-- [Installation and local setup](./doc/installation.md)
-- [Running the experiment](./doc/usage_guide.md)
-- [Architecture](./doc/architecture.md)
-- [Troubleshooting](./doc/troubleshooting.md)
+- [Installation and local setup](./doc/installation.md).
+- [Running the experiment](./doc/usage_guide.md).
+- [Data description](./doc/data.md).
+- [Architecture](./doc/architecture.md).
+- [Troubleshooting](./doc/troubleshooting.md).
