@@ -1,6 +1,6 @@
 ## Running the experiment
 
-Once the application is installed (see [Installation](#installation)), you can start setting up the
+Once the application is installed (see [Installation](./installation.md)), you can start setting up the
 experiment area:
 
 1. Start the server: start the device running this server (usually a Raspberry Pi or PC), then run
