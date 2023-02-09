@@ -49,6 +49,7 @@ class CommandBridge:
 
     def clear_queue(self) -> None:
         """Clear command queue."""
+        self.pepper_tasks = {}
         try:
             while True:
                 self._queue.get_nowait()
@@ -136,11 +137,13 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
     ) -> AsyncIterable[pepper_command_pb2.Command]:
         """Send commands to client."""
         self.logger.info("Requested command stream.")
-        while self.queue.accepting_cmds:
+        while self.queue.accepting_cmds and context.is_active():
             try:
+                self.logger.info("here")
                 yield self.queue.get(timeout=self.QUEUE_TIMEOUT)
             except Empty:
                 continue
+        self.queue.clear_queue()
 
     def NotifyAnimationEnded(self, request: pepper_command_pb2.Uuid, context) -> empty_pb2.Empty:
         """Check a command has finished, and remove it from the queue."""
