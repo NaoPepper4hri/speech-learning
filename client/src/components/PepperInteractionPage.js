@@ -30,17 +30,9 @@ class PepperInteractionPage extends React.Component {
     });
 
     const turnAndSpeak = (text, onDone, lookAtScreen) => {
-      requestPepperLookAtParticipant({ user: "automatic" });
+      requestPepperText(text, { user: "automatic" });
       onPepperIsDone(() => {
-        requestPepperText(text, { user: "automatic" });
-        onPepperIsDone(() => {
-          if (lookAtScreen) {
-            requestPepperLookAtScreen({ user: "automatic" });
-            onPepperIsDone(onDone);
-          } else {
-            onDone();
-          }
-        });
+        onDone();
       });
     };
 
