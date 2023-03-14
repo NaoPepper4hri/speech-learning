@@ -139,7 +139,6 @@ class PepperServicer(pepper_command_pb2_grpc.PepperServicer):
         self.logger.info("Requested command stream.")
         while self.queue.accepting_cmds and context.is_active():
             try:
-                self.logger.info("here")
                 yield self.queue.get(timeout=self.QUEUE_TIMEOUT)
             except Empty:
                 continue
